@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{5f506bc9-9feb-41ac-a37f-2dc0ee16a900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Inc">
+      <UniqueIdentifier>{63ec935b-f8c5-496e-928c-2bdc04d33851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Src">
+      <UniqueIdentifier>{22673534-21d5-41ca-bc39-116c90954c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{b1070472-09ca-4640-945e-3348bda3b236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Inc">
+      <UniqueIdentifier>{de7cb96c-4516-4f82-b374-da38e837e52b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math\Src">
+      <UniqueIdentifier>{510641a2-0a5c-4fbc-b5bf-0e940512690d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Inc\API.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\IniFile.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\SystemTypes.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Vector2.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Arithmetic.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Vector3.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Vector4.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\WADFile.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\WADMaker.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\FileSystem.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\IniFile.cpp">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\WADFile.cpp">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\WADMaker.cpp">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\FileSystem.cpp">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
