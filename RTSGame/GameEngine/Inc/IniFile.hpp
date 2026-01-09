@@ -32,7 +32,7 @@ namespace GameEngine
 	private:
 		strg				mFilepath;
 		Content				mBuffer;
-		std::vector<uint8>* pMemBuffer;
+		std::vector<uint8>* mMemBuffer;
 
 		strg Trim(const strg& s);
 		void ReadString(const strg& content);

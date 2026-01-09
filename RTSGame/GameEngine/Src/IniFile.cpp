@@ -36,7 +36,7 @@ bool IniFile::Open(strgv filename)
 /// <returns></returns>
 void IniFile::OpenMem(std::vector<uint8>* mem)
 {
-    pMemBuffer = mem;
+    mMemBuffer = mem;
     strg content(reinterpret_cast<const char*>(mem->data()), mem->size());
     ReadString(content);
 }
@@ -75,8 +75,8 @@ void IniFile::Write(strgv section, strgv key, strgv value)
 void IniFile::CloseMem()
 {
     strg content = WriteString();
-    pMemBuffer->assign(content.begin(), content.end());
-    pMemBuffer = nullptr;
+    mMemBuffer->assign(content.begin(), content.end());
+    mMemBuffer = nullptr;
 }
 
 /// <summary>

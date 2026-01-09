@@ -7,8 +7,6 @@
 ======================================================*/
 #ifndef MATRIX3_HPP_
 #define MATRIX3_HPP_
-#include "SystemTypes.hpp"
-#include "Arithmetic.hpp"
 
 namespace GameEngine
 {
@@ -17,7 +15,7 @@ namespace GameEngine
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	template<typename T>
-	class Matrix4 : public IArithmetic
+	class Matrix4
 	{
 	public:
 		T Data[16];
@@ -29,7 +27,7 @@ namespace GameEngine
 
 		bool operator == (const Matrix4<T>& other) const
 		{
-			for (uint64 i = 0; i < 16; i++)
+			for (size_t i = 0; i < 16; i++)
 			{
 				if (Data[i] != other.Data[i])
 					return false;
@@ -40,16 +38,16 @@ namespace GameEngine
 		Matrix4<T> operator +(const Matrix4<T>& other) const
 		{
 			Matrix4<T> result;
-			for (uint64 i = 0; i < 16; i++)
-				result[i] = Data[i] + other.Data[i];
+			for (size_t i = 0; i < 16; i++)
+				result.Data[i] = Data[i] + other.Data[i];
 			return result;
 		}
 
 		Matrix4<T> operator -(const Matrix4<T>& other) const
 		{
 			Matrix4<T> result;
-			for (uint64 i = 0; i < 16; i++)
-				result[i] = Data[i] - other.Data[i];
+			for (size_t i = 0; i < 16; i++)
+				result.Data[i] = Data[i] - other.Data[i];
 			return result;
 		}
 
@@ -65,14 +63,14 @@ namespace GameEngine
 
 		Matrix4<T>& operator +=(const Matrix4<T>& other)
 		{
-			for (uint64 i = 0; i < 16; i++)
+			for (size_t i = 0; i < 16; i++)
 				Data[i] += other.Data[i];
 			return *this;
 		}
 
 		Matrix4<T>& operator -=(const Matrix4<T>& other)
 		{
-			for (uint64 i = 0; i < 16; i++)
+			for (size_t i = 0; i < 16; i++)
 				Data[i] -= other.Data[i];
 			return *this;
 		}

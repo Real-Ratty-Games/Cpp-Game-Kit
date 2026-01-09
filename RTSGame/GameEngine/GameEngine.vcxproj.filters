@@ -33,9 +33,6 @@
     <ClInclude Include="Inc\Vector2.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Inc\Arithmetic.hpp">
-      <Filter>Math\Inc</Filter>
-    </ClInclude>
     <ClInclude Include="Inc\Vector3.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
