@@ -75,6 +75,7 @@
     <ClInclude Include="Inc\API.hpp" />
     <ClInclude Include="Inc\FileSystem.hpp" />
     <ClInclude Include="Inc\IniFile.hpp" />
+    <ClInclude Include="Inc\Matrix4.hpp" />
     <ClInclude Include="Inc\SystemTypes.hpp" />
     <ClInclude Include="Inc\Arithmetic.hpp" />
     <ClInclude Include="Inc\Vector2.hpp" />

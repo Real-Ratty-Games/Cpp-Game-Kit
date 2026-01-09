@@ -9,6 +9,9 @@
 #define SYSTEMTYPES_HPP_
 #include <string>
 
+/// <summary>
+/// Shorter, more clearer system types
+/// </summary>
 namespace GameEngine
 {
 	typedef const char*				cstrg;

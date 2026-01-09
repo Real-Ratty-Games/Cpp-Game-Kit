@@ -37,9 +37,9 @@ void WADMaker::Make(strgv inpath, strgv outloc, bool saveExt)
 	outname += "." + ini.Read("default", "extension", "tv");
 	ini.Close();
 
-	std::vector<strg> files = WADMaker_GetFilesinDir(filepath);
-	std::vector<strg> filenames = WADMaker_GetFilesinDir(filepath, true, saveExt);
-	std::vector<uint8> filetypes = WADMaker_GetFiletypesinDir(filepath);
+	std::vector<strg> files = WADMaker_GetFilesinDir(inpath);
+	std::vector<strg> filenames = WADMaker_GetFilesinDir(inpath, true, saveExt);
+	std::vector<uint8> filetypes = WADMaker_GetFiletypesinDir(inpath);
 	std::vector<std::vector<uint8>> data;
 
 	for (auto& it : files)

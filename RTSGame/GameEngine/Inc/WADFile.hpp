@@ -15,6 +15,9 @@
 
 namespace GameEngine
 {
+	/// <summary>
+	/// Data types for wad file entry
+	/// </summary>
 	enum class EWADFileDataType : uint8
 	{
 		RAW		= 0,
@@ -22,6 +25,9 @@ namespace GameEngine
 		SOUND	= 2
 	};
 
+	/// <summary>
+	/// WAD file entry
+	/// </summary>
 	struct WADData
 	{
 	public:
@@ -40,6 +46,9 @@ namespace GameEngine
 		}
 	};
 
+	/// <summary>
+	/// Read data from a wad file
+	/// </summary>
 	class GAMEENGINEAPI WADFile
 	{
 	public:
@@ -53,6 +62,9 @@ namespace GameEngine
 		std::unordered_map<strg, WADData>	mData;
 	};
 
+	/// <summary>
+	/// Exception for issues reading a wad file
+	/// </summary>
 	class GAMEENGINEAPI WADException : public std::exception
 	{
 	public:

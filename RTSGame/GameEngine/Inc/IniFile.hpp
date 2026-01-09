@@ -13,6 +13,9 @@
 
 namespace GameEngine
 {
+	/// <summary>
+	/// Reading and writing a ini file
+	/// </summary>
 	class GAMEENGINEAPI IniFile
 	{
 	public:

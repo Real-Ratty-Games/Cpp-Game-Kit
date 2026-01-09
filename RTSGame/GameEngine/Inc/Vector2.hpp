@@ -12,12 +12,19 @@
 
 namespace GameEngine
 {
+	/// <summary>
+	/// Vector 2D
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	template<typename T>
 	class Vector2 : public IArithmetic
 	{
 	public:
 		T X;
 		T Y;
+
+		Vector2<T>()
+		{ }
 
 		Vector2<T>(T vl)
 		{

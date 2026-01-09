@@ -51,6 +51,9 @@
     <ClInclude Include="Inc\FileSystem.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\Matrix4.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\IniFile.cpp">

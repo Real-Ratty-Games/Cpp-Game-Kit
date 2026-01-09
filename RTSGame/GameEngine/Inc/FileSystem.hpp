@@ -11,6 +11,9 @@
 #include "SystemTypes.hpp"
 #include <vector>
 
+/// <summary>
+/// Functions for managing system files and directories
+/// </summary>
 namespace GameEngine::FileSystem
 {
 	inline GAMEENGINEAPI bool				Exists(strgv filepath);

@@ -12,6 +12,10 @@
 
 namespace GameEngine
 {
+	/// <summary>
+	/// Vector 4D
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	template<typename T>
 	class Vector4 : public IArithmetic
 	{
@@ -20,6 +24,9 @@ namespace GameEngine
 		T Y;
 		T Z;
 		T W;
+
+        Vector4<T>()
+        { }
 
 		Vector4<T>(T vl)
 		{
