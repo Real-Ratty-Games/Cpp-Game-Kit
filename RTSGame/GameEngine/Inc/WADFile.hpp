@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <stdexcept>
 
-namespace GameEngine
+namespace GameEngine::Core
 {
 	/// <summary>
 	/// Data types for wad file entry

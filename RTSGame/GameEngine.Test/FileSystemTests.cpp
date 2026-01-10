@@ -14,7 +14,7 @@
 #include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace GameEngine;
+using namespace GameEngine::Core;
 
 namespace GameEngineTest
 {

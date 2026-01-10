@@ -11,7 +11,7 @@
 #include <filesystem>
 #include <fstream>
 
-using namespace GameEngine;
+using namespace GameEngine::Core;
 
 std::vector<strg> WADMaker_GetFilesinDir(strgv filepath, bool on = false, bool saveExt = false);
 std::vector<uint8> WADMaker_GetFiletypesinDir(strgv filepath);

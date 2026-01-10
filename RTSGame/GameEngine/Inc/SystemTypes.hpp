@@ -13,10 +13,12 @@
 #include "Vector4.hpp"
 #include "Matrix4.hpp"
 
+using namespace GameEngine::Math;
+
 /// <summary>
 /// Shorter, more clearer system types
 /// </summary>
-namespace GameEngine
+namespace GameEngine::Core
 {
 	typedef const char*				cstrg;
 	typedef std::string				strg;
@@ -29,17 +31,17 @@ namespace GameEngine
 	typedef unsigned short			uint16;
 	typedef unsigned long long		uint64;
 	typedef unsigned long			ulong;
-	typedef Vector2<int>			ivec2;
+	typedef Vector2<int>			vec2i;
 	typedef Vector2<float>			vec2;
-	typedef Vector2<double>			dvec2;
-	typedef Vector3<int>			ivec3;
+	typedef Vector2<double>			vec2d;
+	typedef Vector3<int>			vec3i;
 	typedef Vector3<float>			vec3;
-	typedef Vector3<double>			dvec3;
-	typedef Vector4<int>			ivec4;
+	typedef Vector3<double>			vec3d;
+	typedef Vector4<int>			vec4i;
 	typedef Vector4<float>			vec4;
-	typedef Vector4<double>			dvec4;
-	typedef Matrix4<int>			imat4;
+	typedef Vector4<double>			vec4d;
+	typedef Matrix4<int>			mat4i;
 	typedef Matrix4<float>			mat4;
-	typedef Matrix4<double>			dmat4;
+	typedef Matrix4<double>			mat4d;
 }
 #endif

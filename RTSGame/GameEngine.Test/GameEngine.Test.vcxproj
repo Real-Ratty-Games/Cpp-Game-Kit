@@ -49,12 +49,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>..\GameEngine\Inc;..\Thirdparty\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>..\x64\Debug;..\Thirdparty\x64\Debug;..\Thirdparty\x64\Shared;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\x64\Debug;..\Thirdparty\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\GameEngine\Inc;..\Thirdparty\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>..\x64\Release;..\Thirdparty\x64\Release;..\Thirdparty\x64\Shared;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\x64\Release;..\Thirdparty\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -70,7 +70,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL3.lib;Lua.lib;GameEngine.lib;bgfxDebug.lib;bimg_decodeDebug.lib;bimgDebug.lib;bxDebug.lib;soloud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -91,7 +91,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL3.lib;Lua.lib;GameEngine.lib;bgfxRelease.lib;bimg_decodeRelease.lib;bimgRelease.lib;bxRelease.lib;soloud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>GameEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

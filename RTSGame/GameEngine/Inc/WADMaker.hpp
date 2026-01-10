@@ -12,7 +12,7 @@
 #include "WADFile.hpp"
 #include <unordered_map>
 
-namespace GameEngine::WADMaker
+namespace GameEngine::Core::WADMaker
 {
 	void GAMEENGINEAPI Make(strgv inpath, strgv outloc, bool saveExt = false);
 	void GAMEENGINEAPI MakeAll(strgv fileroot, strgv outloc, bool saveExt = false);

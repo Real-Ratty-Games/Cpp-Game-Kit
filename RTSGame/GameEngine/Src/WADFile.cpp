@@ -9,7 +9,7 @@
 #include <fstream>
 #include <sstream>
 
-using namespace GameEngine;
+using namespace GameEngine::Core;
 
 /// <summary>
 /// Open a wad file and load its contents into buffer

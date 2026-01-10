@@ -19,6 +19,15 @@
     <Filter Include="Math\Src">
       <UniqueIdentifier>{510641a2-0a5c-4fbc-b5bf-0e940512690d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="OS">
+      <UniqueIdentifier>{0b9ea0ae-29ec-4cba-8b89-3ed5c5d7302f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS\Inc">
+      <UniqueIdentifier>{522ef1fa-69e0-4ea1-a427-fe53120f3075}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS\Src">
+      <UniqueIdentifier>{528e4ef8-dff8-4851-bdcd-b3710d2041f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\API.hpp">
@@ -51,6 +60,27 @@
     <ClInclude Include="Inc\Matrix4.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\Window.hpp">
+      <Filter>OS\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Input.hpp">
+      <Filter>OS\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\InputTypes.hpp">
+      <Filter>OS\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Gamepad.hpp">
+      <Filter>OS\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\DebugHelp.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Collider.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Collision.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\IniFile.cpp">
@@ -64,6 +94,18 @@
     </ClCompile>
     <ClCompile Include="Src\FileSystem.cpp">
       <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Window.cpp">
+      <Filter>OS\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Input.cpp">
+      <Filter>OS\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Gamepad.cpp">
+      <Filter>OS\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Collision.cpp">
+      <Filter>Math\Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

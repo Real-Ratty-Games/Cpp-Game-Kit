@@ -8,7 +8,7 @@
 #include "../Inc/FileSystem.hpp"
 #include <filesystem>
 
-using namespace GameEngine;
+using namespace GameEngine::Core;
 
 /// <summary>
 /// Returns true if File/Path exists

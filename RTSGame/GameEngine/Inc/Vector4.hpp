@@ -8,7 +8,7 @@
 #ifndef VECTOR4_HPP_
 #define VECTOR4_HPP_
 
-namespace GameEngine
+namespace GameEngine::Math
 {
 	/// <summary>
 	/// Vector 4D

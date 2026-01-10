@@ -9,10 +9,13 @@
 #include "CppUnitTest.h"
 #include "SystemTypes.hpp"
 #include "FileSystem.hpp"
+#include "Collider.hpp"
+#include "Collision.hpp"
 #include <vector>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace GameEngine;
+using namespace GameEngine::Core;
+using namespace GameEngine::Math;
 
 namespace GameEngineTest
 {
@@ -109,6 +112,44 @@ namespace GameEngineTest
 			Assert::AreEqual(divExp.X, div.X);
 			Assert::AreEqual(divExp.Y, div.Y);
 			Assert::AreEqual(divExp.Z, div.Z);
+		}
+
+		TEST_METHOD(Matrix4Test)
+		{
+			mat4 a(1.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 2.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 4.0f, 0.0f,
+				0.0f, 0.0f, 0.0f, 1.0f);
+
+			mat4 b(3.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 4.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 3.0f, 0.0f,
+				0.0f, 0.0f, 0.0f, 2.0f);
+			
+			mat4 result(3.0f, 0.0f, 0.0f, 0.0f,
+				0.0f, 8.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 12.0f, 0.0f,
+				0.0f, 0.0f, 0.0f, 2.0f);
+
+			mat4 cross = a * b;
+
+			Assert::IsTrue(cross == result);
+		}
+
+		TEST_METHOD(CollisionTest)
+		{
+			const vec2				point(5.0f, 2.0f);
+			const BoxCollider		box		= { vec2(4.0f, 1.0f), vec2(10.0f, 15.0f) };
+			const BoxCollider		box2	= { vec2(10.0f, 20.0f), vec2(5.0f, 2.0f) };
+			const CircleCollider	circle	= { vec2(3.0f, 2.0f), 2.5f };
+			const CircleCollider	circle2 = { vec2(3.0f, 2.0f), 15.0f };
+
+			Assert::IsTrue(Collision::Intersect(point,	box));
+			Assert::IsTrue(Collision::Intersect(box,	box2));
+			Assert::IsTrue(Collision::Intersect(point,	circle));
+			Assert::IsTrue(Collision::Intersect(circle, circle2));
+			Assert::IsTrue(Collision::Intersect(box,	circle));
+			Assert::IsTrue(Collision::Intersect(box,	circle2));
 		}
 	};
 }

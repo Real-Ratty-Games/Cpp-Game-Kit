@@ -11,7 +11,7 @@
 #include "SystemTypes.hpp"
 #include <unordered_map>
 
-namespace GameEngine
+namespace GameEngine::Core
 {
 	/// <summary>
 	/// Reading and writing a ini file

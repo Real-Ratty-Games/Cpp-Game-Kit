@@ -14,7 +14,7 @@
 /// <summary>
 /// Functions for managing system files and directories
 /// </summary>
-namespace GameEngine::FileSystem
+namespace GameEngine::Core::FileSystem
 {
 	inline GAMEENGINEAPI bool				Exists(strgv filepath);
 	inline GAMEENGINEAPI void				FileRemove(strgv filepath);

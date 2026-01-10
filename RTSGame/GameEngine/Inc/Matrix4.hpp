@@ -8,7 +8,7 @@
 #ifndef MATRIX3_HPP_
 #define MATRIX3_HPP_
 
-namespace GameEngine
+namespace GameEngine::Math
 {
 	/// <summary>
 	/// Matrix 4x4
@@ -21,6 +21,17 @@ namespace GameEngine
 		T Data[16];
 
 		Matrix4<T>() : Data{} {}
+
+		Matrix4<T>(T a1, T a2, T a3, T a4,
+			T b1, T b2, T b3, T b4, 
+			T c1, T c2, T c3, T c4, 
+			T d1, T d2, T d3, T d4)
+			: Data{
+			a1, a2, a3, a4,
+			b1, b2, b3, b4,
+			c1, c2, c3, c4,
+			d1, d2, d3, d4
+		} { }
 
 		T& operator()(int row, int col) { return Data[row * 4 + col]; }
 		const T& operator()(int row, int col) const { return Data[row * 4 + col]; }
@@ -57,7 +68,7 @@ namespace GameEngine
 			for (int row = 0; row < 4; row++)
 				for (int col = 0; col < 4; col++)
 					for (int k = 0; k < 4; k++)
-						result(row, col) += Data(row, k) * other(k, col);
+						result(row, col) += Data[row * 4 + k] * other(k, col);
 			return result;
 		}
 
@@ -81,7 +92,7 @@ namespace GameEngine
 			for (int row = 0; row < 4; row++)
 				for (int col = 0; col < 4; col++)
 					for (int k = 0; k < 4; k++)
-						result(row, col) += Data(row, k) * other(k, col);
+						result(row, col) += Data[row * 4 + k] * other(k, col);
 			return result;
 		}
 	};

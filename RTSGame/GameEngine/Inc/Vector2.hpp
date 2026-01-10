@@ -8,7 +8,7 @@
 #ifndef VECTOR2_HPP_
 #define VECTOR2_HPP_
 
-namespace GameEngine
+namespace GameEngine::Math
 {
 	/// <summary>
 	/// Vector 2D

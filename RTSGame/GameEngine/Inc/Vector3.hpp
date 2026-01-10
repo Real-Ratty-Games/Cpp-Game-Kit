@@ -8,7 +8,7 @@
 #ifndef VECTOR3_HPP_
 #define VECTOR3_HPP_
 
-namespace GameEngine
+namespace GameEngine::Math
 {
 	/// <summary>
 	/// Vector 3D

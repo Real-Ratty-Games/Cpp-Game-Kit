@@ -44,12 +44,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\Thirdparty\Inc;..\GameEngine\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>..\x64\Debug;..\Thirdparty\x64\Debug;..\Thirdparty\x64\Shared;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Thirdparty\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>..\x64\Debug;..\Thirdparty\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\Thirdparty\Inc;..\GameEngine\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>..\x64\Release;..\Thirdparty\x64\Release;..\Thirdparty\x64\Shared;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Thirdparty\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>..\x64\Release;..\Thirdparty\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -83,8 +83,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Inc\API.hpp" />
+    <ClInclude Include="Inc\Collider.hpp" />
+    <ClInclude Include="Inc\Collision.hpp" />
+    <ClInclude Include="Inc\DebugHelp.hpp" />
     <ClInclude Include="Inc\FileSystem.hpp" />
+    <ClInclude Include="Inc\Gamepad.hpp" />
     <ClInclude Include="Inc\IniFile.hpp" />
+    <ClInclude Include="Inc\InputTypes.hpp" />
+    <ClInclude Include="Inc\Input.hpp" />
     <ClInclude Include="Inc\Matrix4.hpp" />
     <ClInclude Include="Inc\SystemTypes.hpp" />
     <ClInclude Include="Inc\Vector2.hpp" />
@@ -92,12 +98,17 @@
     <ClInclude Include="Inc\Vector4.hpp" />
     <ClInclude Include="Inc\WADFile.hpp" />
     <ClInclude Include="Inc\WADMaker.hpp" />
+    <ClInclude Include="Inc\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Collision.cpp" />
     <ClCompile Include="Src\FileSystem.cpp" />
+    <ClCompile Include="Src\Gamepad.cpp" />
     <ClCompile Include="Src\IniFile.cpp" />
+    <ClCompile Include="Src\Input.cpp" />
     <ClCompile Include="Src\WADFile.cpp" />
     <ClCompile Include="Src\WADMaker.cpp" />
+    <ClCompile Include="Src\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

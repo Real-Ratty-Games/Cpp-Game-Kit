@@ -9,7 +9,7 @@
 #include <fstream>
 #include <sstream>
 
-using namespace GameEngine;
+using namespace GameEngine::Core;
 
 /// <summary>
 /// Open ini file and read into buffer
