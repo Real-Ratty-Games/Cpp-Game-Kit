@@ -62,7 +62,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxDebug.lib;bimg_decodeDebug.lib;bimgDebug.lib;bxDebug.lib;soloud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxDebug.lib;bimg_decodeDebug.lib;bimgDebug.lib;bxDebug.lib;soloud_static_x64_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,7 +78,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxRelease.lib;bimg_decodeRelease.lib;bimgRelease.lib;bxRelease.lib;soloud.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxRelease.lib;bimg_decodeRelease.lib;bimgRelease.lib;bxRelease.lib;soloud_static_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -92,6 +92,7 @@
     <ClInclude Include="Inc\InputTypes.hpp" />
     <ClInclude Include="Inc\Input.hpp" />
     <ClInclude Include="Inc\Matrix4.hpp" />
+    <ClInclude Include="Inc\Sound.hpp" />
     <ClInclude Include="Inc\SystemTypes.hpp" />
     <ClInclude Include="Inc\Vector2.hpp" />
     <ClInclude Include="Inc\Vector3.hpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="Src\Gamepad.cpp" />
     <ClCompile Include="Src\IniFile.cpp" />
     <ClCompile Include="Src\Input.cpp" />
+    <ClCompile Include="Src\Sound.cpp" />
     <ClCompile Include="Src\WADFile.cpp" />
     <ClCompile Include="Src\WADMaker.cpp" />
     <ClCompile Include="Src\Window.cpp" />

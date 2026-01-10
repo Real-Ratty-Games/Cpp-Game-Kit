@@ -16,12 +16,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine", "GameEngine\Ga
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lua", "Lua\Lua.vcxproj", "{C24D2316-7BDF-48FD-BAC9-4AE22116891C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine.Test", "GameEngine.Test\GameEngine.Test.vcxproj", "{7B45FBBF-8352-3E7A-5D3D-BF52B20EA3AF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{62645824-DC34-4CF9-BEB9-1DC281A715F5} = {62645824-DC34-4CF9-BEB9-1DC281A715F5}
-		{C24D2316-7BDF-48FD-BAC9-4AE22116891C} = {C24D2316-7BDF-48FD-BAC9-4AE22116891C}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -40,10 +34,6 @@ Global
 		{C24D2316-7BDF-48FD-BAC9-4AE22116891C}.Debug|x64.Build.0 = Debug|x64
 		{C24D2316-7BDF-48FD-BAC9-4AE22116891C}.Release|x64.ActiveCfg = Release|x64
 		{C24D2316-7BDF-48FD-BAC9-4AE22116891C}.Release|x64.Build.0 = Release|x64
-		{7B45FBBF-8352-3E7A-5D3D-BF52B20EA3AF}.Debug|x64.ActiveCfg = Debug|x64
-		{7B45FBBF-8352-3E7A-5D3D-BF52B20EA3AF}.Debug|x64.Build.0 = Debug|x64
-		{7B45FBBF-8352-3E7A-5D3D-BF52B20EA3AF}.Release|x64.ActiveCfg = Release|x64
-		{7B45FBBF-8352-3E7A-5D3D-BF52B20EA3AF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

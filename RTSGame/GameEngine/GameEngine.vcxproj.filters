@@ -81,6 +81,9 @@
     <ClInclude Include="Inc\Collision.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\Sound.hpp">
+      <Filter>OS\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\IniFile.cpp">
@@ -106,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="Src\Collision.cpp">
       <Filter>Math\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Sound.cpp">
+      <Filter>OS\Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

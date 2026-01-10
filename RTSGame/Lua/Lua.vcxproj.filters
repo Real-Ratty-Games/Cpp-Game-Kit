@@ -30,6 +30,7 @@
     <ClCompile Include="..\Thirdparty\lua\ltablib.c" />
     <ClCompile Include="..\Thirdparty\lua\ltm.c" />
     <ClCompile Include="..\Thirdparty\lua\lua.c" />
+    <ClCompile Include="..\Thirdparty\lua\luac.c" />
     <ClCompile Include="..\Thirdparty\lua\lundump.c" />
     <ClCompile Include="..\Thirdparty\lua\lutf8lib.c" />
     <ClCompile Include="..\Thirdparty\lua\lvm.c" />
