@@ -26,16 +26,11 @@ namespace GameEngine::OS
 	class GAMEENGINEAPI Sound
 	{
 	public:
+		static void LoadFromFile(SoundWav& obj, strgv filepath);
+		static void LoadFromMemory(SoundWav& obj, std::vector<uint8>& data);
+
 		void Initialize();
 		void Release();
-
-		void LoadFromFile(SoundWav& obj, strgv filepath);
-		void LoadFromMemory(SoundWav& obj, std::vector<uint8>& data);
-
-		void Play(SoundWav& obj, SoundHandle& inst, float volume = 1.0f, bool paused = false, float pan = 0.0f, uint bus = 0);
-		void Play3D(SoundWav& obj, SoundHandle& inst, vec3 location, vec3 velocity, float volume = 1.0f, bool paused = false, uint bus = 0);
-		void SetLoop(SoundHandle& inst, bool vl);
-		bool IsLooping(SoundHandle& inst);
 
 		SoundCore* Core();
 

@@ -22,5 +22,7 @@ namespace GameEngine::Core::FileSystem
 	inline GAMEENGINEAPI std::vector<strg>	SubDirectories(strgv dir);
 	inline GAMEENGINEAPI void				DirectoryCreate(strgv dir);
 	inline GAMEENGINEAPI void				DirectoryRemove(strgv dir);
+	inline GAMEENGINEAPI std::vector<char>	ReadBinaryFile(strgv filepath);
+	inline GAMEENGINEAPI void				WriteBinaryFile(strgv filepath, std::vector<char>& data);
 }
 #endif

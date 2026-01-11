@@ -7,6 +7,7 @@
 ======================================================*/
 #include "../Inc/FileSystem.hpp"
 #include <filesystem>
+#include <fstream>
 
 using namespace GameEngine::Core;
 
@@ -20,6 +21,10 @@ bool FileSystem::Exists(strgv filepath)
 	return std::filesystem::exists(std::filesystem::path(filepath));
 }
 
+/// <summary>
+/// Removes a file
+/// </summary>
+/// <param name="filepath"></param>
 void FileSystem::FileRemove(strgv filepath)
 {
 	std::filesystem::remove(filepath);
@@ -95,4 +100,36 @@ void FileSystem::DirectoryCreate(strgv dir)
 void FileSystem::DirectoryRemove(strgv dir)
 {
 	std::filesystem::remove_all(dir);
+}
+
+/// <summary>
+/// Read a binary file
+/// </summary>
+/// <param name="filepath"></param>
+/// <returns>buffer</returns>
+std::vector<char> FileSystem::ReadBinaryFile(strgv filepath)
+{
+	std::vector<char> rtVl;
+
+	std::ifstream File(filepath.data(), std::ios::in | std::ios::binary | std::ios::ate);
+	std::streamsize size = File.tellg();
+	rtVl.resize(size);
+
+	File.seekg(0, std::ios::beg);
+	File.read(rtVl.data(), size);
+	File.close();
+
+	return rtVl;
+}
+
+/// <summary>
+/// Write a file in binary format
+/// </summary>
+/// <param name="filepath"></param>
+/// <param name="data"></param>
+void FileSystem::WriteBinaryFile(strgv filepath, std::vector<char>& data)
+{
+	std::ofstream File(filepath.data(), std::ios::binary);
+	File.write(data.data(), data.size());
+	File.close();
 }

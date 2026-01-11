@@ -9,22 +9,11 @@
 
 using namespace GameEngine::OS;
 
-void Sound::Initialize()
-{
-	mCore = new SoundCore();
-	SoundResult err = mCore->init();
-	if (err != SoLoud::SO_NO_ERROR)
-		throw new SoundException("Failed initializing sound engine!");
-	mCore->set3dListenerUp(0.0f, 1.0f, 0.0f);
-}
-
-void Sound::Release()
-{
-	mCore->deinit();
-	delete mCore;
-	mCore = nullptr;
-}
-
+/// <summary>
+/// Load sound data from file
+/// </summary>
+/// <param name="obj">sound instance</param>
+/// <param name="filepath"></param>
 void Sound::LoadFromFile(SoundWav& obj, strgv filepath)
 {
 	if (obj.load(filepath.data()) != SoLoud::SO_NO_ERROR)
@@ -34,30 +23,37 @@ void Sound::LoadFromFile(SoundWav& obj, strgv filepath)
 	}
 }
 
+/// <summary>
+/// Load sound from memory
+/// </summary>
+/// <param name="obj">sound instance</param>
+/// <param name="data"></param>
 void Sound::LoadFromMemory(SoundWav& obj, std::vector<uint8>& data)
 {
 	if (obj.loadMem(data.data(), data.size(), false, false) != SoLoud::SO_NO_ERROR)
 		throw new SoundException("Failed loading sound file from memory!");
 }
 
-void Sound::Play(SoundWav& obj, SoundHandle& inst, float volume, bool paused, float pan, uint bus)
+/// <summary>
+/// Create sound engine core
+/// </summary>
+void Sound::Initialize()
 {
-	inst = mCore->play(obj, volume, pan, paused, bus);
+	mCore = new SoundCore();
+	SoundResult err = mCore->init();
+	if (err != SoLoud::SO_NO_ERROR)
+		throw new SoundException("Failed initializing sound engine!");
+	mCore->set3dListenerUp(0.0f, 1.0f, 0.0f);
 }
 
-void Sound::Play3D(SoundWav& obj, SoundHandle& inst, vec3 location, vec3 velocity, float volume, bool paused, uint bus)
+/// <summary>
+/// Delete sound engine core
+/// </summary>
+void Sound::Release()
 {
-	inst = mCore->play3d(obj, location.X, location.Y, location.Z, velocity.X, velocity.Y, velocity.Z, volume, paused, bus);
-}
-
-void Sound::SetLoop(SoundHandle& inst, bool vl)
-{
-	mCore->setLooping(inst, vl);
-}
-
-bool Sound::IsLooping(SoundHandle& inst)
-{
-	return mCore->getLooping(inst);
+	mCore->deinit();
+	delete mCore;
+	mCore = nullptr;
 }
 
 SoundCore* Sound::Core()

@@ -30,13 +30,14 @@ namespace GameEngine::Core
 		void Close();
 
 	private:
-		strg				mFilepath;
-		Content				mBuffer;
-		std::vector<uint8>* mMemBuffer;
-
 		strg Trim(const strg& s);
 		void ReadString(const strg& content);
 		strg WriteString() const;
+
+	private:
+		strg				mFilepath;
+		Content				mBuffer;
+		std::vector<uint8>* mMemBuffer;
 	};
 }
 #endif

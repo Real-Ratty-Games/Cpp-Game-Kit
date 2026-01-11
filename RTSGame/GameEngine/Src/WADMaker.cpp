@@ -163,6 +163,9 @@ void WADMaker::MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg,
 	OUT.close();
 }
 
+/*======================================================
+======================================================*/
+
 /// <summary>
 /// Returns list of files in a directory that are of valid structure
 /// </summary>

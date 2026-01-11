@@ -28,6 +28,24 @@
     <Filter Include="OS\Src">
       <UniqueIdentifier>{528e4ef8-dff8-4851-bdcd-b3710d2041f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script">
+      <UniqueIdentifier>{06ec9a6b-f2f1-4416-92f6-16e9c3416913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Inc">
+      <UniqueIdentifier>{11b3fef2-850c-4895-a9b8-39e4862440f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Src">
+      <UniqueIdentifier>{e0fcb9b3-d88a-4f9a-96f2-06f1cd9f5c6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Draw">
+      <UniqueIdentifier>{ee196164-6ed1-4ec3-b01e-8e6f9dedc07b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Draw\Inc">
+      <UniqueIdentifier>{a236627c-a4a6-4c5c-83f8-6d189074e83c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Draw\Src">
+      <UniqueIdentifier>{50be23ba-ff36-493d-913b-6feff0e0967c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\API.hpp">
@@ -84,6 +102,27 @@
     <ClInclude Include="Inc\Sound.hpp">
       <Filter>OS\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\ScriptField.hpp">
+      <Filter>Script\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ScriptCore.hpp">
+      <Filter>Script\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ScriptText.hpp">
+      <Filter>Script\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ScriptException.hpp">
+      <Filter>Script\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ScriptInstance.hpp">
+      <Filter>Script\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Program.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Clock.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\IniFile.cpp">
@@ -112,6 +151,24 @@
     </ClCompile>
     <ClCompile Include="Src\Sound.cpp">
       <Filter>OS\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ScriptCore.cpp">
+      <Filter>Script\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ScriptText.cpp">
+      <Filter>Script\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ScriptException.cpp">
+      <Filter>Script\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\ScriptInstance.cpp">
+      <Filter>Script\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Clock.cpp">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Program.cpp">
+      <Filter>Core\Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
