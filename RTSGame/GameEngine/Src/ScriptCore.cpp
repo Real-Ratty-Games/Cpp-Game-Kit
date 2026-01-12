@@ -6,8 +6,8 @@
 		* Created by Norbert Gerberg.
 ======================================================*/
 #include "../Inc/ScriptCore.hpp"
-#include <lauxlib.h>
-#include <lualib.h>
+#include <lua/lauxlib.h>
+#include <lua/lualib.h>
 
 using namespace GameEngine::Script;
 

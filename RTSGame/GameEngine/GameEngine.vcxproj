@@ -44,12 +44,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\Thirdparty\lua;..\Thirdparty\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>..\x64\Debug;..\Thirdparty\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Thirdparty\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Thirdparty\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\Thirdparty\lua;..\Thirdparty\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>..\x64\Release;..\Thirdparty\x64\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Thirdparty\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Thirdparty\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

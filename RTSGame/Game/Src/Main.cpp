@@ -5,8 +5,17 @@
 	Revision history:
 		* Created by Norbert Gerberg.
 ======================================================*/
+#include "../Inc/Game.hpp"
+#include <DebugHelp.hpp>
+
+using namespace MyGame;
 
 int main()
 {
+	DEBUGHELP_LOOK4MEMLEAKS();
+	DEBUGHELP_SHOWCMD(false);
+
+	GameProgram program;
+	program.Run();
 	return 0;
 }

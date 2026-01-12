@@ -9,7 +9,7 @@
 #define SCRIPTCORE_HPP_
 #include "API.hpp"
 #include "SystemTypes.hpp"
-#include <lua.hpp>
+#include <lua/lua.hpp>
 
 using namespace GameEngine::Core;
 

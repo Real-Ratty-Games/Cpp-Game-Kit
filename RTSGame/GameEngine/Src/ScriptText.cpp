@@ -9,9 +9,9 @@
 #include "../Inc/ScriptCore.hpp"
 #include "../Inc/FileSystem.hpp"
 #include "../Inc/ScriptException.hpp"
-#include <lua.hpp>
-#include <lauxlib.h>
-#include <lualib.h>
+#include <lua/lua.hpp>
+#include <lua/lauxlib.h>
+#include <lua/lualib.h>
 
 using namespace GameEngine::Script;
 
