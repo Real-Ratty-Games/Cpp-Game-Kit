@@ -19,7 +19,8 @@ void GameWindow::EventCallback()
 	switch (mWndEvent.type)
 	{
 	case SDL_EVENT_QUIT: pProgram->Quit(); break;
-	case SDL_EVENT_WINDOW_MINIMIZED: SetIconified(true); break;
-	case SDL_EVENT_WINDOW_RESTORED: SetIconified(false); break;
+	case SDL_EVENT_WINDOW_MINIMIZED: bIconified = true; break;
+	case SDL_EVENT_WINDOW_RESTORED: bIconified = false; break;
+	case SDL_EVENT_WINDOW_RESIZED: bResized = true; break;
 	}
 }

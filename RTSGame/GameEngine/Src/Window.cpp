@@ -100,6 +100,7 @@ void Window::Show(strgv title, uint width, uint height, bool fs)
 /// </summary>
 void Window::PollEvent()
 {
+	bResized = false;
 	while (SDL_PollEvent(&mWndEvent)) EventCallback();
 }
 
@@ -115,18 +116,18 @@ void Window::Destroy()
 /// Returns true if window is minimized
 /// </summary>
 /// <returns></returns>
-bool Window::Iconified()
+bool Window::IsIconified()
 {
 	return bIconified;
 }
 
 /// <summary>
-/// Minimize window
+/// Returns true if window was resized
 /// </summary>
-/// <param name="vl"></param>
-void Window::SetIconified(bool vl)
+/// <returns></returns>
+bool Window::IsResized()
 {
-	bIconified = vl;
+	return bResized;
 }
 
 /// <summary>
@@ -154,6 +155,13 @@ void Window::Center()
 void Window::SetFullscreen(bool vl)
 {
 	SDL_SetWindowFullscreen(mWndHandle, vl);
+}
+
+vec2i Window::GetSize()
+{
+	int w, h;
+	SDL_GetWindowSize(mWndHandle, &w, &h);
+	return vec2i(w, h);
 }
 
 /// <summary>

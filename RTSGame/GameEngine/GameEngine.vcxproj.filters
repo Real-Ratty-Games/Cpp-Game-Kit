@@ -123,6 +123,15 @@
     <ClInclude Include="Inc\Clock.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\DrawData.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Renderer.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\DrawException.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\IniFile.cpp">
@@ -169,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="Src\Program.cpp">
       <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Renderer.cpp">
+      <Filter>Draw\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\DrawException.cpp">
+      <Filter>Draw\Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

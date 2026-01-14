@@ -31,12 +31,14 @@ namespace GameEngine::OS
 		void PollEvent();
 		void Destroy();
 
-		bool Iconified();
-		void SetIconified(bool vl);
+		bool IsIconified();
+		bool IsResized();
 
 		void SetSize(uint width, uint height);
 		void Center();
 		void SetFullscreen(bool vl);
+
+		vec2i GetSize();
 
 		void* GetNativePtr();
 
@@ -48,6 +50,7 @@ namespace GameEngine::OS
 		SDL_Event	mWndEvent;
 
 		bool bIconified = false;
+		bool bResized = false;
 
 		static SDL_Window*		sSplashWndHandle;
 		static SDL_Renderer*	sSplashWndRenderer;

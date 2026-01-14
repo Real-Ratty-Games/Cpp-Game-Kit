@@ -20,9 +20,9 @@ namespace GameEngine::OS
 	/// </summary>
 	namespace Keyboard
 	{
-		bool GAMEENGINEAPI			KeyDown(KeyboardKey key);
-		bool GAMEENGINEAPI			KeyUp(KeyboardKey key);
-		bool GAMEENGINEAPI			KeyPressed(KeyboardKey key);
+		GAMEENGINEAPI bool	KeyDown(KeyboardKey key);
+		GAMEENGINEAPI bool	KeyUp(KeyboardKey key);
+		GAMEENGINEAPI bool	KeyPressed(KeyboardKey key);
 	}
 
 	/// <summary>
@@ -30,10 +30,10 @@ namespace GameEngine::OS
 	/// </summary>
 	namespace Mouse
 	{
-		bool GAMEENGINEAPI			ButtonDown(MouseButton button);
-		bool GAMEENGINEAPI			ButtonUp(MouseButton button);
-		bool GAMEENGINEAPI			ButtonPressed(MouseButton button);
-		vec2 GAMEENGINEAPI			CursorLocation();
+		GAMEENGINEAPI bool	ButtonDown(MouseButton button);
+		GAMEENGINEAPI bool	ButtonUp(MouseButton button);
+		GAMEENGINEAPI bool	ButtonPressed(MouseButton button);
+		GAMEENGINEAPI vec2	CursorLocation();
 	}
 }
 #endif

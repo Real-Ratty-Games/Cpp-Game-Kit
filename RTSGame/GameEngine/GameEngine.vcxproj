@@ -87,6 +87,9 @@
     <ClInclude Include="Inc\Collider.hpp" />
     <ClInclude Include="Inc\Collision.hpp" />
     <ClInclude Include="Inc\DebugHelp.hpp" />
+    <ClInclude Include="Inc\DrawException.hpp" />
+    <ClInclude Include="Inc\Renderer.hpp" />
+    <ClInclude Include="Inc\DrawData.hpp" />
     <ClInclude Include="Inc\FileSystem.hpp" />
     <ClInclude Include="Inc\Gamepad.hpp" />
     <ClInclude Include="Inc\IniFile.hpp" />
@@ -111,11 +114,13 @@
   <ItemGroup>
     <ClCompile Include="Src\Clock.cpp" />
     <ClCompile Include="Src\Collision.cpp" />
+    <ClCompile Include="Src\DrawException.cpp" />
     <ClCompile Include="Src\FileSystem.cpp" />
     <ClCompile Include="Src\Gamepad.cpp" />
     <ClCompile Include="Src\IniFile.cpp" />
     <ClCompile Include="Src\Input.cpp" />
     <ClCompile Include="Src\Program.cpp" />
+    <ClCompile Include="Src\Renderer.cpp" />
     <ClCompile Include="Src\ScriptException.cpp" />
     <ClCompile Include="Src\ScriptCore.cpp" />
     <ClCompile Include="Src\ScriptInstance.cpp" />
