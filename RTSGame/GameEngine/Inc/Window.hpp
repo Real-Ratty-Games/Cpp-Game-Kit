@@ -27,18 +27,20 @@ namespace GameEngine::OS
 		static void DestroySplashScreen();
 		static void SetHardwareCursorImage(strgv img);
 
-		void Show(strgv title, uint width, uint height, bool fs);
+		void Create(strgv title, uint width, uint height, bool fs);
+		void Show(bool vl = true);
 		void PollEvent();
 		void Destroy();
 
 		bool IsIconified();
-		bool IsResized();
 
 		void SetSize(uint width, uint height);
 		void Center();
 		void SetFullscreen(bool vl);
+		void SwitchFullscreen();
 
 		vec2i GetSize();
+		bool GetFullscreen();
 
 		void* GetNativePtr();
 
@@ -50,10 +52,12 @@ namespace GameEngine::OS
 		SDL_Event	mWndEvent;
 
 		bool bIconified = false;
-		bool bResized = false;
 
 		static SDL_Window*		sSplashWndHandle;
 		static SDL_Renderer*	sSplashWndRenderer;
+
+	private:
+		bool bFullscreen = false;
 	};
 
 	/// <summary>

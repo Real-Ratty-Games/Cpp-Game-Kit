@@ -58,6 +58,7 @@
       <PreprocessorDefinitions>GAMEENGINEAPI_EXPORT;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/Zc:__cplusplus  /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -74,6 +75,7 @@
       <PreprocessorDefinitions>GAMEENGINEAPI_EXPORT;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/Zc:__cplusplus  /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -88,6 +90,7 @@
     <ClInclude Include="Inc\Collision.hpp" />
     <ClInclude Include="Inc\DebugHelp.hpp" />
     <ClInclude Include="Inc\DrawException.hpp" />
+    <ClInclude Include="Inc\DrawSurface.hpp" />
     <ClInclude Include="Inc\Renderer.hpp" />
     <ClInclude Include="Inc\DrawData.hpp" />
     <ClInclude Include="Inc\FileSystem.hpp" />
@@ -102,8 +105,11 @@
     <ClInclude Include="Inc\ScriptText.hpp" />
     <ClInclude Include="Inc\ScriptCore.hpp" />
     <ClInclude Include="Inc\ScriptField.hpp" />
+    <ClInclude Include="Inc\Shader.hpp" />
     <ClInclude Include="Inc\Sound.hpp" />
+    <ClInclude Include="Inc\Sprite.hpp" />
     <ClInclude Include="Inc\SystemTypes.hpp" />
+    <ClInclude Include="Inc\Translation.hpp" />
     <ClInclude Include="Inc\Vector2.hpp" />
     <ClInclude Include="Inc\Vector3.hpp" />
     <ClInclude Include="Inc\Vector4.hpp" />
@@ -115,6 +121,7 @@
     <ClCompile Include="Src\Clock.cpp" />
     <ClCompile Include="Src\Collision.cpp" />
     <ClCompile Include="Src\DrawException.cpp" />
+    <ClCompile Include="Src\DrawSurface.cpp" />
     <ClCompile Include="Src\FileSystem.cpp" />
     <ClCompile Include="Src\Gamepad.cpp" />
     <ClCompile Include="Src\IniFile.cpp" />
@@ -125,7 +132,10 @@
     <ClCompile Include="Src\ScriptCore.cpp" />
     <ClCompile Include="Src\ScriptInstance.cpp" />
     <ClCompile Include="Src\ScriptText.cpp" />
+    <ClCompile Include="Src\Shader.cpp" />
     <ClCompile Include="Src\Sound.cpp" />
+    <ClCompile Include="Src\Sprite.cpp" />
+    <ClCompile Include="Src\Translation.cpp" />
     <ClCompile Include="Src\WADFile.cpp" />
     <ClCompile Include="Src\WADMaker.cpp" />
     <ClCompile Include="Src\Window.cpp" />

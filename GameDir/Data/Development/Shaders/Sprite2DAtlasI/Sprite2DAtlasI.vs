@@ -20,5 +20,5 @@ void main()
 	gl_Position = mul(u_viewProj, worldPos);
 
 	v_texcoord0 = a_texcoord0;
-	v_color = vec4(i_data4.z, i_data4.w, i_data0.z, 1.0);
+	v_color = vec4(i_data4.z, i_data4.w, i_data0.z, i_data1.z);
 }

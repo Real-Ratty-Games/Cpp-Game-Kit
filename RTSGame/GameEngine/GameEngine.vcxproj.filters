@@ -132,6 +132,18 @@
     <ClInclude Include="Inc\DrawException.hpp">
       <Filter>Draw\Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\Shader.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\DrawSurface.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Sprite.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Translation.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\IniFile.cpp">
@@ -184,6 +196,18 @@
     </ClCompile>
     <ClCompile Include="Src\DrawException.cpp">
       <Filter>Draw\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Shader.cpp">
+      <Filter>Draw\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\DrawSurface.cpp">
+      <Filter>Draw\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Sprite.cpp">
+      <Filter>Draw\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Translation.cpp">
+      <Filter>Math\Src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -15,10 +15,10 @@ using namespace GameEngine::Core;
 
 namespace GameEngine::Math::Collision
 {
-	inline bool GAMEENGINEAPI Intersect(const vec2& point,			const BoxCollider& box);
-	inline bool GAMEENGINEAPI Intersect(const vec2& point,			const CircleCollider& circle);
-	inline bool GAMEENGINEAPI Intersect(const BoxCollider& a,		const BoxCollider& b);
-	inline bool GAMEENGINEAPI Intersect(const CircleCollider& a,	const CircleCollider& b);
-	inline bool GAMEENGINEAPI Intersect(const BoxCollider& box,		const CircleCollider& circle);
+	GAMEENGINEAPI inline bool Intersect(const vec2& point,			const BoxCollider& box);
+	GAMEENGINEAPI inline bool Intersect(const vec2& point,			const CircleCollider& circle);
+	GAMEENGINEAPI inline bool Intersect(const BoxCollider& a,		const BoxCollider& b);
+	GAMEENGINEAPI inline bool Intersect(const CircleCollider& a,	const CircleCollider& b);
+	GAMEENGINEAPI inline bool Intersect(const BoxCollider& box,		const CircleCollider& circle);
 }
 #endif

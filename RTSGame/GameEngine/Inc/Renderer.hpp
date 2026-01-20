@@ -10,6 +10,7 @@
 #include "API.hpp"
 #include "SystemTypes.hpp"
 #include "DrawData.hpp"
+#include <vector>
 
 using namespace GameEngine::Core;
 
@@ -20,20 +21,56 @@ namespace GameEngine
 		class Window;
 	}
 
-	namespace Draw::Renderer
+	namespace Draw
 	{
-		GAMEENGINEAPI inline bool Initialize(OS::Window* window, DrawAPI api);
-		GAMEENGINEAPI inline void Release();
-		GAMEENGINEAPI inline void BeginDraw(OS::Window* window, bool vsync, MSAA msaa);
-		GAMEENGINEAPI inline void EndDraw();
+		class Shader;
+		class Sprite;
+		class DrawSurface;
 
-		GAMEENGINEAPI const bgfx::Caps* GetGPUInfo();
-		GAMEENGINEAPI inline void Printf(vec2i location, uint8 attr, strgv text);
+		namespace Renderer
+		{
+			GAMEENGINEAPI inline bool Initialize(OS::Window* window, DrawAPI api, bool vsync, MSAA msaa);
+			GAMEENGINEAPI inline void Release();
+			GAMEENGINEAPI inline void BeginDraw();
+			GAMEENGINEAPI inline void EndDraw();
 
-		GAMEENGINEAPI inline void SetScissor(vec2i location, vec2i size);
+			GAMEENGINEAPI inline void OnResize(vec2i size, bool vsync, MSAA msaa);
 
-		GAMEENGINEAPI inline bgfx::VertexBufferHandle CreateVertexBuffer(const void* data, uint size, bgfx::VertexLayout& layout);
-		GAMEENGINEAPI inline bgfx::IndexBufferHandle CreateIndexBuffer(const void* data, uint size);
+			GAMEENGINEAPI const bgfx::Caps* GetGPUInfo();
+			GAMEENGINEAPI inline void Printf(vec2i location, uint8 attr, strgv text);
+
+			GAMEENGINEAPI inline void SetScissor(vec2i location, vec2i size);
+			GAMEENGINEAPI inline void SetViewScissor(uint16 viewid, vec2i location, vec2i size);
+
+			GAMEENGINEAPI inline void SetState(uint64 state = BGFX_STATE_DEFAULT
+				| BGFX_STATE_BLEND_ALPHA
+				| BGFX_STATE_WRITE_RGB
+				| BGFX_STATE_WRITE_A
+				| BGFX_STATE_WRITE_Z
+				| BGFX_STATE_DEPTH_TEST_LESS
+				| BGFX_STATE_CULL_CCW
+				| BGFX_STATE_MSAA);
+
+			GAMEENGINEAPI inline bgfx::VertexBufferHandle CreateVertexBuffer(const void* data, uint size, bgfx::VertexLayout& layout);
+			GAMEENGINEAPI inline bgfx::IndexBufferHandle CreateIndexBuffer(const void* data, uint size);
+
+			GAMEENGINEAPI void LoadTextureFromFile(Texture& texture, strgv filename, uint64 flags, strgv texturename, bool flipUV);
+			GAMEENGINEAPI void LoadTextureFromMemory(Texture& texture, std::vector<uint8>& data, uint64 flags, strgv texturename);
+			GAMEENGINEAPI inline void FreeTexture(Texture& tex);
+
+			GAMEENGINEAPI void SetActiveShader(Shader* shader);
+			GAMEENGINEAPI void BeginDrawSprite(DrawSurface* surface, Camera2D& cam);
+			GAMEENGINEAPI void DrawSprite(Sprite* sprite, Transform2D& transformation);
+			GAMEENGINEAPI void DrawSpriteAtlas(Sprite* sprite, TransformAtlas2D& transformation, vec2 subSize);
+
+			GAMEENGINEAPI void PrepareSpriteInstancing(Sprite* sprite, InstanceData& idata, std::vector<Transform2D>& tdata);
+			GAMEENGINEAPI void PrepareSpriteAtlasInstancing(Sprite* sprite, InstanceData& idata, std::vector<TransformAtlas2D>& tdata, vec2 subSize);
+			
+			GAMEENGINEAPI void DrawSpriteInstanced(InstanceData& idata);
+			GAMEENGINEAPI void DrawSpriteAtlasInstanced(InstanceData& idata, Sprite* sprite, vec2 subSize);
+
+			GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, Transform2D& transformation, vec2 subSize, strgv text);
+		}
 	}
 }
 #endif

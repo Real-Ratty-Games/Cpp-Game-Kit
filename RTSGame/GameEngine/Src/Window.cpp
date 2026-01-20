@@ -80,15 +80,16 @@ void Window::DestroySplashScreen()
 }
 
 /// <summary>
-/// Create and show window
+/// Create window
 /// </summary>
 /// <param name="title"></param>
 /// <param name="width"></param>
 /// <param name="height"></param>
 /// <param name="fs">fullscreen</param>
-void Window::Show(strgv title, uint width, uint height, bool fs)
+void Window::Create(strgv title, uint width, uint height, bool fs)
 {
-	if ((mWndHandle = SDL_CreateWindow(title.data(), (int)width, (int)height, fs ? SDL_WINDOW_FULLSCREEN : 0)) == nullptr)
+	bFullscreen = fs;
+	if ((mWndHandle = SDL_CreateWindow(title.data(), (int)width, (int)height, (fs ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_HIDDEN)) == nullptr)
 	{
 		const strg errmsg = "Failed creating window: " + strg(SDL_GetError());
 		throw new WindowException(errmsg);
@@ -96,11 +97,20 @@ void Window::Show(strgv title, uint width, uint height, bool fs)
 }
 
 /// <summary>
+/// Show/Hide window
+/// </summary>
+/// <param name="vl">True if show</param>
+void Window::Show(bool vl)
+{
+	if (vl) SDL_ShowWindow(mWndHandle);
+	else SDL_HideWindow(mWndHandle);
+}
+
+/// <summary>
 /// Poll window events
 /// </summary>
 void Window::PollEvent()
 {
-	bResized = false;
 	while (SDL_PollEvent(&mWndEvent)) EventCallback();
 }
 
@@ -119,15 +129,6 @@ void Window::Destroy()
 bool Window::IsIconified()
 {
 	return bIconified;
-}
-
-/// <summary>
-/// Returns true if window was resized
-/// </summary>
-/// <returns></returns>
-bool Window::IsResized()
-{
-	return bResized;
 }
 
 /// <summary>
@@ -154,14 +155,36 @@ void Window::Center()
 /// <param name="vl"></param>
 void Window::SetFullscreen(bool vl)
 {
+	bFullscreen = vl;
 	SDL_SetWindowFullscreen(mWndHandle, vl);
 }
 
+/// <summary>
+/// Switch fullscreen mode
+/// </summary>
+void Window::SwitchFullscreen()
+{
+	SetFullscreen(!bFullscreen);
+}
+ 
+/// <summary>
+/// Returns window size
+/// </summary>
+/// <returns></returns>
 vec2i Window::GetSize()
 {
 	int w, h;
 	SDL_GetWindowSize(mWndHandle, &w, &h);
 	return vec2i(w, h);
+}
+
+/// <summary>
+/// Returns true if fullscreen mode is on
+/// </summary>
+/// <returns></returns>
+bool Window::GetFullscreen()
+{
+	return bFullscreen;
 }
 
 /// <summary>

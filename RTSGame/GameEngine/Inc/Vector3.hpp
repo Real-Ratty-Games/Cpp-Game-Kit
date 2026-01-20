@@ -7,6 +7,7 @@
 ======================================================*/
 #ifndef VECTOR3_HPP_
 #define VECTOR3_HPP_
+#include <cmath>
 
 namespace GameEngine::Math
 {
@@ -42,6 +43,47 @@ namespace GameEngine::Math
 			Y = vec.Y;
 			Z = vec.Z;
 		}
+
+        template<typename U>
+        Vector3(const Vector3<U>& other)
+            : X(static_cast<T>(other.X)),
+            Y(static_cast<T>(other.Y))
+        { }
+
+        inline T* Ptr()
+        {
+            return &X;
+        }
+
+        inline const T* Ptr() const
+        {
+            return &X;
+        }
+
+        T Length() const
+        {
+            return std::sqrt(X * X + Y * Y + Z * Z);
+        }
+
+        Vector3<T> Normalized() const
+        {
+            const T len = Length();
+
+            if (len == T(0))
+                return Vector3<T>();
+
+            return Vector3<T>(X / len, Y / len, Z / len);
+        }
+
+        Vector3<T> Negate() const
+        {
+            return Vector3<T>(-X, -Y, -Z);
+        }
+
+        Vector3<T> operator-() const
+        {
+            return Vector3<T>(-X, -Y, -Z);
+        }
 
         /// <summary>
         /// Right hand cross product

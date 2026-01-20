@@ -129,7 +129,19 @@ std::vector<char> FileSystem::ReadBinaryFile(strgv filepath)
 /// <param name="data"></param>
 void FileSystem::WriteBinaryFile(strgv filepath, std::vector<char>& data)
 {
-	std::ofstream File(filepath.data(), std::ios::binary);
-	File.write(data.data(), data.size());
-	File.close();
+	std::ofstream file(filepath.data(), std::ios::binary);
+	file.write(data.data(), data.size());
+	file.close();
+}
+
+/// <summary>
+/// Write a text file
+/// </summary>
+/// <param name="filepath"></param>
+/// <param name="text"></param>
+void FileSystem::WriteTextFile(strgv filepath, strgv text)
+{
+	std::ofstream file(filepath.data());
+	file.write(text.data(), text.size());
+	file.close();
 }

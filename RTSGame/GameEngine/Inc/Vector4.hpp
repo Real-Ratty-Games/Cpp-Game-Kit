@@ -7,6 +7,7 @@
 ======================================================*/
 #ifndef VECTOR4_HPP_
 #define VECTOR4_HPP_
+#include <cmath>
 
 namespace GameEngine::Math
 {
@@ -45,6 +46,47 @@ namespace GameEngine::Math
 			Z = vec.Z;
 			W = vec.W;
 		}
+
+        template<typename U>
+        Vector4(const Vector4<U>& other)
+            : X(static_cast<T>(other.X)),
+            Y(static_cast<T>(other.Y))
+        { }
+
+        inline T* Ptr()
+        {
+            return &X;
+        }
+
+        inline const T* Ptr() const
+        {
+            return &X;
+        }
+
+        T Length() const
+        {
+            return std::sqrt(X * X + Y * Y + Z * Z + W * W);
+        }
+
+        Vector4<T> Normalized() const
+        {
+            const T len = Length();
+
+            if (len == T(0))
+                return Vector4<T>();
+
+            return Vector4<T>(X / len, Y / len, Z / len, W / len);
+        }
+
+        Vector4<T> Negate() const
+        {
+            return Vector4<T>(-X, -Y, -Z, -W);
+        }
+
+        Vector4<T> operator-() const
+        {
+            return Vector4<T>(-X, -Y, -Z, -W);
+        }
 
         bool operator == (const Vector4<T>& other) const
         {

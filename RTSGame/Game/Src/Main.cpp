@@ -12,7 +12,9 @@ using namespace MyGame;
 
 int main()
 {
+#if _DEBUG
 	DEBUGHELP_LOOK4MEMLEAKS();
+#endif
 	DEBUGHELP_SHOWCMD(false);
 
 	GameProgram program;

@@ -7,6 +7,7 @@
 ======================================================*/
 #ifndef VECTOR2_HPP_
 #define VECTOR2_HPP_
+#include <cmath>
 
 namespace GameEngine::Math
 {
@@ -38,6 +39,47 @@ namespace GameEngine::Math
 		{
 			X = vec.X;
 			Y = vec.Y;
+		}
+
+		template<typename U>
+		Vector2(const Vector2<U>& other)
+			: X(static_cast<T>(other.X)),
+			Y(static_cast<T>(other.Y))
+		{ }
+
+		inline T* Ptr()
+		{
+			return &X;
+		}
+
+		inline const T* Ptr() const
+		{
+			return &X;
+		}
+
+		T Length() const
+		{
+			return std::sqrt(X * X + Y * Y);
+		}
+
+		Vector2<T> Normalized() const
+		{
+			const T len = Length();
+
+			if (len == T(0))
+				return Vector2<T>();
+
+			return Vector2<T>(X / len, Y / len);
+		}
+
+		Vector2<T> Negate() const
+		{
+			return Vector2<T>(-X, -Y);
+		}
+
+		Vector2<T> operator-() const
+		{
+			return Vector2<T>(-X, -Y);
 		}
 
 		bool operator == (const Vector2<T>& other) const
