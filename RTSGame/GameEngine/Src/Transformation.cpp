@@ -5,7 +5,7 @@
 	Revision history:
 		* Created by Norbert Gerberg.
 ======================================================*/
-#include "../Inc/Translation.hpp"
+#include "../Inc/Transformation.hpp"
 
 using namespace GameEngine::Math;
 

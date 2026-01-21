@@ -141,7 +141,7 @@
     <ClInclude Include="Inc\Sprite.hpp">
       <Filter>Draw\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Inc\Translation.hpp">
+    <ClInclude Include="Inc\Transformation.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
   </ItemGroup>
@@ -206,7 +206,7 @@
     <ClCompile Include="Src\Sprite.cpp">
       <Filter>Draw\Src</Filter>
     </ClCompile>
-    <ClCompile Include="Src\Translation.cpp">
+    <ClCompile Include="Src\Transformation.cpp">
       <Filter>Math\Src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,7 +12,7 @@
 #include "../Inc/Shader.hpp"
 #include "../Inc/Sprite.hpp"
 #include "../Inc/DrawSurface.hpp"
-#include "../Inc/Translation.hpp"
+#include "../Inc/Transformation.hpp"
 #include <bx/math.h>
 
 #define STB_IMAGE_IMPLEMENTATION
