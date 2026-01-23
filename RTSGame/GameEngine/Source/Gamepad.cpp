@@ -1,0 +1,151 @@
+/*======================================================
+	Copyright (c) 2026 Real Ratty Games.
+	Created by Norbert Gerberg.
+======================================================*/
+#include "../Public/Gamepad.hpp"
+#include <SDL3/SDL_gamepad.h>
+#include <stdexcept>
+
+using namespace GameEngine;
+
+inline bool Gamepad_CheckButton(SDL_Gamepad* handle, GamepadButton button);
+
+/// <summary>
+/// Load gamepad mapping for a bunch of different controller types
+/// </summary>
+void Gamepad::LoadConfig()
+{
+	if (SDL_AddGamepadMappingsFromFile("Data/Gamepads.ini") == -1)
+	{
+		const strg errmsg = "Failed adding gamepad mapping: " + strg(SDL_GetError());
+		throw new std::runtime_error(errmsg);
+	}
+}
+
+/// <summary>
+/// Connect to active gamepad in port
+/// </summary>
+/// <param name="port"></param>
+/// <returns></returns>
+bool Gamepad::Connect(uint8 port)
+{
+	bool rtvl = true;
+	if (!SDL_HasGamepad()) rtvl = false;
+	else
+	{
+		int cnt = 0;
+		SDL_JoystickID* ids = SDL_GetGamepads(&cnt);
+		if (cnt <= port) rtvl = false;
+		else
+		{
+			mGamepadHandle = SDL_OpenGamepad(ids[port]);
+			rtvl = SDL_GamepadConnected(mGamepadHandle);
+		}
+		SDL_free(ids);
+	}
+	return rtvl;
+}
+
+/// <summary>
+/// Destroy gamepad connection
+/// </summary>
+void Gamepad::Disconnect()
+{
+	SDL_CloseGamepad(mGamepadHandle);
+	mGamepadHandle = nullptr;
+}
+
+/// <summary>
+/// Returns true if gamepad is connected
+/// </summary>
+/// <returns></returns>
+bool Gamepad::IsConnected()
+{
+	return SDL_GamepadConnected(mGamepadHandle);
+}
+
+/// <summary>
+/// Check if button is held down
+/// </summary>
+/// <param name="button"></param>
+/// <returns>True if button is being held down</returns>
+bool Gamepad::ButtonDown(GamepadButton button)
+{
+	return Gamepad_CheckButton(mGamepadHandle, button);
+}
+
+/// <summary>
+/// Check if button is not held down
+/// </summary>
+/// <param name="button"></param>
+/// <returns>True if button is up</returns>
+bool Gamepad::ButtonUp(GamepadButton button)
+{
+	return !ButtonDown(button);
+}
+
+/// <summary>
+/// Check if button was pressed once
+/// </summary>
+/// <param name="button"></param>
+/// <returns>True if button was pressed once</returns>
+bool Gamepad::ButtonPressed(GamepadButton button)
+{
+	const bool down = Gamepad_CheckButton(mGamepadHandle, button);
+	auto it = std::find(mPressed.begin(), mPressed.end(), button);
+	const bool pressed = (it != mPressed.end());
+
+	if (down && !pressed)
+	{
+		mPressed.push_back(button);
+		return true;
+	}
+	else if (!down && pressed) mPressed.erase(it);
+	return false;
+}
+
+/// <summary>
+/// Gamepad motor rumble
+/// </summary>
+/// <param name="left">from 0 to 0xFFFF (65535)</param>
+/// <param name="right">from 0 to 0xFFFF (65535)</param>
+/// <param name="time">in ms</param>
+void Gamepad::Rumble(uint16 left, uint16 right, uint time)
+{
+	SDL_RumbleGamepad(mGamepadHandle, left, right, time);
+}
+
+/// <summary>
+/// Gamepad motor rumble for triggers
+/// </summary>
+/// <param name="left">from 0 to 0xFFFF (65535)</param>
+/// <param name="right">from 0 to 0xFFFF (65535)</param>
+/// <param name="time">in ms</param>
+void Gamepad::RumbleTriggers(uint16 left, uint16 right, uint time)
+{
+	SDL_RumbleGamepadTriggers(mGamepadHandle, left, right, time);
+}
+
+/// <summary>
+/// Get axis button state
+/// </summary>
+/// <param name="axis">thumbsticks: -32768 to 32767; triggers: 0 to 32767</param>
+/// <returns>Axis state</returns>
+int16 Gamepad::Axis(GamepadAxis axis)
+{
+	return SDL_GetGamepadAxis(mGamepadHandle, (SDL_GamepadAxis)axis);
+}
+
+/*======================================================
+======================================================*/
+
+/// <summary>
+/// Returns true if gamepad button is held down
+/// </summary>
+/// <param name="handle"></param>
+/// <param name="button"></param>
+/// <returns></returns>
+bool Gamepad_CheckButton(SDL_Gamepad* handle, GamepadButton button)
+{
+	return SDL_GetGamepadButton(handle, (SDL_GamepadButton)button);
+}

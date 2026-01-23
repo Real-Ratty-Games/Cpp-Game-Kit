@@ -1,23 +1,21 @@
 /*======================================================
 	Copyright (c) 2026 Real Ratty Games.
-	This software is a trade secret.
-
-	Revision history:
-		* Created by Norbert Gerberg.
+	Created by Norbert Gerberg.
 ======================================================*/
 #include "../Inc/Game.hpp"
 #include "../Inc/GameWindow.hpp"
 #include <Renderer.hpp>
 #include <Input.hpp>
 
-using namespace GameEngine::OS;
-using namespace GameEngine::Draw;
-
 using namespace MyGame;
+
+InstanceData _SimpleTextData;
+int _Count = 0;
 
 void GameProgram::OnResize(vec2i& size)
 {
 	mBackBufferSurface->OnResize(size);
+	mSurface2->OnResize(size);
 }
 
 bool GameProgram::Initialize()
@@ -42,11 +40,19 @@ bool GameProgram::Initialize()
 
 	// create back buffer surface
 	mBackBufferSurface = new DrawSurface(0, mWindow->GetNativePtr());
+	mSurface2 = new DrawSurface(1, nullptr);
 
 	// init camera
 	mCamera.Size = mWindow->GetSize();
 
 	LoadData();
+
+	Transform2D transf;
+	transf.Location = vec2(100, 100);
+	transf.Scale = vec2(1);
+	transf.Rotation = 0.0f;
+	transf.ImageColor = Color(1);
+	Renderer::PrepareSpriteFontText(mFontSprite, transf, _SimpleTextData, vec2(18, 30), "Hello, World!\nC++ is awesome!");
 
 	Window::DestroySplashScreen();
 	mWindow->Show();
@@ -65,6 +71,9 @@ void GameProgram::Tick()
 
 		if (Keyboard::KeyPressed(KeyboardKey::ESCAPE))
 			Quit();
+
+		if (Keyboard::KeyDown(KeyboardKey::SPACE))
+			_Count++;
 	}
 }
 
@@ -74,17 +83,36 @@ void GameProgram::Draw()
 	if (!mWindow->IsIconified())
 	{
 
-		Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
+		Renderer::BeginDrawSprite(mSurface2, mCamera);
 
 		Renderer::SetActiveShader(&mSprite2DAtlasIShader);
 
-		Transform2D transf;
-		transf.Location		= vec2(100, 100);
-		transf.Scale		= vec2(1);
-		transf.Rotation		= 0.0f;
-		transf.ImageColor	= Color(1);
-		Renderer::DrawSpriteFontText(mFontSprite, transf, vec2(18, 30), "Hello, World!\nC++ is awesome!");
+		Renderer::DrawSpriteFontText(mFontSprite, _SimpleTextData, vec2(18, 30));
 
+
+		Renderer::SetActiveShader(&mSprite2DAtlasShader);
+
+		Transform2D transf;
+		transf.Location = vec2(500, 100);
+		transf.Scale = vec2(1);
+		transf.Rotation = 0.0f;
+		transf.ImageColor = Color(1);
+		Renderer::DrawSpriteFontText(mFontSprite, transf, vec2(18, 30), std::to_string(_Count));
+
+
+		Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
+		Renderer::SetActiveShader(&mSprite2DShader);
+
+		Transform2D transf2;
+		transf2.Location = vec2(0);
+		transf2.Scale = vec2(1);
+		transf2.Rotation = 0.0f;
+		transf2.ImageColor = Color(1);
+
+		Sprite* spr = new Sprite(&mSurface2->GetTexture());
+		Renderer::DrawSprite(spr, transf2);
+
+		delete spr;
 	}
 	Renderer::EndDraw();
 }
@@ -92,6 +120,11 @@ void GameProgram::Draw()
 void GameProgram::Cleanup()
 {
 	FreeData();
+
+	if (mSurface2 != nullptr)
+	{
+		delete mSurface2;
+	}
 
 	if (mBackBufferSurface != nullptr)
 	{

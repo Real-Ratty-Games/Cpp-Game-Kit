@@ -1,9 +1,6 @@
 /*======================================================
 	Copyright (c) 2026 Real Ratty Games.
-	This software is a trade secret.
-
-	Revision history:
-		* Created by Norbert Gerberg.
+	Created by Norbert Gerberg.
 ======================================================*/
 #ifndef GAME_HPP_
 #define GAME_HPP_
@@ -15,8 +12,6 @@
 #include <Sprite.hpp>
 
 using namespace GameEngine;
-using namespace GameEngine::Core;
-using namespace GameEngine::Draw;
 
 namespace MyGame
 {
@@ -45,6 +40,7 @@ namespace MyGame
 		Clock			mClock = Clock(120.0f);
 
 		DrawSurface*	mBackBufferSurface;
+		DrawSurface*	mSurface2;
 
 		Shader			mSprite2DShader;
 		Shader			mSprite2DIShader;

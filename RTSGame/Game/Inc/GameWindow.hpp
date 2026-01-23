@@ -1,9 +1,6 @@
 /*======================================================
 	Copyright (c) 2026 Real Ratty Games.
-	This software is a trade secret.
-
-	Revision history:
-		* Created by Norbert Gerberg.
+	Created by Norbert Gerberg.
 ======================================================*/
 #ifndef GAMEWINDOW_HPP_
 #define GAMEWINDOW_HPP_
@@ -12,8 +9,6 @@
 #include <Program.hpp>
 
 using namespace GameEngine;
-using namespace GameEngine::Core;
-using namespace GameEngine::OS;
 
 namespace MyGame
 {

@@ -44,11 +44,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\GameEngine\Inc;..\Thirdparty\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>..\GameEngine\Public;..\Thirdparty\Inc;$(IncludePath)</IncludePath>
     <LibraryPath>..\Thirdparty\x64\Debug;..\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\GameEngine\Inc;..\Thirdparty\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>..\GameEngine\Public;..\Thirdparty\Inc;$(IncludePath)</IncludePath>
     <LibraryPath>..\Thirdparty\x64\Release;..\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
