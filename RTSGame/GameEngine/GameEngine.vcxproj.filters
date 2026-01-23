@@ -102,6 +102,12 @@
     <ClCompile Include="Source\ScriptText.cpp">
       <Filter>Script\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Alarm.cpp">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation.cpp">
+      <Filter>Draw\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\Clock.hpp">
@@ -193,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="Public\API.hpp">
       <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Alarm.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Animation.hpp">
+      <Filter>Draw\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

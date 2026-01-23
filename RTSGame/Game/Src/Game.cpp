@@ -10,12 +10,10 @@
 using namespace MyGame;
 
 InstanceData _SimpleTextData;
-int _Count = 0;
 
 void GameProgram::OnResize(vec2i& size)
 {
 	mBackBufferSurface->OnResize(size);
-	mSurface2->OnResize(size);
 }
 
 bool GameProgram::Initialize()
@@ -40,7 +38,6 @@ bool GameProgram::Initialize()
 
 	// create back buffer surface
 	mBackBufferSurface = new DrawSurface(0, mWindow->GetNativePtr());
-	mSurface2 = new DrawSurface(1, nullptr);
 
 	// init camera
 	mCamera.Size = mWindow->GetSize();
@@ -66,14 +63,20 @@ void GameProgram::Tick()
 	mClock.Tick();
 	while (mClock.Wait())
 	{
+		mTestAnimator.Tick();
+
 		if (Keyboard::KeyPressed(KeyboardKey::N1))
 			mWindow->SwitchFullscreen();
 
 		if (Keyboard::KeyPressed(KeyboardKey::ESCAPE))
 			Quit();
 
-		if (Keyboard::KeyDown(KeyboardKey::SPACE))
-			_Count++;
+		if (Keyboard::KeyPressed(KeyboardKey::SPACE))
+			mTestAnimator.Replay();
+		else if (Keyboard::KeyPressed(KeyboardKey::P))
+			mTestAnimator.Pause(true);
+		else if (Keyboard::KeyPressed(KeyboardKey::O))
+			mTestAnimator.Pause(false);
 	}
 }
 
@@ -83,36 +86,20 @@ void GameProgram::Draw()
 	if (!mWindow->IsIconified())
 	{
 
-		Renderer::BeginDrawSprite(mSurface2, mCamera);
+		Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
 
 		Renderer::SetActiveShader(&mSprite2DAtlasIShader);
 
 		Renderer::DrawSpriteFontText(mFontSprite, _SimpleTextData, vec2(18, 30));
 
-
 		Renderer::SetActiveShader(&mSprite2DAtlasShader);
-
+		
 		Transform2D transf;
-		transf.Location = vec2(500, 100);
+		transf.Location = vec2(500, 300);
+		transf.Rotation = 0;
 		transf.Scale = vec2(1);
-		transf.Rotation = 0.0f;
-		transf.ImageColor = Color(1);
-		Renderer::DrawSpriteFontText(mFontSprite, transf, vec2(18, 30), std::to_string(_Count));
+		Renderer::DrawSpriteAnimation(mTestSprite, transf, &mTestAnimator);
 
-
-		Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
-		Renderer::SetActiveShader(&mSprite2DShader);
-
-		Transform2D transf2;
-		transf2.Location = vec2(0);
-		transf2.Scale = vec2(1);
-		transf2.Rotation = 0.0f;
-		transf2.ImageColor = Color(1);
-
-		Sprite* spr = new Sprite(&mSurface2->GetTexture());
-		Renderer::DrawSprite(spr, transf2);
-
-		delete spr;
 	}
 	Renderer::EndDraw();
 }
@@ -120,11 +107,6 @@ void GameProgram::Draw()
 void GameProgram::Cleanup()
 {
 	FreeData();
-
-	if (mSurface2 != nullptr)
-	{
-		delete mSurface2;
-	}
 
 	if (mBackBufferSurface != nullptr)
 	{
@@ -183,6 +165,22 @@ void GameProgram::LoadData()
 		BGFX_SAMPLER_V_CLAMP, "Font", false);
 
 	mFontSprite = new Sprite(&mFontTexture);
+
+	Renderer::LoadTextureFromFile(mTestTexture, "Data/TestAnimation.png", BGFX_SAMPLER_MIN_POINT |
+		BGFX_SAMPLER_MAG_POINT |
+		BGFX_SAMPLER_U_CLAMP |
+		BGFX_SAMPLER_V_CLAMP, "TestAnimation", false);
+
+	mTestSprite = new Sprite(&mTestTexture);
+
+	mTestAnimation.FrameSize		= vec2(128);
+	mTestAnimation.StartIndex		= vec2(3, 1);
+	mTestAnimation.Speed			= 50;
+	mTestAnimation.RowCount			= 4;
+	mTestAnimation.TotalFrameCount	= 7;
+	mTestAnimation.Style			= ESpriteAnimationStyle::REVERSELOOP;
+
+	mTestAnimator.Play(&mTestAnimation);
 }
 
 void GameProgram::FreeData()
@@ -194,4 +192,12 @@ void GameProgram::FreeData()
 	}
 
 	Renderer::FreeTexture(mFontTexture);
+
+	if (mTestSprite != nullptr)
+	{
+		delete mTestSprite;
+		mTestSprite = nullptr;
+	}
+
+	Renderer::FreeTexture(mTestTexture);
 }

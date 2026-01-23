@@ -84,6 +84,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Alarm.cpp" />
+    <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\Clock.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\DrawSurface.cpp" />
@@ -104,6 +106,7 @@
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Public\Alarm.hpp" />
     <ClInclude Include="Public\API.hpp" />
     <ClInclude Include="Public\Clock.hpp" />
     <ClInclude Include="Public\Collider.hpp" />
@@ -126,6 +129,7 @@
     <ClInclude Include="Public\Shader.hpp" />
     <ClInclude Include="Public\Sound.hpp" />
     <ClInclude Include="Public\Sprite.hpp" />
+    <ClInclude Include="Public\Animation.hpp" />
     <ClInclude Include="Public\SystemTypes.hpp" />
     <ClInclude Include="Public\Transformation.hpp" />
     <ClInclude Include="Public\Vector2.hpp" />

@@ -9,6 +9,7 @@
 #include "../Public/Sprite.hpp"
 #include "../Public/DrawSurface.hpp"
 #include "../Public/Transformation.hpp"
+#include "../Public/Animation.hpp"
 #include <bx/math.h>
 #include <stdexcept>
 
@@ -603,6 +604,17 @@ void Renderer::DrawSpriteFontText(Sprite* sprite, Transform2D& transformation, v
 
 		cursor.X += subSize.X;
 	}
+}
+
+void Renderer::DrawSpriteAnimation(Sprite* sprite, Transform2D& transformation, SpriteAnimator* animator)
+{
+	TransformAtlas2D transf;
+	transf.Location		= transformation.Location;
+	transf.Rotation		= transformation.Rotation;
+	transf.Scale		= transformation.Scale;
+	transf.ImageColor	= transformation.ImageColor;
+	transf.Index		= animator->GetCurrentIndex();
+	DrawSpriteAtlas(sprite, transf, animator->GetAnimation()->FrameSize);
 }
 
 /*======================================================

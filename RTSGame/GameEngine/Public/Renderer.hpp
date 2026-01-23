@@ -15,6 +15,7 @@ namespace GameEngine
 	class Shader;
 	class Sprite;
 	class DrawSurface;
+	class SpriteAnimator;
 
 	namespace Renderer
 	{
@@ -54,6 +55,8 @@ namespace GameEngine
 		GAMEENGINEAPI void PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation, InstanceData& idata, vec2 subSize, strgv text);
 		GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, InstanceData& idata, vec2 subSize);
 		GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, Transform2D& transformation, vec2 subSize, strgv text);
+
+		GAMEENGINEAPI void DrawSpriteAnimation(Sprite* sprite, Transform2D& transformation, SpriteAnimator* animator);
 	}
 }
 #endif

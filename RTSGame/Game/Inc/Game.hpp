@@ -10,6 +10,7 @@
 #include <DrawSurface.hpp>
 #include <Shader.hpp>
 #include <Sprite.hpp>
+#include <Animation.hpp>
 
 using namespace GameEngine;
 
@@ -40,7 +41,6 @@ namespace MyGame
 		Clock			mClock = Clock(120.0f);
 
 		DrawSurface*	mBackBufferSurface;
-		DrawSurface*	mSurface2;
 
 		Shader			mSprite2DShader;
 		Shader			mSprite2DIShader;
@@ -51,6 +51,11 @@ namespace MyGame
 
 		Texture			mFontTexture;
 		Sprite*			mFontSprite;
+
+		Texture			mTestTexture;
+		Sprite*			mTestSprite;
+		SpriteAnimation mTestAnimation;
+		SpriteAnimator	mTestAnimator;
 	};
 }
 #endif
