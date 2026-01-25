@@ -89,7 +89,6 @@ const bgfx::Caps* Renderer::GetGPUInfo()
 	return bgfx::getCaps();
 }
 
-// 0x0f
 void Renderer::Printf(vec2i location, uint8 attr, strgv text)
 {
 #if _DEBUG

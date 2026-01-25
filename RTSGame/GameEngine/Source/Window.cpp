@@ -10,9 +10,6 @@ using namespace GameEngine;
 SDL_Window* Window::sSplashWndHandle = nullptr;
 SDL_Renderer* Window::sSplashWndRenderer = nullptr;
 
-/// <summary>
-/// Initialize SDL3
-/// </summary>
 void Window::Initialize()
 {
 	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
@@ -22,17 +19,11 @@ void Window::Initialize()
 	}
 }
 
-/// <summary>
-/// Free SDL3
-/// </summary>
 void Window::Release()
 {
 	SDL_Quit();
 }
 
-/// <summary>
-/// Show a splash screen with image
-/// </summary>
 void Window::ShowSplashScreen()
 {
 	SDL_Surface* surface = SDL_LoadBMP("Data/Splash.bmp");
@@ -54,10 +45,6 @@ void Window::ShowSplashScreen()
 	SDL_RenderPresent(sSplashWndRenderer);
 }
 
-/// <summary>
-/// Set hardware cursor image
-/// </summary>
-/// <param name="img">format must be bmp</param>
 void Window::SetHardwareCursorImage(strgv img)
 {
 	SDL_Surface* cursorSurface = SDL_LoadBMP(img.data());
@@ -68,22 +55,12 @@ void Window::SetHardwareCursorImage(strgv img)
 	}
 }
 
-/// <summary>
-/// Destroy splash window
-/// </summary>
 void Window::DestroySplashScreen()
 {
 	SDL_DestroyRenderer(sSplashWndRenderer);
 	SDL_DestroyWindow(sSplashWndHandle);
 }
 
-/// <summary>
-/// Create window
-/// </summary>
-/// <param name="title"></param>
-/// <param name="width"></param>
-/// <param name="height"></param>
-/// <param name="fs">fullscreen</param>
 void Window::Create(strgv title, uint width, uint height, bool fs)
 {
 	bFullscreen = fs;
@@ -94,81 +71,48 @@ void Window::Create(strgv title, uint width, uint height, bool fs)
 	}
 }
 
-/// <summary>
-/// Show/Hide window
-/// </summary>
-/// <param name="vl">True if show</param>
 void Window::Show(bool vl)
 {
 	if (vl) SDL_ShowWindow(mWndHandle);
 	else SDL_HideWindow(mWndHandle);
 }
 
-/// <summary>
-/// Poll window events
-/// </summary>
 void Window::PollEvent()
 {
 	while (SDL_PollEvent(&mWndEvent)) EventCallback();
 }
 
-/// <summary>
-/// Close and cleanup window
-/// </summary>
 void Window::Destroy()
 {
 	SDL_DestroyWindow(mWndHandle);
 }
 
-/// <summary>
-/// Returns true if window is minimized
-/// </summary>
-/// <returns></returns>
 bool Window::IsIconified()
 {
 	return bIconified;
 }
 
-/// <summary>
-/// Set window size in pixel
-/// </summary>
-/// <param name="width"></param>
-/// <param name="height"></param>
 void Window::SetSize(uint width, uint height)
 {
 	SDL_SetWindowSize(mWndHandle, (int)width, (int)height);
 }
 
-/// <summary>
-/// Center window to monitor
-/// </summary>
 void Window::Center()
 {
 	SDL_SetWindowPosition(mWndHandle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
-/// <summary>
-/// Switch fullscreen mode on or off
-/// </summary>
-/// <param name="vl"></param>
 void Window::SetFullscreen(bool vl)
 {
 	bFullscreen = vl;
 	SDL_SetWindowFullscreen(mWndHandle, vl);
 }
 
-/// <summary>
-/// Switch fullscreen mode
-/// </summary>
 void Window::SwitchFullscreen()
 {
 	SetFullscreen(!bFullscreen);
 }
  
-/// <summary>
-/// Returns window size
-/// </summary>
-/// <returns></returns>
 vec2i Window::GetSize()
 {
 	int w, h;
@@ -176,19 +120,11 @@ vec2i Window::GetSize()
 	return vec2i(w, h);
 }
 
-/// <summary>
-/// Returns true if fullscreen mode is on
-/// </summary>
-/// <returns></returns>
 bool Window::GetFullscreen()
 {
 	return bFullscreen;
 }
 
-/// <summary>
-/// Returns native OS window handle
-/// </summary>
-/// <returns></returns>
 void* Window::GetNativePtr()
 {
 	SDL_PropertiesID wid = SDL_GetWindowProperties(mWndHandle);

@@ -17,19 +17,12 @@ SpriteAnimator::SpriteAnimator()
 	mAlarm.PushModule("AdvanceFrame", GAMEENGINE_ALARM_BIND(SpriteAnimator::AdvanceFrame), GAMEENGINE_ALARM_DISABLE);
 }
 
-/// <summary>
-/// Play animation
-/// </summary>
-/// <param name="animation"></param>
 void SpriteAnimator::Play(SpriteAnimation* animation)
 {
 	pAnimation = animation;
 	Replay();
 }
 
-/// <summary>
-/// Replay animation from beginning
-/// </summary>
 void SpriteAnimator::Replay()
 {
 	mCurrentFrame = 0;
@@ -40,63 +33,36 @@ void SpriteAnimator::Replay()
 	mAlarm.SetModuleCount("AdvanceFrame", pAnimation->Speed);
 }
 
-/// <summary>
-/// Stop animation
-/// </summary>
 void SpriteAnimator::Stop()
 {
 	mAlarm.SetModuleCount("AdvanceFrame", GAMEENGINE_ALARM_DISABLE);
 }
 
-/// <summary>
-/// Pause animation
-/// </summary>
-/// <param name="paused"></param>
 void SpriteAnimator::Pause(bool paused)
 {
 	mAlarm.SetModulePaused("AdvanceFrame", paused);
 }
 
-/// <summary>
-/// Returns true if animation has finished
-/// Does not check while looping
-/// </summary>
-/// <returns></returns>
 bool SpriteAnimator::IsFinished()
 {
 	return bAnimationFinished;
 }
 
-/// <summary>
-/// Advance animation
-/// </summary>
 void SpriteAnimator::Tick()
 {
 	mAlarm.Tick();
 }
 
-/// <summary>
-/// Returns pointer to current animation
-/// </summary>
-/// <returns></returns>
 SpriteAnimation* SpriteAnimator::GetAnimation()
 {
 	return pAnimation;
 }
 
-/// <summary>
-/// Returns current index for atlas rendering
-/// </summary>
-/// <returns></returns>
 vec2 SpriteAnimator::GetCurrentIndex()
 {
 	return mCurrentIndex;
 }
 
-/// <summary>
-/// Advance a frame and manage animation style
-/// </summary>
-/// <returns></returns>
 int64 SpriteAnimator::AdvanceFrame()
 {
 	const int	totalframes = pAnimation->TotalFrameCount - 1;

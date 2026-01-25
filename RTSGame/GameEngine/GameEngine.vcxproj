@@ -99,6 +99,7 @@
     <ClCompile Include="Source\ScriptInstance.cpp" />
     <ClCompile Include="Source\ScriptText.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\Transformation.cpp" />
     <ClCompile Include="Source\WADFile.cpp" />

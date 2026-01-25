@@ -18,6 +18,9 @@ namespace GameEngine
 	typedef SoLoud::Soloud		SoundCore;
 	typedef SoLoud::result		SoundResult;
 
+	/// <summary>
+	/// Manages audio
+	/// </summary>
 	class GAMEENGINEAPI Sound
 	{
 	public:

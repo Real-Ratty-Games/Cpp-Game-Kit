@@ -11,6 +11,9 @@
 
 namespace GameEngine
 {
+	/// <summary>
+	/// Manages a shader
+	/// </summary>
 	class GAMEENGINEAPI Shader
 	{
 	public:

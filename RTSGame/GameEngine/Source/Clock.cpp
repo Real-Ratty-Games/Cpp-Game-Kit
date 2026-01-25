@@ -18,9 +18,6 @@ Clock::Clock(double framerate)
 	bFirstTick = true;
 }
 
-/// <summary>
-/// Advance counter
-/// </summary>
 void Clock::Tick()
 {
 	double currentFrame = static_cast<double>(SDL_GetPerformanceCounter()) / static_cast<double>(mFreq);
@@ -41,10 +38,6 @@ void Clock::Tick()
 	mAccumulatedTime += mDeltaTime;
 }
 
-/// <summary>
-/// Use like: while(Wait())
-/// </summary>
-/// <returns>True if frame passed</returns>
 bool Clock::Wait()
 {
 	if (mAccumulatedTime >= mFixedTime)
@@ -55,19 +48,11 @@ bool Clock::Wait()
 	return false;
 }
 
-/// <summary>
-/// Set clock speed multiplier
-/// </summary>
-/// <param name="vl"></param>
 void Clock::SetSpeed(double vl)
 {
 	mSpeed = vl;
 }
 
-/// <summary>
-/// Set clock framerate
-/// </summary>
-/// <param name="framerate"></param>
 void Clock::SetFramerate(double framerate)
 {
 	mFixedTime = (1.0 / framerate);

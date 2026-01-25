@@ -7,24 +7,12 @@
 
 using namespace GameEngine::Math;
 
-/// <summary>
-/// Point x Box collision test
-/// </summary>
-/// <param name="point"></param>
-/// <param name="box"></param>
-/// <returns></returns>
 bool Collision::Intersect(const vec2& point, const BoxCollider& box)
 {
 	return point.X >= box.Location.X && point.X <= box.Location.X + box.Size.X &&
 		point.Y >= box.Location.Y && point.Y <= box.Location.Y + box.Size.Y;
 }
 
-/// <summary>
-/// Point x Circle collision test
-/// </summary>
-/// <param name="point"></param>
-/// <param name="circle"></param>
-/// <returns></returns>
 bool Collision::Intersect(const vec2& point, const CircleCollider& circle)
 {
 	float dx = point.X - circle.Location.X;
@@ -32,12 +20,6 @@ bool Collision::Intersect(const vec2& point, const CircleCollider& circle)
 	return (dx * dx + dy * dy) <= (circle.Radius * circle.Radius);
 }
 
-/// <summary>
-/// Box x Box collision test
-/// </summary>
-/// <param name="a"></param>
-/// <param name="b"></param>
-/// <returns></returns>
 bool Collision::Intersect(const BoxCollider& a, const BoxCollider& b)
 {
 	bool cX = a.Location.X + a.Size.X >= b.Location.X &&
@@ -47,12 +29,6 @@ bool Collision::Intersect(const BoxCollider& a, const BoxCollider& b)
 	return cX && cY;
 }
 
-/// <summary>
-/// Circle x Circle collision test
-/// </summary>
-/// <param name="a"></param>
-/// <param name="b"></param>
-/// <returns></returns>
 bool Collision::Intersect(const CircleCollider& a, const CircleCollider& b)
 {
 	float dx = a.Location.X - b.Location.X;
@@ -61,12 +37,6 @@ bool Collision::Intersect(const CircleCollider& a, const CircleCollider& b)
 	return (dx * dx + dy * dy) <= (r * r);
 }
 
-/// <summary>
-/// Box x Circle collision test
-/// </summary>
-/// <param name="box"></param>
-/// <param name="circle"></param>
-/// <returns></returns>
 bool Collision::Intersect(const BoxCollider& box, const CircleCollider& circle)
 {
 	float closestX = std::clamp(

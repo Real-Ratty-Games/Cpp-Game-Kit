@@ -22,10 +22,6 @@ ScriptInstance::ScriptInstance(ScriptCore* scriptcore, strgv instancename)
 	mName = instancename;
 }
 
-/// <summary>
-/// Create instance from script text
-/// </summary>
-/// <param name="scripttext"></param>
 void ScriptInstance::Initialize(ScriptText* scripttext)
 {
 	lua_State* state = pScriptCore->State();
@@ -68,19 +64,12 @@ void ScriptInstance::Initialize(ScriptText* scripttext)
 	ScriptInstance_ReadFields(state, mFields);
 }
 
-/// <summary>
-/// Free instance
-/// </summary>
 void ScriptInstance::Release()
 {
 	if (mID != LUA_NOREF)
 		luaL_unref(pScriptCore->State(), LUA_REGISTRYINDEX, mID);
 }
 
-/// <summary>
-/// Execute field
-/// </summary>
-/// <param name="field"></param>
 void ScriptInstance::ExecuteMethod(ScriptField& field)
 {
 	if (field.Type != EScriptFieldType::METHOD)
@@ -111,19 +100,11 @@ void ScriptInstance::ExecuteMethod(ScriptField& field)
 	lua_pop(state, 1);
 }
 
-/// <summary>
-/// Returns front level fields in script
-/// </summary>
-/// <returns></returns>
 std::vector<ScriptField>& ScriptInstance::GetFields()
 {
 	return mFields;
 }
 
-/// <summary>
-/// Returns instance id
-/// </summary>
-/// <returns></returns>
 int ScriptInstance::ID()
 {
 	return mID;

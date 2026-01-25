@@ -13,12 +13,6 @@ using namespace GameEngine;
 std::vector<strg> WADMaker_GetFilesinDir(strgv filepath, bool on = false, bool saveExt = false);
 std::vector<uint8> WADMaker_GetFiletypesinDir(strgv filepath);
 
-/// <summary>
-/// Generate new wad archive from existing directory structure
-/// </summary>
-/// <param name="filepath"></param>
-/// <param name="outloc"></param>
-/// <param name="saveExt"></param>
 void WADMaker::Make(strgv inpath, strgv outloc, bool saveExt)
 {
 	const strg soutloc(outloc);
@@ -94,12 +88,6 @@ void WADMaker::Make(strgv inpath, strgv outloc, bool saveExt)
 	OUT.close();
 }
 
-/// <summary>
-/// Create multiple new wad archives from existing directory structure
-/// </summary>
-/// <param name="fileroot"></param>
-/// <param name="outloc"></param>
-/// <param name="saveExt"></param>
 void WADMaker::MakeAll(strgv fileroot, strgv outloc, bool saveExt)
 {
 	std::vector<strg> totalpaths;
@@ -112,12 +100,6 @@ void WADMaker::MakeAll(strgv fileroot, strgv outloc, bool saveExt)
 	for (auto& it : totalpaths) Make(it, outloc, saveExt);
 }
 
-/// <summary>
-/// Create new wad archive from memory
-/// </summary>
-/// <param name="filename"></param>
-/// <param name="outloc"></param>
-/// <param name="data"></param>
 void WADMaker::MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg, WADData>& data)
 {
 	const strg soutloc(outloc);

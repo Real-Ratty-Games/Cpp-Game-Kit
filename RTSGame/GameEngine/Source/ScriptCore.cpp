@@ -8,18 +8,12 @@
 
 using namespace GameEngine;
 
-/// <summary>
-/// Create lua core
-/// </summary>
 void ScriptCore::Initialize()
 {
 	mState = luaL_newstate();
 	luaL_openlibs(mState);
 }
 
-/// <summary>
-/// Free lua core
-/// </summary>
 void ScriptCore::Release()
 {
 	if (mState != nullptr)
@@ -29,10 +23,6 @@ void ScriptCore::Release()
 	}
 }
 
-/// <summary>
-/// Returns lua state
-/// </summary>
-/// <returns></returns>
 lua_State* ScriptCore::State()
 {
 	return mState;

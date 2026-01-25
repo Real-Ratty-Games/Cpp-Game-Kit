@@ -13,15 +13,31 @@ namespace GameEngine
 	class ScriptCore;
 
 	/// <summary>
-	/// Loading and compiling lua scripts
+	/// Loading and compiling lua script
 	/// </summary>
 	class GAMEENGINEAPI ScriptText
 	{
 	public:
 		ScriptText(ScriptCore* scriptcore);
+
+		/// <summary>
+		/// Load lua script from file
+		/// </summary>
+		/// <param name="filepath">file path</param>
+		/// <param name="bytecode">is the source file already in bytecode</param>
 		void LoadFromFile(strgv filepath, bool bytecode);
 		void LoadFromMemory(strgv data);
+
+		/// <summary>
+		/// Save compiled bytecode to file
+		/// </summary>
+		/// <param name="outpath"></param>
 		void DumpBytecode(strgv outpath);
+
+		/// <summary>
+		/// Returns bytecode data
+		/// </summary>
+		/// <returns></returns>
 		std::vector<char>& Data();
 
 	private:

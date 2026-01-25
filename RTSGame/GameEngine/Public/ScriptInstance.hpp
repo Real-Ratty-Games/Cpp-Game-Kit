@@ -24,7 +24,17 @@ namespace GameEngine
 		void Initialize(ScriptText* scripttext);
 		void Release();
 		void ExecuteMethod(ScriptField& field);
+
+		/// <summary>
+		/// Returns front level fields in script
+		/// </summary>
+		/// <returns></returns>
 		std::vector<ScriptField>& GetFields();
+
+		/// <summary>
+		/// Returns instance id
+		/// </summary>
+		/// <returns></returns>
 		int ID();
 
 	private:

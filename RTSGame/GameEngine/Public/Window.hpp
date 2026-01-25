@@ -20,6 +20,11 @@ namespace GameEngine
 		inline static void Release();
 		static void ShowSplashScreen();
 		static void DestroySplashScreen();
+
+		/// <summary>
+		/// Set hardware cursor image
+		/// </summary>
+		/// <param name="img">format must be bmp</param>
 		static void SetHardwareCursorImage(strgv img);
 
 		void Create(strgv title, uint width, uint height, bool fs);
@@ -37,6 +42,10 @@ namespace GameEngine
 		vec2i GetSize();
 		bool GetFullscreen();
 
+		/// <summary>
+		/// Returns native OS window handle
+		/// </summary>
+		/// <returns></returns>
 		void* GetNativePtr();
 
 	protected:

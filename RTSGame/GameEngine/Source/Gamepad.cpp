@@ -10,9 +10,6 @@ using namespace GameEngine;
 
 inline bool Gamepad_CheckButton(SDL_Gamepad* handle, GamepadButton button);
 
-/// <summary>
-/// Load gamepad mapping for a bunch of different controller types
-/// </summary>
 void Gamepad::LoadConfig()
 {
 	if (SDL_AddGamepadMappingsFromFile("Data/Gamepads.ini") == -1)
@@ -22,11 +19,6 @@ void Gamepad::LoadConfig()
 	}
 }
 
-/// <summary>
-/// Connect to active gamepad in port
-/// </summary>
-/// <param name="port"></param>
-/// <returns></returns>
 bool Gamepad::Connect(uint8 port)
 {
 	bool rtvl = true;
@@ -46,49 +38,27 @@ bool Gamepad::Connect(uint8 port)
 	return rtvl;
 }
 
-/// <summary>
-/// Destroy gamepad connection
-/// </summary>
 void Gamepad::Disconnect()
 {
 	SDL_CloseGamepad(mGamepadHandle);
 	mGamepadHandle = nullptr;
 }
 
-/// <summary>
-/// Returns true if gamepad is connected
-/// </summary>
-/// <returns></returns>
 bool Gamepad::IsConnected()
 {
 	return SDL_GamepadConnected(mGamepadHandle);
 }
 
-/// <summary>
-/// Check if button is held down
-/// </summary>
-/// <param name="button"></param>
-/// <returns>True if button is being held down</returns>
 bool Gamepad::ButtonDown(GamepadButton button)
 {
 	return Gamepad_CheckButton(mGamepadHandle, button);
 }
 
-/// <summary>
-/// Check if button is not held down
-/// </summary>
-/// <param name="button"></param>
-/// <returns>True if button is up</returns>
 bool Gamepad::ButtonUp(GamepadButton button)
 {
 	return !ButtonDown(button);
 }
 
-/// <summary>
-/// Check if button was pressed once
-/// </summary>
-/// <param name="button"></param>
-/// <returns>True if button was pressed once</returns>
 bool Gamepad::ButtonPressed(GamepadButton button)
 {
 	const bool down = Gamepad_CheckButton(mGamepadHandle, button);
@@ -104,33 +74,16 @@ bool Gamepad::ButtonPressed(GamepadButton button)
 	return false;
 }
 
-/// <summary>
-/// Gamepad motor rumble
-/// </summary>
-/// <param name="left">from 0 to 0xFFFF (65535)</param>
-/// <param name="right">from 0 to 0xFFFF (65535)</param>
-/// <param name="time">in ms</param>
 void Gamepad::Rumble(uint16 left, uint16 right, uint time)
 {
 	SDL_RumbleGamepad(mGamepadHandle, left, right, time);
 }
 
-/// <summary>
-/// Gamepad motor rumble for triggers
-/// </summary>
-/// <param name="left">from 0 to 0xFFFF (65535)</param>
-/// <param name="right">from 0 to 0xFFFF (65535)</param>
-/// <param name="time">in ms</param>
 void Gamepad::RumbleTriggers(uint16 left, uint16 right, uint time)
 {
 	SDL_RumbleGamepadTriggers(mGamepadHandle, left, right, time);
 }
 
-/// <summary>
-/// Get axis button state
-/// </summary>
-/// <param name="axis">thumbsticks: -32768 to 32767; triggers: 0 to 32767</param>
-/// <returns>Axis state</returns>
 int16 Gamepad::Axis(GamepadAxis axis)
 {
 	return SDL_GetGamepadAxis(mGamepadHandle, (SDL_GamepadAxis)axis);

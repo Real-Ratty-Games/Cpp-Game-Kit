@@ -27,6 +27,8 @@ namespace GameEngine
 		GAMEENGINEAPI inline void OnResize(vec2i size, bool vsync, MSAA msaa);
 
 		GAMEENGINEAPI const bgfx::Caps* GetGPUInfo();
+
+		/// 0x0f
 		GAMEENGINEAPI inline void Printf(vec2i location, uint8 attr, strgv text);
 
 		GAMEENGINEAPI inline void SetScissor(vec2i location, vec2i size);
@@ -42,6 +44,9 @@ namespace GameEngine
 		GAMEENGINEAPI inline void FreeTexture(Texture& tex);
 
 		GAMEENGINEAPI void SetActiveShader(Shader* shader);
+
+		// Begin Sprite Rendering
+
 		GAMEENGINEAPI void BeginDrawSprite(DrawSurface* surface, Camera2D& cam);
 		GAMEENGINEAPI void DrawSprite(Sprite* sprite, Transform2D& transformation);
 		GAMEENGINEAPI void DrawSpriteAtlas(Sprite* sprite, TransformAtlas2D& transformation, vec2 subSize);
@@ -57,6 +62,8 @@ namespace GameEngine
 		GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, Transform2D& transformation, vec2 subSize, strgv text);
 
 		GAMEENGINEAPI void DrawSpriteAnimation(Sprite* sprite, Transform2D& transformation, SpriteAnimator* animator);
+
+		// End Sprite Rendering
 	}
 }
 #endif

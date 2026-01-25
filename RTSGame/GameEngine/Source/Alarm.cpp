@@ -6,12 +6,6 @@
 
 using namespace GameEngine;
 
-/// <summary>
-/// Insert new alarm module
-/// </summary>
-/// <param name="name">module name</param>
-/// <param name="method">method</param>
-/// <param name="count">start count</param>
 void Alarm::PushModule(strgv name, std::function<int64()> method, int64 count)
 {
 	strg sname(name);
@@ -27,11 +21,6 @@ void Alarm::PushModule(strgv name, std::function<int64()> method, int64 count)
 	}
 }
 
-/// <summary>
-/// Set count of existing module
-/// </summary>
-/// <param name="name">module name</param>
-/// <param name="count"></param>
 void Alarm::SetModuleCount(strgv name, int64 count)
 {
 	strg sname(name);
@@ -46,11 +35,6 @@ void Alarm::SetModuleCount(strgv name, int64 count)
 	}
 }
 
-/// <summary>
-/// Set true if active module should be paused
-/// </summary>
-/// <param name="name">module name</param>
-/// <param name="paused">true if paused</param>
 void Alarm::SetModulePaused(strgv name, bool paused)
 {
 	strg sname(name);
@@ -58,11 +42,6 @@ void Alarm::SetModulePaused(strgv name, bool paused)
 		mModules[sname].bPaused = paused;
 }
 
-/// <summary>
-/// Returns true if module is active and not paused
-/// </summary>
-/// <param name="name"></param>
-/// <returns></returns>
 bool Alarm::IsModuleActive(strgv name)
 {
 	strg sname(name);
@@ -71,9 +50,6 @@ bool Alarm::IsModuleActive(strgv name)
 	return false;
 }
 
-/// <summary>
-/// Advance module counters and execute methods
-/// </summary>
 void Alarm::Tick()
 {
 	std::vector<strg> toRemove;

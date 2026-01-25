@@ -85,7 +85,6 @@ void GameProgram::Draw()
 	Renderer::BeginDraw();
 	if (!mWindow->IsIconified())
 	{
-
 		Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
 
 		Renderer::SetActiveShader(&mSprite2DAtlasIShader);

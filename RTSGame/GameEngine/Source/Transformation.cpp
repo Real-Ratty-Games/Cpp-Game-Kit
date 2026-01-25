@@ -6,12 +6,6 @@
 
 using namespace GameEngine;
 
-/// <summary>
-/// Translate matrix
-/// </summary>
-/// <param name="mat">in matrix</param>
-/// <param name="v">position</param>
-/// <returns></returns>
 mat4 Math::Translate(const mat4& mat, const vec3& v)
 {
 	mat4 result = mat4::Identity();
@@ -21,12 +15,6 @@ mat4 Math::Translate(const mat4& mat, const vec3& v)
 	return result * mat;
 }
 
-/// <summary>
-/// Scale matrix
-/// </summary>
-/// <param name="mat">in matrix</param>
-/// <param name="v">scale</param>
-/// <returns></returns>
 mat4 Math::Scale(const mat4& mat, const vec3& v)
 {
 	mat4 result = mat4::Identity();
@@ -36,13 +24,6 @@ mat4 Math::Scale(const mat4& mat, const vec3& v)
 	return result * mat;
 }
 
-/// <summary>
-/// Rotate matrix
-/// </summary>
-/// <param name="mat">in matrix</param>
-/// <param name="axis">rotation axis</param>
-/// <param name="angle">value in radians</param>
-/// <returns></returns>
 mat4 Math::Rotate(const mat4& mat, const vec3& axis, float angle)
 {
 	const vec3	u = axis.Normalized();

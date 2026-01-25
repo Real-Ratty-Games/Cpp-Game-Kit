@@ -8,33 +8,16 @@
 
 using namespace GameEngine;
 
-/// <summary>
-/// Returns true if File/Path exists
-/// </summary>
-/// <param name="filepath"></param>
-/// <returns></returns>
 bool FileSystem::Exists(strgv filepath)
 {
 	return std::filesystem::exists(std::filesystem::path(filepath));
 }
 
-/// <summary>
-/// Removes a file
-/// </summary>
-/// <param name="filepath"></param>
 void FileSystem::FileRemove(strgv filepath)
 {
 	std::filesystem::remove(filepath);
 }
 
-/// <summary>
-/// 0 = full
-/// 1 = name
-/// 2 = extension
-/// </summary>
-/// <param name="dir"></param>
-/// <param name="nt"></param>
-/// <returns></returns>
 std::vector<strg> FileSystem::FilesInDirectory(strgv dir, int nt)
 {
 	if (Exists(dir))
@@ -58,11 +41,6 @@ std::vector<strg> FileSystem::FilesInDirectory(strgv dir, int nt)
 	return {};
 }
 
-/// <summary>
-/// Returns list of sub directories
-/// </summary>
-/// <param name="dir"></param>
-/// <returns></returns>
 std::vector<strg> FileSystem::SubDirectories(strgv dir)
 {
 	if (Exists(dir))
@@ -81,29 +59,16 @@ std::vector<strg> FileSystem::SubDirectories(strgv dir)
 	return {};
 }
 
-/// <summary>
-/// Creates a new directory on system
-/// </summary>
-/// <param name="dir"></param>
 void FileSystem::DirectoryCreate(strgv dir)
 {
 	std::filesystem::create_directory(dir);
 }
 
-/// <summary>
-/// Removes a directory from system with all its files
-/// </summary>
-/// <param name="dir"></param>
 void FileSystem::DirectoryRemove(strgv dir)
 {
 	std::filesystem::remove_all(dir);
 }
 
-/// <summary>
-/// Read a binary file
-/// </summary>
-/// <param name="filepath"></param>
-/// <returns>buffer</returns>
 std::vector<char> FileSystem::ReadBinaryFile(strgv filepath)
 {
 	std::vector<char> rtVl;
@@ -119,11 +84,6 @@ std::vector<char> FileSystem::ReadBinaryFile(strgv filepath)
 	return rtVl;
 }
 
-/// <summary>
-/// Write a file in binary format
-/// </summary>
-/// <param name="filepath"></param>
-/// <param name="data"></param>
 void FileSystem::WriteBinaryFile(strgv filepath, std::vector<char>& data)
 {
 	std::ofstream file(filepath.data(), std::ios::binary);
@@ -131,11 +91,6 @@ void FileSystem::WriteBinaryFile(strgv filepath, std::vector<char>& data)
 	file.close();
 }
 
-/// <summary>
-/// Write a text file
-/// </summary>
-/// <param name="filepath"></param>
-/// <param name="text"></param>
 void FileSystem::WriteTextFile(strgv filepath, strgv text)
 {
 	std::ofstream file(filepath.data());

@@ -108,6 +108,9 @@
     <ClCompile Include="Source\Animation.cpp">
       <Filter>Draw\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Sound.cpp">
+      <Filter>OS\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\Clock.hpp">

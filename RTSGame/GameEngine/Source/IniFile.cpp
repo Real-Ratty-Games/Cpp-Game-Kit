@@ -8,11 +8,6 @@
 
 using namespace GameEngine;
 
-/// <summary>
-/// Open ini file and read into buffer
-/// </summary>
-/// <param name="filename"></param>
-/// <returns></returns>
 bool IniFile::Open(strgv filename)
 {
     mFilepath = filename;
@@ -26,11 +21,6 @@ bool IniFile::Open(strgv filename)
     return true;
 }
 
-/// <summary>
-/// Read into buffer from memory
-/// </summary>
-/// <param name="mem"></param>
-/// <returns></returns>
 void IniFile::OpenMem(std::vector<uint8>* mem)
 {
     mMemBuffer = mem;
@@ -38,13 +28,6 @@ void IniFile::OpenMem(std::vector<uint8>* mem)
     ReadString(content);
 }
 
-/// <summary>
-/// Read back value from buffer
-/// </summary>
-/// <param name="section"></param>
-/// <param name="key"></param>
-/// <param name="value">default value</param>
-/// <returns>read value</returns>
 strg IniFile::Read(strgv section, strgv key, strgv value)
 {
     if (auto sec = mBuffer.find(section.data()); sec != mBuffer.end())
@@ -55,20 +38,11 @@ strg IniFile::Read(strgv section, strgv key, strgv value)
     return strg(value);
 }
 
-/// <summary>
-/// Overwrite value of key
-/// </summary>
-/// <param name="section"></param>
-/// <param name="key"></param>
-/// <param name="value"></param>
 void IniFile::Write(strgv section, strgv key, strgv value)
 {
     mBuffer[section.data()][key.data()] = value;
 }
 
-/// <summary>
-/// Clear buffer from mem
-/// </summary>
 void IniFile::CloseMem()
 {
     strg content = WriteString();
@@ -76,9 +50,6 @@ void IniFile::CloseMem()
     mMemBuffer = nullptr;
 }
 
-/// <summary>
-/// Clear buffer and write changes to file
-/// </summary>
 void IniFile::Close()
 {
     std::ofstream file(mFilepath);
@@ -87,11 +58,6 @@ void IniFile::Close()
     file.close();
 }
 
-/// <summary>
-/// Trim key line
-/// </summary>
-/// <param name="s"></param>
-/// <returns>clear line</returns>
 strg IniFile::Trim(const strg& s)
 {
     auto start = s.find_first_not_of(" \t\r\n");
@@ -99,10 +65,6 @@ strg IniFile::Trim(const strg& s)
     return (start == strg::npos) ? "" : s.substr(start, end - start + 1);
 }
 
-/// <summary>
-/// Read line to put in buffer
-/// </summary>
-/// <param name="content"></param>
 void IniFile::ReadString(const strg& content)
 {
     mBuffer.clear();
@@ -133,10 +95,6 @@ void IniFile::ReadString(const strg& content)
     }
 }
 
-/// <summary>
-/// Write buffer to stream
-/// </summary>
-/// <returns>Stream data</returns>
 strg IniFile::WriteString() const
 {
     std::ostringstream stream;

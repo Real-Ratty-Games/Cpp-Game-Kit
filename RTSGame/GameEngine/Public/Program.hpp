@@ -9,6 +9,9 @@
 
 namespace GameEngine
 {
+	/// <summary>
+	/// Template for main program logic
+	/// </summary>
 	class GAMEENGINEAPI Program
 	{
 	public:

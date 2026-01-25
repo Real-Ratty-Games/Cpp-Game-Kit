@@ -8,10 +8,6 @@
 
 using namespace GameEngine;
 
-/// <summary>
-/// Open a wad file and load its contents into buffer
-/// </summary>
-/// <param name="filepath"></param>
 void WADFile::Open(strgv filepath)
 {
 	std::ifstream file(filepath.data(), std::ios::binary | std::ios::ate);
@@ -61,11 +57,6 @@ void WADFile::Open(strgv filepath)
 	buffer.clear();
 }
 
-/// <summary>
-/// Returns item in buffer
-/// </summary>
-/// <param name="itemname"></param>
-/// <returns></returns>
 WADData* WADFile::Read(strgv itemname)
 {
 	strg name(itemname);
@@ -74,27 +65,16 @@ WADData* WADFile::Read(strgv itemname)
 	return nullptr;
 }
 
-/// <summary>
-/// Returns buffer pointer
-/// </summary>
-/// <returns></returns>
 std::unordered_map<strg, WADData>& WADFile::Data()
 {
 	return mData;
 }
 
-/// <summary>
-/// Returns item count
-/// </summary>
-/// <returns></returns>
 int WADFile::Size()
 {
 	return mData.size();
 }
 
-/// <summary>
-/// Dispose of items
-/// </summary>
 void WADFile::Close()
 {
 	mData.clear();

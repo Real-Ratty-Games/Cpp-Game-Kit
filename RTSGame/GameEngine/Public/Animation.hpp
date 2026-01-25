@@ -45,6 +45,12 @@ namespace GameEngine
 		void Replay();
 		void Stop();
 		void Pause(bool paused);
+
+		/// <summary>
+		/// Returns true if animation has finished
+		/// Does not check while looping
+		/// </summary>
+		/// <returns></returns>
 		bool IsFinished();
 		void Tick();
 

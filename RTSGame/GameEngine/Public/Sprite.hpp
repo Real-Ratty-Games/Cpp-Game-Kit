@@ -10,6 +10,9 @@
 
 namespace GameEngine
 {
+	/// <summary>
+	/// 2D Quad Sprite
+	/// </summary>
 	class GAMEENGINEAPI Sprite
 	{
 	public:

@@ -19,11 +19,6 @@ ScriptText::ScriptText(ScriptCore* scriptcore)
 	pScriptCore = scriptcore;
 }
 
-/// <summary>
-/// Load lua script from file
-/// </summary>
-/// <param name="filepath">file path</param>
-/// <param name="bytecode">is the source file already in bytecode</param>
 void ScriptText::LoadFromFile(strgv filepath, bool bytecode)
 {
 	if (!FileSystem::Exists(filepath))
@@ -59,10 +54,6 @@ void ScriptText::LoadFromFile(strgv filepath, bool bytecode)
 	}
 }
 
-/// <summary>
-/// Load lua script from memory
-/// </summary>
-/// <param name="data"></param>
 void ScriptText::LoadFromMemory(strgv data)
 {
 	lua_State* state = pScriptCore->State();
@@ -78,20 +69,12 @@ void ScriptText::LoadFromMemory(strgv data)
 	if (status != 0) mData.clear();
 }
 
-/// <summary>
-/// Save compiled bytecode to file
-/// </summary>
-/// <param name="outpath"></param>
 void ScriptText::DumpBytecode(strgv outpath)
 {
 	if (FileSystem::Exists(outpath))
 		FileSystem::WriteBinaryFile(outpath, mData);
 }
 
-/// <summary>
-/// Returns bytecode data
-/// </summary>
-/// <returns></returns>
 std::vector<char>& ScriptText::Data()
 {
 	return mData;
