@@ -10,7 +10,7 @@
 #include <DrawSurface.hpp>
 #include <Shader.hpp>
 #include <Sprite.hpp>
-#include <Animation.hpp>
+#include <SpriteAnimation.hpp>
 
 using namespace GameEngine;
 

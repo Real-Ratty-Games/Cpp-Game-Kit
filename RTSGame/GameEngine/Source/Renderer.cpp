@@ -9,26 +9,43 @@
 #include "../Public/Sprite.hpp"
 #include "../Public/DrawSurface.hpp"
 #include "../Public/Transformation.hpp"
-#include "../Public/Animation.hpp"
+#include "../Public/SpriteAnimation.hpp"
 #include <bx/math.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 #include <stdexcept>
+#include <fstream>
+#include <sstream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 using namespace GameEngine;
 
+struct RawMeshData
+{
+	std::vector<MeshVertex>	Vertices;
+	std::vector<uint16>		Indices;
+};
+
 /// Active instances for sprite rendering
 Shader*			_ActiveShader		= nullptr;
 DrawSurface*	_ActiveDrawSurface	= nullptr;
+
+bgfx::VertexLayout _Mesh3DVBLayout;
 
 /// For primitive 2D quad rendering
 bgfx::VertexBufferHandle	_Quad2DVB;
 float						_Quad2DView[16];
 
+inline void Renderer_Init3DLayout();
 inline void Renderer_Init2DQuad();
 inline void Renderer_Release2DQuad();
 inline void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2D& transformation);
+void		Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene);
+void		Renderer_ModelProcessMesh(Mesh3D& modelMesh, aiMesh* mesh, const aiScene* scene);
+inline void	Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata);
 
 bool Renderer::Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa)
 {
@@ -55,6 +72,7 @@ bool Renderer::Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa)
 	bgfx::reset(wndSize.X, wndSize.Y, (vsync ? BGFX_RESET_VSYNC : BGFX_RESET_NONE) | (uint)msaa);
 	bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
 
+	Renderer_Init3DLayout();
 	Renderer_Init2DQuad();
 	return true;
 }
@@ -174,8 +192,8 @@ void Renderer::LoadTextureFromMemory(Texture& texture, std::vector<uint8>& data,
 		else throw new std::runtime_error("Failed loading texture from memory!");
 
 		auto header = data.data();
-		int height = *reinterpret_cast<cstrg>(header + 12);
-		int width = *reinterpret_cast<cstrg>(header + 16);
+		int height = *reinterpret_cast<const char*>(header + 12);
+		int width = *reinterpret_cast<const char*>(header + 16);
 		texture.Size = vec2i(width, height);
 	}
 	else throw new std::runtime_error("Failed loading texture from memory; Data was empty!");
@@ -221,7 +239,7 @@ void Renderer::DrawSpriteAtlas(Sprite* sprite, TransformAtlas2D& transformation,
 	Renderer_DrawTexture(sprite->GetTexture(), sprite->RotationPivot, subSize, transformation);
 }
 
-void Renderer::PrepareSpriteInstancing(Sprite* sprite, InstanceData& idata, std::vector<Transform2D>& tdata)
+void Renderer::PrepareSpriteInstancing(Sprite* sprite, SpriteInstanceData& idata, std::vector<Transform2D>& tdata)
 {
 	const int insCnt = tdata.size();
 	const uint16 insStride = 64 + sizeof(vec4);
@@ -263,7 +281,7 @@ void Renderer::PrepareSpriteInstancing(Sprite* sprite, InstanceData& idata, std:
 	}
 }
 
-void Renderer::PrepareSpriteAtlasInstancing(Sprite* sprite, InstanceData& idata, std::vector<TransformAtlas2D>& tdata, vec2 subSize)
+void Renderer::PrepareSpriteAtlasInstancing(Sprite* sprite, SpriteInstanceData& idata, std::vector<TransformAtlas2D>& tdata, vec2 subSize)
 {
 	const int insCnt = tdata.size();
 	const uint16 insStride = 64 + sizeof(vec4);
@@ -312,7 +330,7 @@ void Renderer::PrepareSpriteAtlasInstancing(Sprite* sprite, InstanceData& idata,
 	}
 }
 
-void Renderer::DrawSpriteInstanced(InstanceData& idata)
+void Renderer::DrawSpriteInstanced(SpriteInstanceData& idata)
 {
 	SetState(BGFX_STATE_WRITE_RGB |
 		BGFX_STATE_WRITE_A |
@@ -324,7 +342,7 @@ void Renderer::DrawSpriteInstanced(InstanceData& idata)
 	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), true);
 }
 
-void Renderer::DrawSpriteAtlasInstanced(InstanceData& idata, Sprite* sprite, vec2 subSize)
+void Renderer::DrawSpriteAtlasInstanced(SpriteInstanceData& idata, Sprite* sprite, vec2 subSize)
 {
 	vec4 atinf[2];
 	atinf[0] = vec4(0.0f, 0.0f, sprite->Size.X, sprite->Size.Y);
@@ -333,7 +351,7 @@ void Renderer::DrawSpriteAtlasInstanced(InstanceData& idata, Sprite* sprite, vec
 	DrawSpriteInstanced(idata);
 }
 
-void Renderer::PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation, InstanceData& idata, vec2 subSize, strgv text)
+void Renderer::PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation, SpriteInstanceData& idata, vec2 subSize, strgv text)
 {
 	std::vector<TransformAtlas2D> tdata;
 
@@ -468,7 +486,7 @@ void Renderer::PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation
 	PrepareSpriteAtlasInstancing(sprite, idata, tdata, subSize);
 }
 
-void Renderer::DrawSpriteFontText(Sprite* sprite, InstanceData& idata, vec2 subSize)
+void Renderer::DrawSpriteFontText(Sprite* sprite, SpriteInstanceData& idata, vec2 subSize)
 {
 	DrawSpriteAtlasInstanced(idata, sprite, subSize);
 }
@@ -616,8 +634,58 @@ void Renderer::DrawSpriteAnimation(Sprite* sprite, Transform2D& transformation, 
 	DrawSpriteAtlas(sprite, transf, animator->GetAnimation()->FrameSize);
 }
 
+void Renderer::LoadModelFromFile(Model3D& model, strgv filename)
+{
+	if (!FileSystem::Exists(filename))
+		throw new std::runtime_error("Model file could not be found!");
+
+	Assimp::Importer importer;
+	uint flags = aiProcess_FlipUVs
+		| aiProcess_Triangulate
+		| aiProcess_GenSmoothNormals
+		| aiProcess_CalcTangentSpace
+		| aiProcess_SplitLargeMeshes
+		| aiProcess_OptimizeMeshes;
+
+	const aiScene* scene = importer.ReadFile(filename.data(), flags);
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		throw new std::runtime_error("Failed loading model!");
+
+	Renderer_ModelProcessNode(model, scene->mRootNode, scene);
+}
+
+void Renderer::LoadModelFromMemory(Model3D& model, std::vector<uint8>& data)
+{
+	Assimp::Importer importer;
+	uint flags = aiProcess_FlipUVs
+		| aiProcess_Triangulate
+		| aiProcess_GenSmoothNormals
+		| aiProcess_CalcTangentSpace
+		| aiProcess_SplitLargeMeshes
+		| aiProcess_OptimizeMeshes;
+
+	const aiScene* scene = importer.ReadFileFromMemory(data.data(), data.size(), flags);
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		throw new std::runtime_error("Failed loading model!");
+
+	Renderer_ModelProcessNode(model, scene->mRootNode, scene);
+}
+
 /*======================================================
 ======================================================*/
+
+void Renderer_Init3DLayout()
+{
+	_Mesh3DVBLayout.begin()
+		.add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float)
+		.add(bgfx::Attrib::Normal, 3, bgfx::AttribType::Float)
+		.add(bgfx::Attrib::TexCoord0, 2, bgfx::AttribType::Float)
+		.add(bgfx::Attrib::Tangent, 3, bgfx::AttribType::Float)
+		.add(bgfx::Attrib::Bitangent, 3, bgfx::AttribType::Float)
+		.end();
+}
 
 void Renderer_Init2DQuad()
 {
@@ -681,4 +749,76 @@ void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2
 	bgfx::setVertexBuffer(0, _Quad2DVB);
 	_ActiveShader->SetTexture(0, "s_texColor", *texture);
 	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), true);
+}
+
+void Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene)
+{
+	for (uint i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		model.Meshes.push_back(Mesh3D());
+		Renderer_ModelProcessMesh(model.Meshes[model.Meshes.size()-1], mesh, scene);
+	}
+
+	for (uint i = 0; i < node->mNumChildren; i++)
+		Renderer_ModelProcessNode(model, node->mChildren[i], scene);
+}
+
+void Renderer_ModelProcessMesh(Mesh3D& modelMesh, aiMesh* mesh, const aiScene* scene)
+{
+	RawMeshData result;
+	result.Vertices.resize(mesh->mNumVertices);
+
+	for (uint i = 0; i < mesh->mNumVertices; i++)
+	{
+		MeshVertex& vertex = result.Vertices[i];
+
+		vertex.X = mesh->mVertices[i].x;
+		vertex.Y = mesh->mVertices[i].y;
+		vertex.Z = mesh->mVertices[i].z;
+
+		if (mesh->HasNormals())
+		{
+			vertex.NX = mesh->mNormals[i].x;
+			vertex.NY = mesh->mNormals[i].y;
+			vertex.NZ = mesh->mNormals[i].z;
+		}
+
+		if (mesh->HasTextureCoords(0))
+		{
+			vertex.U = mesh->mTextureCoords[0][i].x;
+			vertex.V = mesh->mTextureCoords[0][i].y;
+		}
+
+		if (mesh->HasTangentsAndBitangents())
+		{
+			vertex.TX = mesh->mTangents[i].x;
+			vertex.TY = mesh->mTangents[i].y;
+			vertex.TZ = mesh->mTangents[i].z;
+
+			vertex.BX = mesh->mBitangents[i].x;
+			vertex.BY = mesh->mBitangents[i].y;
+			vertex.BZ = mesh->mBitangents[i].z;
+		}
+	}
+
+	for (uint i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (uint j = 0; j < face.mNumIndices; j++)
+			result.Indices.push_back(face.mIndices[j]);
+	}
+
+	Renderer_CreateMesh(modelMesh, result);
+}
+
+void Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata)
+{
+	modelMesh.VBH = Renderer::CreateVertexBuffer(mdata.Vertices.data(), mdata.Vertices.size() * sizeof(MeshVertex), _Mesh3DVBLayout);
+	if (!bgfx::isValid(modelMesh.VBH))
+		throw new std::runtime_error("Vertex Buffer is invalid!");
+
+	modelMesh.IBH = Renderer::CreateIndexBuffer(mdata.Indices.data(), mdata.Indices.size() * sizeof(uint16));
+	if (!bgfx::isValid(modelMesh.IBH))
+		throw new std::runtime_error("Index Buffer is invalid!");
 }

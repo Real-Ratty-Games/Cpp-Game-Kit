@@ -51,19 +51,22 @@ namespace GameEngine
 		GAMEENGINEAPI void DrawSprite(Sprite* sprite, Transform2D& transformation);
 		GAMEENGINEAPI void DrawSpriteAtlas(Sprite* sprite, TransformAtlas2D& transformation, vec2 subSize);
 
-		GAMEENGINEAPI void PrepareSpriteInstancing(Sprite* sprite, InstanceData& idata, std::vector<Transform2D>& tdata);
-		GAMEENGINEAPI void PrepareSpriteAtlasInstancing(Sprite* sprite, InstanceData& idata, std::vector<TransformAtlas2D>& tdata, vec2 subSize);
+		GAMEENGINEAPI void PrepareSpriteInstancing(Sprite* sprite, SpriteInstanceData& idata, std::vector<Transform2D>& tdata);
+		GAMEENGINEAPI void PrepareSpriteAtlasInstancing(Sprite* sprite, SpriteInstanceData& idata, std::vector<TransformAtlas2D>& tdata, vec2 subSize);
 			
-		GAMEENGINEAPI void DrawSpriteInstanced(InstanceData& idata);
-		GAMEENGINEAPI void DrawSpriteAtlasInstanced(InstanceData& idata, Sprite* sprite, vec2 subSize);
+		GAMEENGINEAPI void DrawSpriteInstanced(SpriteInstanceData& idata);
+		GAMEENGINEAPI void DrawSpriteAtlasInstanced(SpriteInstanceData& idata, Sprite* sprite, vec2 subSize);
 
-		GAMEENGINEAPI void PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation, InstanceData& idata, vec2 subSize, strgv text);
-		GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, InstanceData& idata, vec2 subSize);
+		GAMEENGINEAPI void PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation, SpriteInstanceData& idata, vec2 subSize, strgv text);
+		GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, SpriteInstanceData& idata, vec2 subSize);
 		GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, Transform2D& transformation, vec2 subSize, strgv text);
 
 		GAMEENGINEAPI void DrawSpriteAnimation(Sprite* sprite, Transform2D& transformation, SpriteAnimator* animator);
 
 		// End Sprite Rendering
+
+		GAMEENGINEAPI void LoadModelFromFile(Model3D& model, strgv filename);
+		GAMEENGINEAPI void LoadModelFromMemory(Model3D& model, std::vector<uint8>& data);
 	}
 }
 #endif

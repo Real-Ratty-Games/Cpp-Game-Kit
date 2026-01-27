@@ -9,13 +9,13 @@
 #include "Vector3.hpp"
 #include "Vector4.hpp"
 #include "Matrix4.hpp"
+#include "Quaternion.hpp"
 
 /// <summary>
 /// Shorter, more clearer system types
 /// </summary>
 namespace GameEngine
 {
-	typedef const char*				cstrg;
 	typedef std::string				strg;
 	typedef std::string_view		strgv;
 	typedef signed char				int8;
@@ -38,5 +38,6 @@ namespace GameEngine
 	typedef Matrix4<int>			mat4i;
 	typedef Matrix4<float>			mat4;
 	typedef Matrix4<double>			mat4d;
+	typedef Quaternion<float>		quat;
 }
 #endif

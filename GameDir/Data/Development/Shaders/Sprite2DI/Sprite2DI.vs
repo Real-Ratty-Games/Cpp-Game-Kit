@@ -3,14 +3,6 @@ $output v_texcoord0, v_color
 
 #include "../Shared/common.sh"
 
-/*======================================================
-	Copyright (c) 2026 Real Ratty Games.
-	This software is a trade secret.
-
-	Revision history:
-		* Created by Norbert Gerberg.
-======================================================*/
-
 void main()
 {
 	mat4 model = mtxFromCols(i_data0, i_data1, i_data2, i_data3);

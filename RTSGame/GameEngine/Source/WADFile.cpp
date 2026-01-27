@@ -22,13 +22,13 @@ void WADFile::Open(strgv filepath)
 	}
 	file.close();
 
-	std::string buffer_str(buffer.begin(), buffer.end());
+	strg buffer_str(buffer.begin(), buffer.end());
 	std::istringstream stream(buffer_str, std::ios::binary);
 
 	uint fileCnt = 0;
 	stream.read(reinterpret_cast<char*>(&fileCnt), sizeof(fileCnt));
 
-	for (uint i = 0; i < fileCnt; ++i)
+	for (uint i = 0; i < fileCnt; i++)
 	{
 		uint16 nameLength = 0;
 		stream.read(reinterpret_cast<char*>(&nameLength), sizeof(nameLength));

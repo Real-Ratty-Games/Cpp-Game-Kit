@@ -105,7 +105,7 @@
     <ClCompile Include="Source\Alarm.cpp">
       <Filter>Core\Src</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation.cpp">
+    <ClCompile Include="Source\SpriteAnimation.cpp">
       <Filter>Draw\Src</Filter>
     </ClCompile>
     <ClCompile Include="Source\Sound.cpp">
@@ -206,8 +206,14 @@
     <ClInclude Include="Public\Alarm.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Animation.hpp">
+    <ClInclude Include="Public\SpriteAnimation.hpp">
       <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\Quaternion.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Public\EulerRotation.hpp">
+      <Filter>Math\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

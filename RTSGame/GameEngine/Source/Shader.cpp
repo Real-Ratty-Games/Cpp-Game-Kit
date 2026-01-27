@@ -122,7 +122,7 @@ void Shader::Submit(uint16 viewID, uint8 flags, const bool depth)
 
 void Shader::InitUniform(strgv name, bgfx::UniformType::Enum type, uint16 nmb)
 {
-	cstrg nm = name.data();
+	const char* nm = name.data();
 	mUniforms[nm] = bgfx::createUniform(nm, type, nmb);
 }
 

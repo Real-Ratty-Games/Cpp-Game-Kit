@@ -63,7 +63,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxDebug.lib;bimg_decodeDebug.lib;bimgDebug.lib;bxDebug.lib;soloud_static_x64_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxDebug.lib;bimg_decodeDebug.lib;bimgDebug.lib;bxDebug.lib;soloud_static_x64_d.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -80,12 +80,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxRelease.lib;bimg_decodeRelease.lib;bimgRelease.lib;bxRelease.lib;soloud_static_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxRelease.lib;bimg_decodeRelease.lib;bimgRelease.lib;bxRelease.lib;soloud_static_x64.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Alarm.cpp" />
-    <ClCompile Include="Source\Animation.cpp" />
+    <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Clock.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\DrawSurface.cpp" />
@@ -122,7 +122,9 @@
     <ClInclude Include="Public\InputTypes.hpp" />
     <ClInclude Include="Public\Matrix4.hpp" />
     <ClInclude Include="Public\Program.hpp" />
+    <ClInclude Include="Public\Quaternion.hpp" />
     <ClInclude Include="Public\Renderer.hpp" />
+    <ClInclude Include="Public\EulerRotation.hpp" />
     <ClInclude Include="Public\ScriptCore.hpp" />
     <ClInclude Include="Public\ScriptField.hpp" />
     <ClInclude Include="Public\ScriptInstance.hpp" />
@@ -130,7 +132,7 @@
     <ClInclude Include="Public\Shader.hpp" />
     <ClInclude Include="Public\Sound.hpp" />
     <ClInclude Include="Public\Sprite.hpp" />
-    <ClInclude Include="Public\Animation.hpp" />
+    <ClInclude Include="Public\SpriteAnimation.hpp" />
     <ClInclude Include="Public\SystemTypes.hpp" />
     <ClInclude Include="Public\Transformation.hpp" />
     <ClInclude Include="Public\Vector2.hpp" />

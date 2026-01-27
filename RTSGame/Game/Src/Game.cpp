@@ -9,7 +9,7 @@
 
 using namespace MyGame;
 
-InstanceData _SimpleTextData;
+SpriteInstanceData _SimpleTextData;
 
 void GameProgram::OnResize(vec2i& size)
 {

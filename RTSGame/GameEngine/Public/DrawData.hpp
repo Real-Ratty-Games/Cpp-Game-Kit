@@ -6,6 +6,7 @@
 #define DRAWDATA_HPP_
 #include "API.hpp"
 #include "SystemTypes.hpp"
+#include "Transformation.hpp"
 #if _DEBUG
 #define BX_CONFIG_DEBUG 1
 #else
@@ -13,6 +14,7 @@
 #endif
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
+#include <vector>
 
 namespace GameEngine
 {
@@ -68,7 +70,7 @@ namespace GameEngine
 		float V;
 	};
 
-	struct InstanceData
+	struct SpriteInstanceData
 	{
 		Sprite*						pSprite;
 		bgfx::InstanceDataBuffer	Buffer;
@@ -109,6 +111,58 @@ namespace GameEngine
 		TransformAtlas2D() : Transform2D()
 		{
 			Index		= vec2(0.0f);
+		}
+	};
+
+	struct MeshVertex
+	{
+		// Position
+		float X;
+		float Y;
+		float Z;
+
+		// Normal
+		float NX;
+		float NY;
+		float NZ;
+
+		// TexCoord
+		float U;
+		float V;
+
+		// Tangent
+		float TX;
+		float TY;
+		float TZ;
+
+		// Bitangent
+		float BX;
+		float BY;
+		float BZ;
+	};
+
+	struct Mesh3D
+	{
+		bgfx::VertexBufferHandle	VBH;
+		bgfx::IndexBufferHandle		IBH;
+	};
+
+	struct Model3D
+	{
+		std::vector<Mesh3D>	Meshes;
+	};
+
+	struct Transform3D
+	{
+		vec3	Location;
+		vec3	Scale;
+		quat	Rotation;
+
+		Transform3D()
+		{
+			Location	= vec3(0.0f);
+			Scale		= vec3(1.0f);
+			Rotation	= quat(0.0f);
 		}
 	};
 }

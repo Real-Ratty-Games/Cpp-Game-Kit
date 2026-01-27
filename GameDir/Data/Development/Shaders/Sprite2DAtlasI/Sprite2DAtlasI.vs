@@ -3,14 +3,6 @@ $output v_texcoord0, v_atlasInfo, v_color
 
 #include "../Shared/common.sh"
 
-/*======================================================
-	Copyright (c) 2026 Real Ratty Games.
-	This software is a trade secret.
-
-	Revision history:
-		* Created by Norbert Gerberg.
-======================================================*/
-
 void main()
 {
 	v_atlasInfo = vec4(i_data4.x, i_data4.y, 1.0, 1.0);
