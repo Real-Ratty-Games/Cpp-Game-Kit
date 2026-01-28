@@ -83,7 +83,7 @@ namespace GameEngine
 		vec2i				Size;
 	};
 
-	struct Camera2D
+	struct Viewport2D
 	{
 		vec2 Location;
 		vec2 Size;
@@ -112,6 +112,13 @@ namespace GameEngine
 		{
 			Index		= vec2(0.0f);
 		}
+	};
+
+	struct SpriteFont
+	{
+		Sprite* pSprite;
+		strg	Glyphs;
+		vec2	GlyphSize;
 	};
 
 	struct MeshVertex

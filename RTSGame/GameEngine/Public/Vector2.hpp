@@ -74,6 +74,11 @@ namespace GameEngine
 			return Vector2<T>(-X, -Y);
 		}
 
+		static inline T Dot(const Vector2<T>& left, const Vector2<T>& right)
+		{
+			return left.X * right.X + left.Y * right.Y;
+		}
+
 		Vector2<T> operator-() const
 		{
 			return Vector2<T>(-X, -Y);

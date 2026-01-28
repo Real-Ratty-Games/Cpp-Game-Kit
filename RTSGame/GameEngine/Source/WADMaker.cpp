@@ -10,8 +10,8 @@
 
 using namespace GameEngine;
 
-std::vector<strg> WADMaker_GetFilesinDir(strgv filepath, bool on = false, bool saveExt = false);
-std::vector<uint8> WADMaker_GetFiletypesinDir(strgv filepath);
+static std::vector<strg> WADMaker_GetFilesinDir(strgv filepath, bool on = false, bool saveExt = false);
+static std::vector<uint8> WADMaker_GetFiletypesinDir(strgv filepath);
 
 void WADMaker::Make(strgv inpath, strgv outloc, bool saveExt)
 {

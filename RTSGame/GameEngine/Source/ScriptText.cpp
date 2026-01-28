@@ -12,7 +12,7 @@
 
 using namespace GameEngine;
 
-int ScriptText_DumpWriter(lua_State* L, const void* p, size_t sz, void* ud);
+static int ScriptText_DumpWriter(lua_State* L, const void* p, size_t sz, void* ud);
 
 ScriptText::ScriptText(ScriptCore* scriptcore)
 {

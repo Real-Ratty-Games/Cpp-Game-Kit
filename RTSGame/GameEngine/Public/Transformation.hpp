@@ -5,23 +5,98 @@
 #ifndef TRANSFORMATION_HPP_
 #define TRANSFORMATION_HPP_
 #include "API.hpp"
-#include "SystemTypes.hpp"
 #include "EulerRotation.hpp"
 
 #define GAMEENGINE_MATH_PI 3.14159
 
 namespace GameEngine::Math
 {
-	GAMEENGINEAPI mat4 Translate(const mat4& mat, const vec3& v);
-	GAMEENGINEAPI mat4 Scale(const mat4& mat, const vec3& v);
+	template<typename T>
+	Matrix4<T> Translate(const Matrix4<T>& mat, const Vector3<T>& v)
+	{
+		Matrix4<T> result = Matrix4<T>::Identity();
+		result(3, 0) = v.X;
+		result(3, 1) = v.Y;
+		result(3, 2) = v.Z;
+		return result * mat;
+	}
+
+	template<typename T>
+	Matrix4<T> Scale(const Matrix4<T>& mat, const Vector3<T>& v)
+	{
+		Matrix4<T> result = Matrix4<T>::Identity();
+		result(0, 0) = v.X;
+		result(1, 1) = v.Y;
+		result(2, 2) = v.Z;
+		return result * mat;
+	}
 
 	/// angle in radians
-	GAMEENGINEAPI mat4 Rotate(const mat4& mat, const vec3& axis, float angle);
-	GAMEENGINEAPI vec3 Rotate(const quat& q, const vec3& v);
+	template<typename T>
+	Matrix4<T> Rotate(const Matrix4<T>& mat, const Vector3<T>& axis, T angle)
+	{
+		const Vector3<T> u = axis.Normalized();
+		const T c = cos(angle);
+		const T s = sin(angle);
+		const T t = 1 - c;
+
+		Matrix4<T> result = Matrix4<T>::Identity();
+		result(0, 0) = t * u.X * u.X + c;
+		result(1, 0) = t * u.X * u.Y - s * u.Z;
+		result(2, 0) = t * u.X * u.Z + s * u.Y;
+
+		result(0, 1) = t * u.X * u.Y + s * u.Z;
+		result(1, 1) = t * u.Y * u.Y + c;
+		result(2, 1) = t * u.Y * u.Z - s * u.X;
+
+		result(0, 2) = t * u.X * u.Z - s * u.Y;
+		result(1, 2) = t * u.Y * u.Z + s * u.X;
+		result(2, 2) = t * u.Z * u.Z + c;
+		return result * mat;
+	}
+
+	template<typename T>
+	Vector3<T> Rotate(const Quaternion<T>& q, const Vector3<T>& v)
+	{
+		Quaternion<T> p(0, v.X, v.Y, v.Z);
+		Quaternion<T> qInv = q.Conjugate();
+		Quaternion<T> result = q * p * qInv;
+		return { result.X, result.Y, result.Z };
+	}
 
 	/// angle in radians
-	GAMEENGINEAPI quat QuatFromAxisAngle(const vec3& axis, float angle);
-	GAMEENGINEAPI quat QuatFromEulerAngles(const EulerRotation& rot);
+	quat QuatFromAxisAngle(const vec3& axis, float angle);
+	quat QuatFromEulerAngles(const EulerRotation& rot);
+
+	template<typename T>
+	Matrix4<T> LookAtLH(const Vector3<T>& eye, const Vector3<T>& target, const Vector3<T>& sup,
+		Vector3<T>& forward, Vector3<T>& right, Vector3<T>& up)
+	{
+		// forward
+		Vector3<T> zaxis = target - eye;
+		zaxis = zaxis.Normalized();
+
+		// right
+		Vector3<T> xaxis = Vector3<T>::Cross(sup, zaxis);
+		xaxis = xaxis.Normalized();
+
+		// up
+		Vector3<T> yaxis = Vector3<T>::Cross(zaxis, xaxis);
+
+		forward = zaxis;
+		right = xaxis;
+		up = yaxis;
+
+		return mat4(
+			xaxis.X, xaxis.Y, xaxis.Z, T(0),
+			yaxis.X, yaxis.Y, yaxis.Z, T(0),
+			zaxis.X, zaxis.Y, zaxis.Z, T(0),
+			-Vector3<T>::Dot(xaxis, eye),
+			-Vector3<T>::Dot(yaxis, eye),
+			-Vector3<T>::Dot(zaxis, eye),
+			T(1)
+		);
+	}
 	
 	template<typename T>
 	inline T ToRadians(const T& vl)

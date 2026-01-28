@@ -7,8 +7,8 @@
 
 using namespace GameEngine;
 
-SDL_Window* Window::sSplashWndHandle = nullptr;
-SDL_Renderer* Window::sSplashWndRenderer = nullptr;
+SDL_Window* Window::sSplashWndHandle		= nullptr;
+SDL_Renderer* Window::sSplashWndRenderer	= nullptr;
 
 void Window::Initialize()
 {

@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Alarm.cpp" />
+    <ClCompile Include="Source\DrawSurface3D.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Clock.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
     <ClCompile Include="Source\Transformation.cpp" />
+    <ClCompile Include="Source\Viewport3D.cpp" />
     <ClCompile Include="Source\WADFile.cpp" />
     <ClCompile Include="Source\WADMaker.cpp" />
     <ClCompile Include="Source\Window.cpp" />
@@ -115,6 +117,7 @@
     <ClInclude Include="Public\DebugHelp.hpp" />
     <ClInclude Include="Public\DrawData.hpp" />
     <ClInclude Include="Public\DrawSurface.hpp" />
+    <ClInclude Include="Public\DrawSurface3D.hpp" />
     <ClInclude Include="Public\FileSystem.hpp" />
     <ClInclude Include="Public\Gamepad.hpp" />
     <ClInclude Include="Public\IniFile.hpp" />
@@ -138,6 +141,7 @@
     <ClInclude Include="Public\Vector2.hpp" />
     <ClInclude Include="Public\Vector3.hpp" />
     <ClInclude Include="Public\Vector4.hpp" />
+    <ClInclude Include="Public\Viewport3D.hpp" />
     <ClInclude Include="Public\WADFile.hpp" />
     <ClInclude Include="Public\WADMaker.hpp" />
     <ClInclude Include="Public\Window.hpp" />

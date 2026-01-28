@@ -8,7 +8,7 @@
 
 using namespace GameEngine;
 
-inline bool Gamepad_CheckButton(SDL_Gamepad* handle, GamepadButton button);
+static inline bool Gamepad_CheckButton(SDL_Gamepad* handle, GamepadButton button);
 
 void Gamepad::LoadConfig()
 {

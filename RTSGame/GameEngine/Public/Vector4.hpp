@@ -80,6 +80,11 @@ namespace GameEngine
             return Vector4<T>(-X, -Y, -Z, -W);
         }
 
+        static inline T Dot(const Vector4<T>& left, const Vector4<T>& right)
+        {
+            return left.X * right.X + left.Y * right.Y + left.Z * right.Z + left.W * right.W;
+        }
+
         Vector4<T> operator-() const
         {
             return Vector4<T>(-X, -Y, -Z, -W);

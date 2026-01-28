@@ -10,11 +10,11 @@
 using namespace GameEngine;
 
 /// Stores pressed keys/buttons
-std::vector<KeyboardKey> _PressedKeyboardKeys;
-std::vector<MouseButton> _PressedMouseButtons;
+static std::vector<KeyboardKey> _PressedKeyboardKeys;
+static std::vector<MouseButton> _PressedMouseButtons;
 
-inline bool Input_CheckKeyboardKey(int key);
-inline bool Input_CheckMouseButton(int button);
+static inline bool Input_CheckKeyboardKey(int key);
+static inline bool Input_CheckMouseButton(int button);
 
 /*======================================================
 	Keyboard

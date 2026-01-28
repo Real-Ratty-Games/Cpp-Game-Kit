@@ -47,10 +47,11 @@ namespace MyGame
 		Shader			mSprite2DAtlasShader;
 		Shader			mSprite2DAtlasIShader;
 
-		Camera2D		mCamera;
+		Viewport2D		mCamera;
 
 		Texture			mFontTexture;
 		Sprite*			mFontSprite;
+		SpriteFont		mSpriteFont;
 
 		Texture			mTestTexture;
 		Sprite*			mTestSprite;

@@ -97,6 +97,11 @@ namespace GameEngine
             );
         }
 
+        static inline T Dot(const Vector3<T>& left, const Vector3<T>& right)
+        {
+            return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
+        }
+
         bool operator == (const Vector3<T>& other) const
         {
             return (X == other.X && Y == other.Y && Z == other.Z);

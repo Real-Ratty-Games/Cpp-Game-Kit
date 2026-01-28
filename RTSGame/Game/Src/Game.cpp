@@ -9,7 +9,7 @@
 
 using namespace MyGame;
 
-SpriteInstanceData _SimpleTextData;
+static SpriteInstanceData _SimpleTextData;
 
 void GameProgram::OnResize(vec2i& size)
 {
@@ -49,7 +49,7 @@ bool GameProgram::Initialize()
 	transf.Scale = vec2(1);
 	transf.Rotation = 0.0f;
 	transf.ImageColor = Color(1);
-	Renderer::PrepareSpriteFontText(mFontSprite, transf, _SimpleTextData, vec2(18, 30), "Hello, World!\nC++ is awesome!");
+	Renderer::PrepareSpriteFontText(mSpriteFont, transf, _SimpleTextData, "Hello, World!\nC++ is awesome!");
 
 	Window::DestroySplashScreen();
 	mWindow->Show();
@@ -89,7 +89,7 @@ void GameProgram::Draw()
 
 		Renderer::SetActiveShader(&mSprite2DAtlasIShader);
 
-		Renderer::DrawSpriteFontText(mFontSprite, _SimpleTextData, vec2(18, 30));
+		Renderer::DrawSpriteFontText(mSpriteFont, _SimpleTextData);
 
 		Renderer::SetActiveShader(&mSprite2DAtlasShader);
 		
@@ -164,6 +164,16 @@ void GameProgram::LoadData()
 		BGFX_SAMPLER_V_CLAMP, "Font", false);
 
 	mFontSprite = new Sprite(&mFontTexture);
+
+	mSpriteFont.pSprite		= mFontSprite;
+	mSpriteFont.GlyphSize	= vec2(18, 30);
+	mSpriteFont.Glyphs		=
+		"AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
+		"ÄäÖöÜü"
+		"0123456789"
+		",;.:_-!?\"§$%&/()=*+~'#|<>²³{[]}\\";
+
+
 
 	Renderer::LoadTextureFromFile(mTestTexture, "Data/TestAnimation.png", BGFX_SAMPLER_MIN_POINT |
 		BGFX_SAMPLER_MAG_POINT |

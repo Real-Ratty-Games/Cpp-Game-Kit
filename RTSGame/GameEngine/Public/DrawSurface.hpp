@@ -14,16 +14,16 @@ namespace GameEngine
 	{
 	public:
 		DrawSurface(uint16 viewid, void* wndHandle);
-		void Release();
-		void Clear();
+		virtual void Release();
+		virtual void Clear();
 		void OnResize(vec2 size);
 		uint16 ViewID() const;
 		Texture& GetTexture();
 
-	private:
+	protected:
 		void DestroyFB();
 		void SetFBViewId();
-		void UpdateFB(vec2i texSize, bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA8);
+		virtual void UpdateFB(vec2i texSize, bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA8);
 
 	public:
 		vec2i					Location;
@@ -33,7 +33,7 @@ namespace GameEngine
 		bool					bTopMost;
 		bool					bTransparent;
 
-	private:
+	protected:
 		bgfx::FrameBufferHandle mFbHandle;
 		Texture					mFbTex;
 

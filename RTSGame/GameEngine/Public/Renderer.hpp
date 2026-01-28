@@ -14,8 +14,11 @@ namespace GameEngine
 	class Window;
 	class Shader;
 	class Sprite;
+	class Viewport3D;
 	class DrawSurface;
+	class DrawSurface3D;
 	class SpriteAnimator;
+	class ViewportOrtho3D;
 
 	namespace Renderer
 	{
@@ -47,7 +50,7 @@ namespace GameEngine
 
 		// Begin Sprite Rendering
 
-		GAMEENGINEAPI void BeginDrawSprite(DrawSurface* surface, Camera2D& cam);
+		GAMEENGINEAPI void BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport);
 		GAMEENGINEAPI void DrawSprite(Sprite* sprite, Transform2D& transformation);
 		GAMEENGINEAPI void DrawSpriteAtlas(Sprite* sprite, TransformAtlas2D& transformation, vec2 subSize);
 
@@ -57,9 +60,9 @@ namespace GameEngine
 		GAMEENGINEAPI void DrawSpriteInstanced(SpriteInstanceData& idata);
 		GAMEENGINEAPI void DrawSpriteAtlasInstanced(SpriteInstanceData& idata, Sprite* sprite, vec2 subSize);
 
-		GAMEENGINEAPI void PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation, SpriteInstanceData& idata, vec2 subSize, strgv text);
-		GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, SpriteInstanceData& idata, vec2 subSize);
-		GAMEENGINEAPI void DrawSpriteFontText(Sprite* sprite, Transform2D& transformation, vec2 subSize, strgv text);
+		GAMEENGINEAPI void PrepareSpriteFontText(SpriteFont& font, Transform2D& transformation, SpriteInstanceData& idata, strgv text);
+		GAMEENGINEAPI void DrawSpriteFontText(SpriteFont& font, SpriteInstanceData& idata);
+		GAMEENGINEAPI void DrawSpriteFontText(SpriteFont& font, Transform2D& transformation, strgv text);
 
 		GAMEENGINEAPI void DrawSpriteAnimation(Sprite* sprite, Transform2D& transformation, SpriteAnimator* animator);
 
@@ -67,6 +70,13 @@ namespace GameEngine
 
 		GAMEENGINEAPI void LoadModelFromFile(Model3D& model, strgv filename);
 		GAMEENGINEAPI void LoadModelFromMemory(Model3D& model, std::vector<uint8>& data);
+
+		// Begin 3D Rendering
+
+		GAMEENGINEAPI void BeginDraw3D(DrawSurface3D* surface, Viewport3D& viewport);
+		GAMEENGINEAPI void BeginDraw3D(DrawSurface3D* surface, ViewportOrtho3D& viewport);
+
+		// End 3D Rendering
 	}
 }
 #endif

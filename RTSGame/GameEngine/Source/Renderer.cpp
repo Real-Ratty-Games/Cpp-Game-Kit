@@ -7,13 +7,16 @@
 #include "../Public/FileSystem.hpp"
 #include "../Public/Shader.hpp"
 #include "../Public/Sprite.hpp"
+#include "../Public/Viewport3D.hpp"
 #include "../Public/DrawSurface.hpp"
+#include "../Public/DrawSurface3D.hpp"
 #include "../Public/Transformation.hpp"
 #include "../Public/SpriteAnimation.hpp"
 #include <bx/math.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <unordered_set>
 #include <stdexcept>
 #include <fstream>
 #include <sstream>
@@ -23,29 +26,29 @@
 
 using namespace GameEngine;
 
-struct RawMeshData
+static struct RawMeshData
 {
 	std::vector<MeshVertex>	Vertices;
 	std::vector<uint16>		Indices;
 };
 
-/// Active instances for sprite rendering
-Shader*			_ActiveShader		= nullptr;
-DrawSurface*	_ActiveDrawSurface	= nullptr;
+/// Active instances for rendering
+static Shader*		_ActiveShader		= nullptr;
+static DrawSurface*	_ActiveDrawSurface	= nullptr;
 
-bgfx::VertexLayout _Mesh3DVBLayout;
+static bgfx::VertexLayout _Mesh3DVBLayout;
 
 /// For primitive 2D quad rendering
-bgfx::VertexBufferHandle	_Quad2DVB;
-float						_Quad2DView[16];
+static bgfx::VertexBufferHandle	_Quad2DVB;
+static float					_Quad2DView[16];
 
-inline void Renderer_Init3DLayout();
-inline void Renderer_Init2DQuad();
-inline void Renderer_Release2DQuad();
-inline void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2D& transformation);
-void		Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene);
-void		Renderer_ModelProcessMesh(Mesh3D& modelMesh, aiMesh* mesh, const aiScene* scene);
-inline void	Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata);
+static inline void	Renderer_Init3DLayout();
+static inline void	Renderer_Init2DQuad();
+static inline void	Renderer_Release2DQuad();
+static inline void	Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2D& transformation);
+static void			Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene);
+static void			Renderer_ModelProcessMesh(Mesh3D& modelMesh, aiMesh* mesh, const aiScene* scene);
+static inline void	Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata);
 
 bool Renderer::Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa)
 {
@@ -213,15 +216,14 @@ void Renderer::SetActiveShader(Shader* shader)
 	_ActiveShader = shader;
 }
 
-void Renderer::BeginDrawSprite(DrawSurface* surface, Camera2D& cam)
+void Renderer::BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport)
 {
 	_ActiveDrawSurface = surface;
-
 	_ActiveDrawSurface->Clear();
 
 	float proj[16];
-	bx::mtxOrtho(proj, cam.Location.X, cam.Size.X + cam.Location.Y,
-		cam.Size.Y + cam.Location.Y, cam.Location.Y, 0.1f, 100.0f, 0.0f, false);
+	bx::mtxOrtho(proj, viewport.Location.X, viewport.Size.X + viewport.Location.Y,
+		viewport.Size.Y + viewport.Location.Y, viewport.Location.Y, 0.1f, 100.0f, 0.0f, false);
 	bgfx::setViewTransform(_ActiveDrawSurface->ViewID(), _Quad2DView, proj);
 }
 
@@ -351,7 +353,7 @@ void Renderer::DrawSpriteAtlasInstanced(SpriteInstanceData& idata, Sprite* sprit
 	DrawSpriteInstanced(idata);
 }
 
-void Renderer::PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation, SpriteInstanceData& idata, vec2 subSize, strgv text)
+void Renderer::PrepareSpriteFontText(SpriteFont& font, Transform2D& transformation, SpriteInstanceData& idata, strgv text)
 {
 	std::vector<TransformAtlas2D> tdata;
 
@@ -364,134 +366,37 @@ void Renderer::PrepareSpriteFontText(Sprite* sprite, Transform2D& transformation
 		result.Scale = transformation.Scale;
 		result.ImageColor = transformation.ImageColor;
 
-		switch (it)
+		if (it == ' ')
 		{
-		case 'A': result.Index = vec2(0, 0); break;
-		case 'a': result.Index = vec2(1, 0); break;
-		case 'B': result.Index = vec2(2, 0); break;
-		case 'b': result.Index = vec2(3, 0); break;
-		case 'C': result.Index = vec2(4, 0); break;
-		case 'c': result.Index = vec2(5, 0); break;
-		case 'D': result.Index = vec2(6, 0); break;
-		case 'd': result.Index = vec2(7, 0); break;
-		case 'E': result.Index = vec2(8, 0); break;
-		case 'e': result.Index = vec2(9, 0); break;
-		case 'F': result.Index = vec2(10, 0); break;
-		case 'f': result.Index = vec2(11, 0); break;
-		case 'G': result.Index = vec2(12, 0); break;
-		case 'g': result.Index = vec2(13, 0); break;
-		case 'H': result.Index = vec2(14, 0); break;
-		case 'h': result.Index = vec2(15, 0); break;
-		case 'I': result.Index = vec2(16, 0); break;
-		case 'i': result.Index = vec2(17, 0); break;
-		case 'J': result.Index = vec2(18, 0); break;
-		case 'j': result.Index = vec2(19, 0); break;
-		case 'K': result.Index = vec2(20, 0); break;
-		case 'k': result.Index = vec2(21, 0); break;
-		case 'L': result.Index = vec2(22, 0); break;
-		case 'l': result.Index = vec2(23, 0); break;
-		case 'M': result.Index = vec2(24, 0); break;
-		case 'm': result.Index = vec2(25, 0); break;
-		case 'N': result.Index = vec2(26, 0); break;
-		case 'n': result.Index = vec2(27, 0); break;
-		case 'O': result.Index = vec2(28, 0); break;
-		case 'o': result.Index = vec2(29, 0); break;
-		case 'P': result.Index = vec2(30, 0); break;
-		case 'p': result.Index = vec2(31, 0); break;
-		case 'Q': result.Index = vec2(32, 0); break;
-		case 'q': result.Index = vec2(33, 0); break;
-		case 'R': result.Index = vec2(34, 0); break;
-		case 'r': result.Index = vec2(35, 0); break;
-		case 'S': result.Index = vec2(36, 0); break;
-		case 's': result.Index = vec2(37, 0); break;
-		case 'T': result.Index = vec2(38, 0); break;
-		case 't': result.Index = vec2(39, 0); break;
-		case 'U': result.Index = vec2(40, 0); break;
-		case 'u': result.Index = vec2(41, 0); break;
-		case 'V': result.Index = vec2(42, 0); break;
-		case 'v': result.Index = vec2(43, 0); break;
-		case 'W': result.Index = vec2(44, 0); break;
-		case 'w': result.Index = vec2(45, 0); break;
-		case 'X': result.Index = vec2(46, 0); break;
-		case 'x': result.Index = vec2(47, 0); break;
-		case 'Y': result.Index = vec2(48, 0); break;
-		case 'y': result.Index = vec2(49, 0); break;
-		case 'Z': result.Index = vec2(50, 0); break;
-		case 'z': result.Index = vec2(51, 0); break;
-		case 'Ä': result.Index = vec2(52, 0); break;
-		case 'ä': result.Index = vec2(53, 0); break;
-		case 'Ö': result.Index = vec2(54, 0); break;
-		case 'ö': result.Index = vec2(55, 0); break;
-		case 'Ü': result.Index = vec2(56, 0); break;
-		case 'ü': result.Index = vec2(57, 0); break;
-		case '0': result.Index = vec2(58, 0); break;
-		case '1': result.Index = vec2(59, 0); break;
-		case '2': result.Index = vec2(60, 0); break;
-		case '3': result.Index = vec2(61, 0); break;
-		case '4': result.Index = vec2(62, 0); break;
-		case '5': result.Index = vec2(63, 0); break;
-		case '6': result.Index = vec2(64, 0); break;
-		case '7': result.Index = vec2(65, 0); break;
-		case '8': result.Index = vec2(66, 0); break;
-		case '9': result.Index = vec2(67, 0); break;
-		case ',': result.Index = vec2(68, 0); break;
-		case ';': result.Index = vec2(69, 0); break;
-		case '.': result.Index = vec2(70, 0); break;
-		case ':': result.Index = vec2(71, 0); break;
-		case '-': result.Index = vec2(72, 0); break;
-		case '_': result.Index = vec2(73, 0); break;
-		case '!': result.Index = vec2(74, 0); break;
-		case '?': result.Index = vec2(75, 0); break;
-		case '"': result.Index = vec2(76, 0); break;
-		case '§': result.Index = vec2(77, 0); break;
-		case '$': result.Index = vec2(78, 0); break;
-		case '%': result.Index = vec2(79, 0); break;
-		case '&': result.Index = vec2(80, 0); break;
-		case '/': result.Index = vec2(81, 0); break;
-		case '(': result.Index = vec2(82, 0); break;
-		case ')': result.Index = vec2(83, 0); break;
-		case '=': result.Index = vec2(84, 0); break;
-		case '*': result.Index = vec2(85, 0); break;
-		case '+': result.Index = vec2(86, 0); break;
-		case '~': result.Index = vec2(87, 0); break;
-		case '\'': result.Index = vec2(88, 0); break;
-		case '#': result.Index = vec2(89, 0); break;
-		case '|': result.Index = vec2(90, 0); break;
-		case '<': result.Index = vec2(91, 0); break;
-		case '>': result.Index = vec2(92, 0); break;
-		case '²': result.Index = vec2(93, 0); break;
-		case '³': result.Index = vec2(94, 0); break;
-		case '{': result.Index = vec2(95, 0); break;
-		case '[': result.Index = vec2(96, 0); break;
-		case ']': result.Index = vec2(97, 0); break;
-		case '}': result.Index = vec2(98, 0); break;
-		case '\\': result.Index = vec2(99, 0); break;
-		case ' ':
-		{
-			cursor.X += subSize.X;
+			cursor.X += font.GlyphSize.X;
 			continue;
-		}break;
-		case '\n':
+		}
+		else if (it == '\n')
 		{
 			cursor.X = transformation.Location.X;
-			cursor.Y += subSize.Y;
+			cursor.Y += font.GlyphSize.Y;
 			continue;
-		}break;
 		}
+
+		auto pos = font.Glyphs.find(it);
+		if (pos != strg::npos)
+			result.Index.X = static_cast<int>(pos);
+		else continue;
+
 		tdata.push_back(result);
 
-		cursor.X += subSize.X;
+		cursor.X += font.GlyphSize.X;
 	}
 
-	PrepareSpriteAtlasInstancing(sprite, idata, tdata, subSize);
+	PrepareSpriteAtlasInstancing(font.pSprite, idata, tdata, font.GlyphSize);
 }
 
-void Renderer::DrawSpriteFontText(Sprite* sprite, SpriteInstanceData& idata, vec2 subSize)
+void Renderer::DrawSpriteFontText(SpriteFont& font, SpriteInstanceData& idata)
 {
-	DrawSpriteAtlasInstanced(idata, sprite, subSize);
+	DrawSpriteAtlasInstanced(idata, font.pSprite, font.GlyphSize);
 }
 
-void Renderer::DrawSpriteFontText(Sprite* sprite, Transform2D& transformation, vec2 subSize, strgv text)
+void Renderer::DrawSpriteFontText(SpriteFont& font, Transform2D& transformation, strgv text)
 {
 	vec2 cursor = transformation.Location;
 	for (auto& it : text)
@@ -502,124 +407,26 @@ void Renderer::DrawSpriteFontText(Sprite* sprite, Transform2D& transformation, v
 		result.Scale = transformation.Scale;
 		result.ImageColor = transformation.ImageColor;
 
-		switch (it)
+		if (it == ' ')
 		{
-		case 'A': result.Index = vec2(0, 0); break;
-		case 'a': result.Index = vec2(1, 0); break;
-		case 'B': result.Index = vec2(2, 0); break;
-		case 'b': result.Index = vec2(3, 0); break;
-		case 'C': result.Index = vec2(4, 0); break;
-		case 'c': result.Index = vec2(5, 0); break;
-		case 'D': result.Index = vec2(6, 0); break;
-		case 'd': result.Index = vec2(7, 0); break;
-		case 'E': result.Index = vec2(8, 0); break;
-		case 'e': result.Index = vec2(9, 0); break;
-		case 'F': result.Index = vec2(10, 0); break;
-		case 'f': result.Index = vec2(11, 0); break;
-		case 'G': result.Index = vec2(12, 0); break;
-		case 'g': result.Index = vec2(13, 0); break;
-		case 'H': result.Index = vec2(14, 0); break;
-		case 'h': result.Index = vec2(15, 0); break;
-		case 'I': result.Index = vec2(16, 0); break;
-		case 'i': result.Index = vec2(17, 0); break;
-		case 'J': result.Index = vec2(18, 0); break;
-		case 'j': result.Index = vec2(19, 0); break;
-		case 'K': result.Index = vec2(20, 0); break;
-		case 'k': result.Index = vec2(21, 0); break;
-		case 'L': result.Index = vec2(22, 0); break;
-		case 'l': result.Index = vec2(23, 0); break;
-		case 'M': result.Index = vec2(24, 0); break;
-		case 'm': result.Index = vec2(25, 0); break;
-		case 'N': result.Index = vec2(26, 0); break;
-		case 'n': result.Index = vec2(27, 0); break;
-		case 'O': result.Index = vec2(28, 0); break;
-		case 'o': result.Index = vec2(29, 0); break;
-		case 'P': result.Index = vec2(30, 0); break;
-		case 'p': result.Index = vec2(31, 0); break;
-		case 'Q': result.Index = vec2(32, 0); break;
-		case 'q': result.Index = vec2(33, 0); break;
-		case 'R': result.Index = vec2(34, 0); break;
-		case 'r': result.Index = vec2(35, 0); break;
-		case 'S': result.Index = vec2(36, 0); break;
-		case 's': result.Index = vec2(37, 0); break;
-		case 'T': result.Index = vec2(38, 0); break;
-		case 't': result.Index = vec2(39, 0); break;
-		case 'U': result.Index = vec2(40, 0); break;
-		case 'u': result.Index = vec2(41, 0); break;
-		case 'V': result.Index = vec2(42, 0); break;
-		case 'v': result.Index = vec2(43, 0); break;
-		case 'W': result.Index = vec2(44, 0); break;
-		case 'w': result.Index = vec2(45, 0); break;
-		case 'X': result.Index = vec2(46, 0); break;
-		case 'x': result.Index = vec2(47, 0); break;
-		case 'Y': result.Index = vec2(48, 0); break;
-		case 'y': result.Index = vec2(49, 0); break;
-		case 'Z': result.Index = vec2(50, 0); break;
-		case 'z': result.Index = vec2(51, 0); break;
-		case 'Ä': result.Index = vec2(52, 0); break;
-		case 'ä': result.Index = vec2(53, 0); break;
-		case 'Ö': result.Index = vec2(54, 0); break;
-		case 'ö': result.Index = vec2(55, 0); break;
-		case 'Ü': result.Index = vec2(56, 0); break;
-		case 'ü': result.Index = vec2(57, 0); break;
-		case '0': result.Index = vec2(58, 0); break;
-		case '1': result.Index = vec2(59, 0); break;
-		case '2': result.Index = vec2(60, 0); break;
-		case '3': result.Index = vec2(61, 0); break;
-		case '4': result.Index = vec2(62, 0); break;
-		case '5': result.Index = vec2(63, 0); break;
-		case '6': result.Index = vec2(64, 0); break;
-		case '7': result.Index = vec2(65, 0); break;
-		case '8': result.Index = vec2(66, 0); break;
-		case '9': result.Index = vec2(67, 0); break;
-		case ',': result.Index = vec2(68, 0); break;
-		case ';': result.Index = vec2(69, 0); break;
-		case '.': result.Index = vec2(70, 0); break;
-		case ':': result.Index = vec2(71, 0); break;
-		case '-': result.Index = vec2(72, 0); break;
-		case '_': result.Index = vec2(73, 0); break;
-		case '!': result.Index = vec2(74, 0); break;
-		case '?': result.Index = vec2(75, 0); break;
-		case '"': result.Index = vec2(76, 0); break;
-		case '§': result.Index = vec2(77, 0); break;
-		case '$': result.Index = vec2(78, 0); break;
-		case '%': result.Index = vec2(79, 0); break;
-		case '&': result.Index = vec2(80, 0); break;
-		case '/': result.Index = vec2(81, 0); break;
-		case '(': result.Index = vec2(82, 0); break;
-		case ')': result.Index = vec2(83, 0); break;
-		case '=': result.Index = vec2(84, 0); break;
-		case '*': result.Index = vec2(85, 0); break;
-		case '+': result.Index = vec2(86, 0); break;
-		case '~': result.Index = vec2(87, 0); break;
-		case '\'': result.Index = vec2(88, 0); break;
-		case '#': result.Index = vec2(89, 0); break;
-		case '|': result.Index = vec2(90, 0); break;
-		case '<': result.Index = vec2(91, 0); break;
-		case '>': result.Index = vec2(92, 0); break;
-		case '²': result.Index = vec2(93, 0); break;
-		case '³': result.Index = vec2(94, 0); break;
-		case '{': result.Index = vec2(95, 0); break;
-		case '[': result.Index = vec2(96, 0); break;
-		case ']': result.Index = vec2(97, 0); break;
-		case '}': result.Index = vec2(98, 0); break;
-		case '\\': result.Index = vec2(99, 0); break;
-		case ' ':
-		{
-			cursor.X += subSize.X;
+			cursor.X += font.GlyphSize.X;
 			continue;
-		}break;
-		case '\n':
+		}
+		else if (it == '\n')
 		{
 			cursor.X = transformation.Location.X;
-			cursor.Y += subSize.Y;
+			cursor.Y += font.GlyphSize.Y;
 			continue;
-		}break;
 		}
-		
-		DrawSpriteAtlas(sprite, result, subSize);
 
-		cursor.X += subSize.X;
+		auto pos = font.Glyphs.find(it);
+		if (pos != strg::npos)
+			result.Index.X = static_cast<int>(pos);
+		else continue;
+		
+		DrawSpriteAtlas(font.pSprite, result, font.GlyphSize);
+
+		cursor.X += font.GlyphSize.X;
 	}
 }
 
@@ -671,6 +478,28 @@ void Renderer::LoadModelFromMemory(Model3D& model, std::vector<uint8>& data)
 		throw new std::runtime_error("Failed loading model!");
 
 	Renderer_ModelProcessNode(model, scene->mRootNode, scene);
+}
+
+void Renderer::BeginDraw3D(DrawSurface3D* surface, Viewport3D& viewport)
+{
+	_ActiveDrawSurface = surface;
+	_ActiveDrawSurface->Clear();
+
+	float proj[16];
+	bx::mtxProj(proj, viewport.Fov, surface->AspectRatio.X / surface->AspectRatio.Y, viewport.Near, viewport.Far,
+		bgfx::getCaps()->homogeneousDepth);
+	bgfx::setViewTransform(surface->ViewID(), viewport.View().Ptr(), proj);
+}
+
+void Renderer::BeginDraw3D(DrawSurface3D* surface, ViewportOrtho3D& viewport)
+{
+	_ActiveDrawSurface = surface;
+	_ActiveDrawSurface->Clear();
+
+	float proj[16];
+	bx::mtxOrtho(proj, viewport.Left, viewport.Right, viewport.Bottom, viewport.Top, viewport.Near,
+		viewport.Far, viewport.Offset, true);
+	bgfx::setViewTransform(surface->ViewID(), viewport.View().Ptr(), proj);
 }
 
 /*======================================================

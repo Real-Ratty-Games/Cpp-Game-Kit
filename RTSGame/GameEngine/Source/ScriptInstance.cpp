@@ -12,8 +12,8 @@
 
 using namespace GameEngine;
 
-void ScriptInstance_ReadFields(lua_State* state, std::vector<ScriptField>& fields);
-void ScriptInstance_FillValueType(lua_State* state, ScriptField& field);
+static void ScriptInstance_ReadFields(lua_State* state, std::vector<ScriptField>& fields);
+static void ScriptInstance_FillValueType(lua_State* state, ScriptField& field);
 
 ScriptInstance::ScriptInstance(ScriptCore* scriptcore, strgv instancename)
 {
