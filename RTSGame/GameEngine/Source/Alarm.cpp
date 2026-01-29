@@ -2,7 +2,7 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Alarm.hpp"
+#include "../Include/Alarm.hpp"
 
 using namespace GameEngine;
 

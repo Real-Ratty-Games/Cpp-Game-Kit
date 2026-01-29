@@ -2,8 +2,8 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/SpriteAnimation.hpp"
-#include "../Public/Sprite.hpp"
+#include "../Include/SpriteAnimation.hpp"
+#include "../Include/Sprite.hpp"
 
 using namespace GameEngine;
 

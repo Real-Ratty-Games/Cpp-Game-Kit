@@ -2,7 +2,7 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Gamepad.hpp"
+#include "../Include/Gamepad.hpp"
 #include <SDL3/SDL_gamepad.h>
 #include <stdexcept>
 

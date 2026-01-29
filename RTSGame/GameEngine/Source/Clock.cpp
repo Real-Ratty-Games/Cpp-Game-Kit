@@ -2,7 +2,7 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Clock.hpp"
+#include "../Include/Clock.hpp"
 #include <SDL3/SDL.h>
 
 using namespace GameEngine;

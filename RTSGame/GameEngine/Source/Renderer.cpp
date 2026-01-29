@@ -2,16 +2,16 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Renderer.hpp"
-#include "../Public/Window.hpp"
-#include "../Public/FileSystem.hpp"
-#include "../Public/Shader.hpp"
-#include "../Public/Sprite.hpp"
-#include "../Public/Viewport3D.hpp"
-#include "../Public/DrawSurface.hpp"
-#include "../Public/DrawSurface3D.hpp"
-#include "../Public/Transformation.hpp"
-#include "../Public/SpriteAnimation.hpp"
+#include "../Include/Renderer.hpp"
+#include "../Include/Window.hpp"
+#include "../Include/FileSystem.hpp"
+#include "../Include/Shader.hpp"
+#include "../Include/Sprite.hpp"
+#include "../Include/Viewport3D.hpp"
+#include "../Include/DrawSurface.hpp"
+#include "../Include/DrawSurface3D.hpp"
+#include "../Include/Transformation.hpp"
+#include "../Include/SpriteAnimation.hpp"
 #include <bx/math.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -36,7 +36,7 @@ static struct RawMeshData
 static Shader*		_ActiveShader		= nullptr;
 static DrawSurface*	_ActiveDrawSurface	= nullptr;
 
-static bgfx::VertexLayout _Mesh3DVBLayout;
+static bgfx::VertexLayout		_Mesh3DVBLayout;
 
 /// For primitive 2D quad rendering
 static bgfx::VertexBufferHandle	_Quad2DVB;
@@ -75,8 +75,8 @@ bool Renderer::Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa)
 	bgfx::reset(wndSize.X, wndSize.Y, (vsync ? BGFX_RESET_VSYNC : BGFX_RESET_NONE) | (uint)msaa);
 	bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
 
-	Renderer_Init3DLayout();
 	Renderer_Init2DQuad();
+	Renderer_Init3DLayout();
 	return true;
 }
 

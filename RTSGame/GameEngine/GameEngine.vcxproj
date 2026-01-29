@@ -63,7 +63,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxDebug.lib;bimg_decodeDebug.lib;bimgDebug.lib;bxDebug.lib;soloud_static_x64_d.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;bgfxDebug.lib;bimg_decodeDebug.lib;bimgDebug.lib;bxDebug.lib;soloud_static_x64_d.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -80,7 +80,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL3.lib;Lua.lib;bgfxRelease.lib;bimg_decodeRelease.lib;bimgRelease.lib;bxRelease.lib;soloud_static_x64.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL3.lib;bgfxRelease.lib;bimg_decodeRelease.lib;bimgRelease.lib;bxRelease.lib;soloud_static_x64.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -96,9 +96,6 @@
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Program.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
-    <ClCompile Include="Source\ScriptCore.cpp" />
-    <ClCompile Include="Source\ScriptInstance.cpp" />
-    <ClCompile Include="Source\ScriptText.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
@@ -109,42 +106,38 @@
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Public\Alarm.hpp" />
-    <ClInclude Include="Public\API.hpp" />
-    <ClInclude Include="Public\Clock.hpp" />
-    <ClInclude Include="Public\Collider.hpp" />
-    <ClInclude Include="Public\Collision.hpp" />
-    <ClInclude Include="Public\DebugHelp.hpp" />
-    <ClInclude Include="Public\DrawData.hpp" />
-    <ClInclude Include="Public\DrawSurface.hpp" />
-    <ClInclude Include="Public\DrawSurface3D.hpp" />
-    <ClInclude Include="Public\FileSystem.hpp" />
-    <ClInclude Include="Public\Gamepad.hpp" />
-    <ClInclude Include="Public\IniFile.hpp" />
-    <ClInclude Include="Public\Input.hpp" />
-    <ClInclude Include="Public\InputTypes.hpp" />
-    <ClInclude Include="Public\Matrix4.hpp" />
-    <ClInclude Include="Public\Program.hpp" />
-    <ClInclude Include="Public\Quaternion.hpp" />
-    <ClInclude Include="Public\Renderer.hpp" />
-    <ClInclude Include="Public\EulerRotation.hpp" />
-    <ClInclude Include="Public\ScriptCore.hpp" />
-    <ClInclude Include="Public\ScriptField.hpp" />
-    <ClInclude Include="Public\ScriptInstance.hpp" />
-    <ClInclude Include="Public\ScriptText.hpp" />
-    <ClInclude Include="Public\Shader.hpp" />
-    <ClInclude Include="Public\Sound.hpp" />
-    <ClInclude Include="Public\Sprite.hpp" />
-    <ClInclude Include="Public\SpriteAnimation.hpp" />
-    <ClInclude Include="Public\SystemTypes.hpp" />
-    <ClInclude Include="Public\Transformation.hpp" />
-    <ClInclude Include="Public\Vector2.hpp" />
-    <ClInclude Include="Public\Vector3.hpp" />
-    <ClInclude Include="Public\Vector4.hpp" />
-    <ClInclude Include="Public\Viewport3D.hpp" />
-    <ClInclude Include="Public\WADFile.hpp" />
-    <ClInclude Include="Public\WADMaker.hpp" />
-    <ClInclude Include="Public\Window.hpp" />
+    <ClInclude Include="Include\Alarm.hpp" />
+    <ClInclude Include="Include\API.hpp" />
+    <ClInclude Include="Include\Clock.hpp" />
+    <ClInclude Include="Include\Collider.hpp" />
+    <ClInclude Include="Include\Collision.hpp" />
+    <ClInclude Include="Include\DebugHelp.hpp" />
+    <ClInclude Include="Include\DrawData.hpp" />
+    <ClInclude Include="Include\DrawSurface.hpp" />
+    <ClInclude Include="Include\DrawSurface3D.hpp" />
+    <ClInclude Include="Include\FileSystem.hpp" />
+    <ClInclude Include="Include\Gamepad.hpp" />
+    <ClInclude Include="Include\IniFile.hpp" />
+    <ClInclude Include="Include\Input.hpp" />
+    <ClInclude Include="Include\InputTypes.hpp" />
+    <ClInclude Include="Include\Matrix4.hpp" />
+    <ClInclude Include="Include\Program.hpp" />
+    <ClInclude Include="Include\Quaternion.hpp" />
+    <ClInclude Include="Include\Renderer.hpp" />
+    <ClInclude Include="Include\EulerRotation.hpp" />
+    <ClInclude Include="Include\Shader.hpp" />
+    <ClInclude Include="Include\Sound.hpp" />
+    <ClInclude Include="Include\Sprite.hpp" />
+    <ClInclude Include="Include\SpriteAnimation.hpp" />
+    <ClInclude Include="Include\SystemTypes.hpp" />
+    <ClInclude Include="Include\Transformation.hpp" />
+    <ClInclude Include="Include\Vector2.hpp" />
+    <ClInclude Include="Include\Vector3.hpp" />
+    <ClInclude Include="Include\Vector4.hpp" />
+    <ClInclude Include="Include\Viewport3D.hpp" />
+    <ClInclude Include="Include\WADFile.hpp" />
+    <ClInclude Include="Include\WADMaker.hpp" />
+    <ClInclude Include="Include\Window.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

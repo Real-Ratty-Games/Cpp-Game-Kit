@@ -2,23 +2,13 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/DrawSurface3D.hpp"
+#include "../Include/DrawSurface3D.hpp"
 #include <bx/bx.h>
 #include <bx/math.h>
 
 using namespace GameEngine;
 
 DrawSurface3D::DrawSurface3D(uint16 viewid, void* wndHandle) : DrawSurface(viewid, wndHandle) {}
-
-void DrawSurface3D::Release()
-{
-	DrawSurface::Release();
-}
-
-void DrawSurface3D::Clear()
-{
-	DrawSurface::Clear();
-}
 
 Texture& DrawSurface3D::GetDepthTexture()
 {

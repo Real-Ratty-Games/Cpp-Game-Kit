@@ -2,15 +2,15 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Collision.hpp"
+#include "../Include/Collision.hpp"
 #include <algorithm>
 
 using namespace GameEngine::Math;
 
-bool Collision::Intersect(const vec2& point, const BoxCollider& box)
+bool Collision::Intersect(const vec2& point, const RectCollider& rect)
 {
-	return point.X >= box.Location.X && point.X <= box.Location.X + box.Size.X &&
-		point.Y >= box.Location.Y && point.Y <= box.Location.Y + box.Size.Y;
+	return point.X >= rect.Location.X && point.X <= rect.Location.X + rect.Size.X &&
+		point.Y >= rect.Location.Y && point.Y <= rect.Location.Y + rect.Size.Y;
 }
 
 bool Collision::Intersect(const vec2& point, const CircleCollider& circle)
@@ -20,7 +20,7 @@ bool Collision::Intersect(const vec2& point, const CircleCollider& circle)
 	return (dx * dx + dy * dy) <= (circle.Radius * circle.Radius);
 }
 
-bool Collision::Intersect(const BoxCollider& a, const BoxCollider& b)
+bool Collision::Intersect(const RectCollider& a, const RectCollider& b)
 {
 	bool cX = a.Location.X + a.Size.X >= b.Location.X &&
 		b.Location.X + b.Size.X >= a.Location.X;
@@ -37,22 +37,70 @@ bool Collision::Intersect(const CircleCollider& a, const CircleCollider& b)
 	return (dx * dx + dy * dy) <= (r * r);
 }
 
-bool Collision::Intersect(const BoxCollider& box, const CircleCollider& circle)
+bool Collision::Intersect(const RectCollider& rect, const CircleCollider& circle)
 {
 	float closestX = std::clamp(
 		circle.Location.X,
-		box.Location.X,
-		box.Location.X + box.Size.X
+		rect.Location.X,
+		rect.Location.X + rect.Size.X
 	);
 
 	float closestY = std::clamp(
 		circle.Location.Y,
-		box.Location.Y,
-		box.Location.Y + box.Size.Y
+		rect.Location.Y,
+		rect.Location.Y + rect.Size.Y
 	);
 
 	float dx = circle.Location.X - closestX;
 	float dy = circle.Location.Y - closestY;
 
 	return (dx * dx + dy * dy) <= (circle.Radius * circle.Radius);
+}
+
+bool Collision::Intersect(const BoxCollider& a, const BoxCollider& b)
+{
+	return(a.Max.X > b.Min.X &&
+		a.Min.X < b.Max.X &&
+		a.Max.Y > b.Min.Y &&
+		a.Min.Y < b.Max.Y &&
+		a.Max.Z > b.Min.Z &&
+		a.Min.Z < b.Max.Z);
+}
+
+bool Collision::Intersect(const vec3& point, const BoxCollider& box)
+{
+	return (point.X > box.Min.X && point.X < box.Max.X &&
+		point.Y > box.Min.Y && point.Y < box.Max.Y &&
+		point.Z > box.Min.Z && point.Z < box.Max.Z);
+}
+
+bool Collision::Intersect(const vec3& point, const SphereCollider& sphere)
+{
+	const vec3 dist = sphere.Location - point;
+	const float distSq = vec3::Dot(dist, dist);
+	return (distSq < (sphere.Radius * sphere.Radius));
+}
+
+bool Collision::Intersect(const SphereCollider& a, const SphereCollider& b)
+{
+	const vec3 dist = b.Location - a.Location;
+	const float distSq = vec3::Dot(dist, dist);
+
+	float sumSq = a.Radius + b.Radius;
+	sumSq *= sumSq;
+
+	return (distSq <= sumSq);
+}
+
+bool Collision::Intersect(const BoxCollider& box, const SphereCollider& sphere)
+{
+	const float xx = std::max(box.Min.X, std::min(sphere.Location.X, box.Max.X));
+	const float yy = std::max(box.Min.Y, std::min(sphere.Location.Y, box.Max.Y));
+	const float zz = std::max(box.Min.Z, std::min(sphere.Location.Z, box.Max.Z));
+
+	const float dx = xx - sphere.Location.X;
+	const float dy = yy - sphere.Location.Y;
+	const float dz = zz - sphere.Location.Z;
+
+	return ((dx * dx + dy * dy + dz * dz) <= (sphere.Radius * sphere.Radius));
 }

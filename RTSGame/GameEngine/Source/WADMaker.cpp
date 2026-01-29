@@ -2,9 +2,9 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/WADMaker.hpp"
-#include "../Public/IniFile.hpp"
-#include "../Public/FileSystem.hpp"
+#include "../Include/WADMaker.hpp"
+#include "../Include/IniFile.hpp"
+#include "../Include/FileSystem.hpp"
 #include <filesystem>
 #include <fstream>
 

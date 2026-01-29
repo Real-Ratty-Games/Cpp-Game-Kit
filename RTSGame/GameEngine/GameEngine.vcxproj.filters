@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Core">
-      <UniqueIdentifier>{5f506bc9-9feb-41ac-a37f-2dc0ee16a900}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Inc">
-      <UniqueIdentifier>{63ec935b-f8c5-496e-928c-2bdc04d33851}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Src">
-      <UniqueIdentifier>{22673534-21d5-41ca-bc39-116c90954c53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{b1070472-09ca-4640-945e-3348bda3b236}</UniqueIdentifier>
     </Filter>
@@ -28,15 +19,6 @@
     <Filter Include="OS\Src">
       <UniqueIdentifier>{528e4ef8-dff8-4851-bdcd-b3710d2041f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Script">
-      <UniqueIdentifier>{06ec9a6b-f2f1-4416-92f6-16e9c3416913}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Script\Inc">
-      <UniqueIdentifier>{11b3fef2-850c-4895-a9b8-39e4862440f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Script\Src">
-      <UniqueIdentifier>{e0fcb9b3-d88a-4f9a-96f2-06f1cd9f5c6b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Draw">
       <UniqueIdentifier>{ee196164-6ed1-4ec3-b01e-8e6f9dedc07b}</UniqueIdentifier>
     </Filter>
@@ -45,6 +27,15 @@
     </Filter>
     <Filter Include="Draw\Src">
       <UniqueIdentifier>{50be23ba-ff36-493d-913b-6feff0e0967c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{5f506bc9-9feb-41ac-a37f-2dc0ee16a900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Inc">
+      <UniqueIdentifier>{63ec935b-f8c5-496e-928c-2bdc04d33851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Src">
+      <UniqueIdentifier>{22673534-21d5-41ca-bc39-116c90954c53}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,15 +84,6 @@
     <ClCompile Include="Source\Window.cpp">
       <Filter>OS\Src</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ScriptCore.cpp">
-      <Filter>Script\Src</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ScriptInstance.cpp">
-      <Filter>Script\Src</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ScriptText.cpp">
-      <Filter>Script\Src</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Alarm.cpp">
       <Filter>Core\Src</Filter>
     </ClCompile>
@@ -119,113 +101,101 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Public\Clock.hpp">
+    <ClInclude Include="Include\Alarm.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\DebugHelp.hpp">
+    <ClInclude Include="Include\API.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\FileSystem.hpp">
+    <ClInclude Include="Include\Clock.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\IniFile.hpp">
+    <ClInclude Include="Include\DebugHelp.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Program.hpp">
+    <ClInclude Include="Include\FileSystem.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\SystemTypes.hpp">
+    <ClInclude Include="Include\IniFile.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\WADFile.hpp">
+    <ClInclude Include="Include\Program.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\WADMaker.hpp">
+    <ClInclude Include="Include\SystemTypes.hpp">
       <Filter>Core\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\DrawData.hpp">
+    <ClInclude Include="Include\WADFile.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\WADMaker.hpp">
+      <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\DrawData.hpp">
       <Filter>Draw\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\DrawSurface.hpp">
+    <ClInclude Include="Include\DrawSurface.hpp">
       <Filter>Draw\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Renderer.hpp">
+    <ClInclude Include="Include\DrawSurface3D.hpp">
       <Filter>Draw\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Shader.hpp">
+    <ClInclude Include="Include\Renderer.hpp">
       <Filter>Draw\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Sprite.hpp">
+    <ClInclude Include="Include\Shader.hpp">
       <Filter>Draw\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Collider.hpp">
+    <ClInclude Include="Include\Sprite.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\SpriteAnimation.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Viewport3D.hpp">
+      <Filter>Draw\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Collider.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Collision.hpp">
+    <ClInclude Include="Include\Collision.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Matrix4.hpp">
+    <ClInclude Include="Include\EulerRotation.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Transformation.hpp">
+    <ClInclude Include="Include\Matrix4.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Vector2.hpp">
+    <ClInclude Include="Include\Quaternion.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Vector3.hpp">
+    <ClInclude Include="Include\Transformation.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Vector4.hpp">
+    <ClInclude Include="Include\Vector2.hpp">
       <Filter>Math\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Gamepad.hpp">
+    <ClInclude Include="Include\Vector3.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Vector4.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Gamepad.hpp">
       <Filter>OS\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Input.hpp">
+    <ClInclude Include="Include\Input.hpp">
       <Filter>OS\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\InputTypes.hpp">
+    <ClInclude Include="Include\InputTypes.hpp">
       <Filter>OS\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Sound.hpp">
+    <ClInclude Include="Include\Sound.hpp">
       <Filter>OS\Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Public\Window.hpp">
+    <ClInclude Include="Include\Window.hpp">
       <Filter>OS\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ScriptCore.hpp">
-      <Filter>Script\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ScriptField.hpp">
-      <Filter>Script\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ScriptInstance.hpp">
-      <Filter>Script\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\ScriptText.hpp">
-      <Filter>Script\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\API.hpp">
-      <Filter>Core\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Alarm.hpp">
-      <Filter>Core\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\SpriteAnimation.hpp">
-      <Filter>Draw\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Quaternion.hpp">
-      <Filter>Math\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\EulerRotation.hpp">
-      <Filter>Math\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\DrawSurface3D.hpp">
-      <Filter>Draw\Inc</Filter>
-    </ClInclude>
-    <ClInclude Include="Public\Viewport3D.hpp">
-      <Filter>Draw\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

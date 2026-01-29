@@ -2,7 +2,7 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/DrawSurface.hpp"
+#include "../Include/DrawSurface.hpp"
 #include <bx/bx.h>
 
 using namespace GameEngine;

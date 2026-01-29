@@ -2,8 +2,8 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Viewport3D.hpp"
-#include "../Public/Transformation.hpp"
+#include "../Include/Viewport3D.hpp"
+#include "../Include/Transformation.hpp"
 
 using namespace GameEngine;
 

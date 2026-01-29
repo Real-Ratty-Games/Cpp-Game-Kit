@@ -2,7 +2,7 @@
     Copyright (c) 2026 Real Ratty Games.
     Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/IniFile.hpp"
+#include "../Include/IniFile.hpp"
 #include <fstream>
 #include <sstream>
 

@@ -2,8 +2,8 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Shader.hpp"
-#include "../Public/FileSystem.hpp"
+#include "../Include/Shader.hpp"
+#include "../Include/FileSystem.hpp"
 #include <vector>
 #include <filesystem>
 #include <bx/bx.h>
@@ -12,10 +12,10 @@
 using namespace GameEngine;
 
 /// Base shader directory
-strg _ShaderDir;
+static strg _ShaderDir;
 
-const bgfx::Memory* Shader_GetMemory(bx::FileReader& filereader);
-strg				Shader_CompileShader(strgv args);
+static const bgfx::Memory*	Shader_GetMemory(bx::FileReader& filereader);
+static strg					Shader_CompileShader(strgv args);
 
 void Shader::SetShaderDirectory(strgv dir)
 {

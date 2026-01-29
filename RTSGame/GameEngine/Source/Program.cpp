@@ -2,7 +2,7 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Program.hpp"
+#include "../Include/Program.hpp"
 
 using namespace GameEngine;
 

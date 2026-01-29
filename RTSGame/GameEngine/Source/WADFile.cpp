@@ -2,7 +2,7 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/WADFile.hpp"
+#include "../Include/WADFile.hpp"
 #include <fstream>
 #include <sstream>
 

@@ -1,11 +1,8 @@
 /*======================================================
 	Copyright (c) 2026 Real Ratty Games.
-	This software is a trade secret.
-
-	Revision history:
-		* Created by Norbert Gerberg.
+	Created by Norbert Gerberg.
 ======================================================*/
-#include "../Public/Sound.hpp"
+#include "../Include/Sound.hpp"
 #include <stdexcept>
 
 using namespace GameEngine;
