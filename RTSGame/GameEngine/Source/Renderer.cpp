@@ -12,6 +12,7 @@
 #include "../Include/DrawSurface3D.hpp"
 #include "../Include/Transformation.hpp"
 #include "../Include/SpriteAnimation.hpp"
+#include "../Include/Math.hpp"
 #include <bx/math.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>

@@ -99,6 +99,9 @@
     <ClCompile Include="Source\Viewport3D.cpp">
       <Filter>Draw\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DrawMath.cpp">
+      <Filter>Math\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Alarm.hpp">
@@ -196,6 +199,15 @@
     </ClInclude>
     <ClInclude Include="Include\Window.hpp">
       <Filter>OS\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Math.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\DrawMath.hpp">
+      <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Multiply.hpp">
+      <Filter>Draw\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

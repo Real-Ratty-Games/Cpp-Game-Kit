@@ -7,8 +7,6 @@
 #include "API.hpp"
 #include "EulerRotation.hpp"
 
-#define GAMEENGINE_MATH_PI 3.14159
-
 namespace GameEngine::Math
 {
 	template<typename T>
@@ -97,17 +95,30 @@ namespace GameEngine::Math
 			T(1)
 		);
 	}
-	
-	template<typename T>
-	inline T ToRadians(const T& vl)
-	{
-		return (T(GAMEENGINE_MATH_PI) / T(180)) * vl;
-	}
 
 	template<typename T>
-	inline T ToDegree(const T& vl)
+	Matrix4<T> LookAtLH(const Vector3<T>& eye, const Vector3<T>& target, const Vector3<T>& sup)
 	{
-		return (T(180) / T(GAMEENGINE_MATH_PI)) * vl;
+		// forward
+		Vector3<T> zaxis = target - eye;
+		zaxis = zaxis.Normalized();
+
+		// right
+		Vector3<T> xaxis = Vector3<T>::Cross(sup, zaxis);
+		xaxis = xaxis.Normalized();
+
+		// up
+		Vector3<T> yaxis = Vector3<T>::Cross(zaxis, xaxis);
+
+		return mat4(
+			xaxis.X, xaxis.Y, xaxis.Z, T(0),
+			yaxis.X, yaxis.Y, yaxis.Z, T(0),
+			zaxis.X, zaxis.Y, zaxis.Z, T(0),
+			-Vector3<T>::Dot(xaxis, eye),
+			-Vector3<T>::Dot(yaxis, eye),
+			-Vector3<T>::Dot(zaxis, eye),
+			T(1)
+		);
 	}
 }
 #endif
