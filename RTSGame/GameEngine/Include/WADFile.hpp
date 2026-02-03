@@ -19,7 +19,8 @@ namespace GameEngine
 	{
 		RAW		= 0,
 		TEXTURE = 1,
-		SOUND	= 2
+		SOUND	= 2,
+		MODEL	= 3
 	};
 
 	/// <summary>

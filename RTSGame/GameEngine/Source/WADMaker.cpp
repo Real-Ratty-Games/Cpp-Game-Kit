@@ -204,6 +204,17 @@ std::vector<uint8> WADMaker_GetFiletypesinDir(strgv filepath)
 		"aac", "AAC", "Aac"
 	};
 
+	std::vector<strg> model_ext = {
+		"fbx", "FBX", "Fbx",
+		"obj", "OBJ", "Obj",
+		"mtl", "MTL", "Mtl",
+		"3d", "3D",
+		"3ds", "3DS",
+		"dae", "DAE", "Dae",
+		"gltf", "GLTF", "Gltf",
+		"glb", "GLB", "Glb"
+	};
+
 	if (std::filesystem::exists(filepath))
 	{
 		std::vector<uint8> rtVl;
@@ -219,6 +230,7 @@ std::vector<uint8> WADMaker_GetFiletypesinDir(strgv filepath)
 				uint8 vl = 0;
 				if (std::find(image_ext.begin(), image_ext.end(), pb) != image_ext.end()) vl = 1;
 				else if (std::find(sound_ext.begin(), sound_ext.end(), pb) != sound_ext.end()) vl = 2;
+				else if (std::find(model_ext.begin(), model_ext.end(), pb) != model_ext.end()) vl = 3;
 				else vl = 0;
 
 				rtVl.push_back(vl);
