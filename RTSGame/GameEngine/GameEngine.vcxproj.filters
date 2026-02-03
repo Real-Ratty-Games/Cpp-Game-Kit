@@ -207,7 +207,7 @@
       <Filter>Math\Inc</Filter>
     </ClInclude>
     <ClInclude Include="Include\Multiply.hpp">
-      <Filter>Draw\Inc</Filter>
+      <Filter>Math\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
