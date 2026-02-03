@@ -4,6 +4,12 @@ Use it to develop your next game or as a learning resource for building somethin
 
 Written in C++20 using MSVC for Windows 10.  
 Should be easy to port to other platforms.
+
+## Building
+* Make sure *VS2022* is installed
+* Make sure *Python* is installed
+* Run ```build.py```
+* Run ```Game```
   
 ## Features
 * <b>Core</b>
