@@ -267,11 +267,11 @@ void Renderer::PrepareSpriteInstancing(Sprite* sprite, SpriteInstanceData& idata
 		);
 
 		mat4 mdl = mat4::Identity();
-		mdl = Math::Translate(mdl, vec3(transf.Location.X, transf.Location.Y, 0.0f));					// move to world pos
-		mdl = Math::Translate(mdl, rotPiv);																// mov pivot to origin
-		mdl = Math::Rotate(mdl, vec3(0.0f, 0.0f, 1.0f), Math::ToRadians(transf.Rotation));				// rotate
-		mdl = Math::Translate(mdl, -rotPiv);															// move pivot back
-		mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f));											// scale
+		mdl = Math::Translate(mdl, vec3(transf.Location.X, transf.Location.Y, 0.0f), false);					// move to world pos
+		mdl = Math::Translate(mdl, rotPiv, false);																// mov pivot to origin
+		mdl = Math::Rotate(mdl, vec3(0.0f, 0.0f, 1.0f), Math::ToRadians(transf.Rotation), false);				// rotate
+		mdl = Math::Translate(mdl, -rotPiv, false);																// move pivot back
+		mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f), false);											// scale
 
 
 		const float* _mtx = mdl.Ptr();
@@ -309,11 +309,11 @@ void Renderer::PrepareSpriteAtlasInstancing(Sprite* sprite, SpriteInstanceData& 
 		);
 
 		mat4 mdl = mat4::Identity();
-		mdl = Math::Translate(mdl, vec3(transf.Location.X, transf.Location.Y, 0.0f));				// move to world pos
-		mdl = Math::Translate(mdl, rotPiv);															// mov pivot to origin
-		mdl = Math::Rotate(mdl, vec3(0.0f, 0.0f, 1.0f), Math::ToRadians(transf.Rotation));			// rotate
-		mdl = Math::Translate(mdl, -rotPiv);														// move pivot back
-		mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f));										// scale
+		mdl = Math::Translate(mdl, vec3(transf.Location.X, transf.Location.Y, 0.0f), false);				// move to world pos
+		mdl = Math::Translate(mdl, rotPiv, false);															// mov pivot to origin
+		mdl = Math::Rotate(mdl, vec3(0.0f, 0.0f, 1.0f), Math::ToRadians(transf.Rotation), false);			// rotate
+		mdl = Math::Translate(mdl, -rotPiv, false);															// move pivot back
+		mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f), false);										// scale
 
 		// sneak in blue value in unused z value
 		vec4& csp = *((vec4*)(&mdl.Data[0]));
@@ -561,11 +561,11 @@ void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2
 	);
 
 	mat4 mdl = mat4::Identity();
-	mdl = Math::Translate(mdl, vec3(transformation.Location.X, transformation.Location.Y, 0.0f));		// move to world pos
-	mdl = Math::Translate(mdl, rotPiv);																	// mov pivot to origin
-	mdl = Math::Rotate(mdl, vec3(0.0f, 0.0f, 1.0f), Math::ToRadians(transformation.Rotation));			// rotate
-	mdl = Math::Translate(mdl, -rotPiv);																// move pivot back
-	mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f));												// scale
+	mdl = Math::Translate(mdl, vec3(transformation.Location.X, transformation.Location.Y, 0.0f), false);		// move to world pos
+	mdl = Math::Translate(mdl, rotPiv, false);																	// mov pivot to origin
+	mdl = Math::Rotate(mdl, vec3(0.0f, 0.0f, 1.0f), Math::ToRadians(transformation.Rotation), false);			// rotate
+	mdl = Math::Translate(mdl, -rotPiv, false);																	// move pivot back
+	mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f), false);												// scale
 
 	bgfx::setTransform(mdl.Ptr());
 	Renderer::SetState(BGFX_STATE_WRITE_RGB |

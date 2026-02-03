@@ -8,13 +8,14 @@ using namespace GameEngine;
 
 quat Math::QuatFromAxisAngle(const vec3& axis, float angle)
 {
-	float half = angle * 0.5f;
-	float s = std::sin(half);
+	const vec3 naxis = axis.Normalized();
+	const float half = angle * 0.5f;
+	const float s = std::sin(half);
 	return quat(
 		std::cos(half),
-		axis.X * s,
-		axis.Y * s,
-		axis.Z * s
+		naxis.X * s,
+		naxis.Y * s,
+		naxis.Z * s
 	);
 }
 
