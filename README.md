@@ -1,2 +1,2 @@
-# RTSGame
-RTS Video Game
+# C++ Game Kit
+Simple C++ framework for game development
