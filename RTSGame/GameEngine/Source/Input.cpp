@@ -13,8 +13,8 @@ using namespace GameEngine;
 static std::vector<KeyboardKey> _PressedKeyboardKeys;
 static std::vector<MouseButton> _PressedMouseButtons;
 
-static inline bool Input_CheckKeyboardKey(int key);
-static inline bool Input_CheckMouseButton(int button);
+static bool Input_CheckKeyboardKey(int key);
+static bool Input_CheckMouseButton(int button);
 
 /*======================================================
 	Keyboard

@@ -8,7 +8,7 @@
 
 using namespace GameEngine;
 
-static inline bool Gamepad_CheckButton(SDL_Gamepad* handle, GamepadButton button);
+static bool Gamepad_CheckButton(SDL_Gamepad* handle, GamepadButton button);
 
 void Gamepad::LoadConfig()
 {
@@ -17,6 +17,12 @@ void Gamepad::LoadConfig()
 		const strg errmsg = "Failed adding gamepad mapping: " + strg(SDL_GetError());
 		throw new std::runtime_error(errmsg);
 	}
+}
+
+Gamepad::~Gamepad()
+{
+	if(IsConnected())
+		Disconnect();
 }
 
 bool Gamepad::Connect(uint8 port)

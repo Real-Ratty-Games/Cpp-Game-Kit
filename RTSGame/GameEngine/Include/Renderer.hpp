@@ -22,29 +22,29 @@ namespace GameEngine
 
 	namespace Renderer
 	{
-		GAMEENGINEAPI inline bool Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa);
-		GAMEENGINEAPI inline void Release();
-		GAMEENGINEAPI inline void BeginDraw();
-		GAMEENGINEAPI inline void EndDraw();
+		GAMEENGINEAPI bool Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa);
+		GAMEENGINEAPI void Release();
+		GAMEENGINEAPI void BeginDraw();
+		GAMEENGINEAPI void EndDraw();
 
-		GAMEENGINEAPI inline void OnResize(vec2i size, bool vsync, MSAA msaa);
+		GAMEENGINEAPI void OnResize(vec2i size, bool vsync, MSAA msaa);
 
 		GAMEENGINEAPI const bgfx::Caps* GetGPUInfo();
 
 		/// 0x0f
-		GAMEENGINEAPI inline void Printf(vec2i location, uint8 attr, strgv text);
+		GAMEENGINEAPI void Printf(vec2i location, uint8 attr, strgv text);
 
-		GAMEENGINEAPI inline void SetScissor(vec2i location, vec2i size);
-		GAMEENGINEAPI inline void SetViewScissor(uint16 viewid, vec2i location, vec2i size);
+		GAMEENGINEAPI void SetScissor(vec2i location, vec2i size);
+		GAMEENGINEAPI void SetViewScissor(uint16 viewid, vec2i location, vec2i size);
 
-		GAMEENGINEAPI inline void SetState(uint64 state);
+		GAMEENGINEAPI void SetState(uint64 state);
 
-		GAMEENGINEAPI inline bgfx::VertexBufferHandle CreateVertexBuffer(const void* data, uint size, bgfx::VertexLayout& layout);
-		GAMEENGINEAPI inline bgfx::IndexBufferHandle CreateIndexBuffer(const void* data, uint size);
+		GAMEENGINEAPI bgfx::VertexBufferHandle CreateVertexBuffer(const void* data, uint size, bgfx::VertexLayout& layout);
+		GAMEENGINEAPI bgfx::IndexBufferHandle CreateIndexBuffer(const void* data, uint size);
 
 		GAMEENGINEAPI void LoadTextureFromFile(Texture& texture, strgv filename, uint64 flags, strgv texturename, bool flipUV);
 		GAMEENGINEAPI void LoadTextureFromMemory(Texture& texture, std::vector<uint8>& data, uint64 flags, strgv texturename);
-		GAMEENGINEAPI inline void FreeTexture(Texture& tex);
+		GAMEENGINEAPI void FreeTexture(Texture& tex);
 
 		GAMEENGINEAPI void SetActiveShader(Shader* shader);
 

@@ -43,13 +43,13 @@ static bgfx::VertexLayout		_Mesh3DVBLayout;
 static bgfx::VertexBufferHandle	_Quad2DVB;
 static float					_Quad2DView[16];
 
-static inline void	Renderer_Init3DLayout();
-static inline void	Renderer_Init2DQuad();
-static inline void	Renderer_Release2DQuad();
-static inline void	Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2D& transformation);
-static void			Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene);
-static void			Renderer_ModelProcessMesh(Mesh3D& modelMesh, aiMesh* mesh, const aiScene* scene);
-static inline void	Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata);
+static void	Renderer_Init3DLayout();
+static void	Renderer_Init2DQuad();
+static void	Renderer_Release2DQuad();
+static void	Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2D& transformation);
+static void	Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene);
+static void	Renderer_ModelProcessMesh(Mesh3D& modelMesh, aiMesh* mesh, const aiScene* scene);
+static void	Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata);
 
 bool Renderer::Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa)
 {

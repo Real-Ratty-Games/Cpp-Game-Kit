@@ -45,14 +45,17 @@ void Window::ShowSplashScreen()
 	SDL_RenderPresent(sSplashWndRenderer);
 }
 
-void Window::SetHardwareCursorImage(strgv img)
+SDL_Cursor* Window::LoadHardwareCursorImage(strgv img)
 {
 	SDL_Surface* cursorSurface = SDL_LoadBMP(img.data());
 	if (cursorSurface != nullptr)
-	{
-		SDL_Cursor* cursor = SDL_CreateColorCursor(cursorSurface, 0, 0);
-		if (cursor != nullptr) SDL_SetCursor(cursor);
-	}
+		return SDL_CreateColorCursor(cursorSurface, 0, 0);
+	return nullptr;
+}
+
+void Window::SetHardwareCursorImage(SDL_Cursor* cursor)
+{
+	SDL_SetCursor(cursor);
 }
 
 void Window::DestroySplashScreen()

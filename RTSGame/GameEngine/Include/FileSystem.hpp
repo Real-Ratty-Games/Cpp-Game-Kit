@@ -18,8 +18,8 @@ namespace GameEngine::FileSystem
 	/// </summary>
 	/// <param name="filepath"></param>
 	/// <returns></returns>
-	GAMEENGINEAPI inline bool				Exists(strgv filepath);
-	GAMEENGINEAPI inline void				FileRemove(strgv filepath);
+	GAMEENGINEAPI bool				Exists(strgv filepath);
+	GAMEENGINEAPI void				FileRemove(strgv filepath);
 
 	/// <summary>
 	/// 0 = full
@@ -29,12 +29,12 @@ namespace GameEngine::FileSystem
 	/// <param name="dir"></param>
 	/// <param name="nt"></param>
 	/// <returns></returns>
-	GAMEENGINEAPI inline std::vector<strg>	FilesInDirectory(strgv dir, int nt);
-	GAMEENGINEAPI inline std::vector<strg>	SubDirectories(strgv dir);
-	GAMEENGINEAPI inline void				DirectoryCreate(strgv dir);
-	GAMEENGINEAPI inline void				DirectoryRemove(strgv dir);
-	GAMEENGINEAPI inline std::vector<char>	ReadBinaryFile(strgv filepath);
-	GAMEENGINEAPI inline void				WriteBinaryFile(strgv filepath, std::vector<char>& data);
-	GAMEENGINEAPI inline void				WriteTextFile(strgv filepath, strgv text);
+	GAMEENGINEAPI  std::vector<strg>	FilesInDirectory(strgv dir, int nt);
+	GAMEENGINEAPI  std::vector<strg>	SubDirectories(strgv dir);
+	GAMEENGINEAPI  void					DirectoryCreate(strgv dir);
+	GAMEENGINEAPI  void					DirectoryRemove(strgv dir);
+	GAMEENGINEAPI  std::vector<char>	ReadBinaryFile(strgv filepath);
+	GAMEENGINEAPI  void					WriteBinaryFile(strgv filepath, std::vector<char>& data);
+	GAMEENGINEAPI  void					WriteTextFile(strgv filepath, strgv text);
 }
 #endif

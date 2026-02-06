@@ -9,7 +9,8 @@
 
 using namespace MyGame;
 
-static SpriteInstanceData _SimpleTextData;
+static SpriteInstanceData	_SimpleTextData;
+static SDL_Cursor*			_SdlCursor;
 
 void GameProgram::OnResize(vec2i& size)
 {
@@ -22,7 +23,8 @@ bool GameProgram::Initialize()
 	Window::Initialize();
 	Window::ShowSplashScreen();
 
-	Window::SetHardwareCursorImage("Data/Cursor.bmp");
+	_SdlCursor = Window::LoadHardwareCursorImage("Data/Cursor.bmp");
+	Window::SetHardwareCursorImage(_SdlCursor);
 
 	mWindow = new GameWindow(this);
 	mWindow->Create("My Game", 1280, 720, false);
@@ -116,9 +118,11 @@ void GameProgram::Cleanup()
 	FreeShaders();
 	Renderer::Release();
 
+	Window::SetHardwareCursorImage(nullptr);
+	SDL_DestroyCursor(_SdlCursor);
+
 	if (mWindow != nullptr)
 	{
-		mWindow->Release();
 		delete mWindow;
 		mWindow = nullptr;
 	}

@@ -23,6 +23,9 @@ namespace GameEngine
         /// Load gamepad mapping for a bunch of different controller types
         /// </summary>
         static void LoadConfig();
+
+        ~Gamepad();
+
         bool        Connect(uint8 port);
         void        Disconnect();
         bool        IsConnected();

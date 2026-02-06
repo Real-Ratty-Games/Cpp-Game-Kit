@@ -16,8 +16,8 @@ namespace GameEngine
 	class GAMEENGINEAPI Window
 	{
 	public:
-		inline static void Initialize();
-		inline static void Release();
+		static void Initialize();
+		static void Release();
 		static void ShowSplashScreen();
 		static void DestroySplashScreen();
 
@@ -25,7 +25,8 @@ namespace GameEngine
 		/// Set hardware cursor image
 		/// </summary>
 		/// <param name="img">format must be bmp</param>
-		static void SetHardwareCursorImage(strgv img);
+		static SDL_Cursor*	LoadHardwareCursorImage(strgv img);
+		static void			SetHardwareCursorImage(SDL_Cursor* cursor);
 
 		void Create(strgv title, uint width, uint height, bool fs);
 		void Show(bool vl = true);

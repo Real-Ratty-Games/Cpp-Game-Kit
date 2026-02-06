@@ -30,11 +30,11 @@ namespace MyGame
 		void Cleanup();
 
 	private:
-		inline void LoadShaders();
-		inline void FreeShaders();
+		void LoadShaders();
+		void FreeShaders();
 
-		inline void LoadData();
-		inline void FreeData();
+		void LoadData();
+		void FreeData();
 
 	private:
 		GameWindow*		mWindow;
