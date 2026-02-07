@@ -6,9 +6,9 @@ Written in C++20 using MSVC for Windows 10.
 Should be easy to port to other platforms.
 
 ## Building
-* Make sure *VS2022* is installed
-* Make sure *Python* is installed
+* Requires VS2022 and Python to be installed
 * Run ```build.py```
+* Set working directory to ```GameDir```
 * Run ```Game```
   
 ## Features

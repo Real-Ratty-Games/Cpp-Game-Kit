@@ -4,6 +4,7 @@
 ======================================================*/
 #include "../Include/Shader.hpp"
 #include "../Include/FileSystem.hpp"
+#include "../Include/BigError.hpp"
 #include <vector>
 #include <filesystem>
 #include <bx/bx.h>
@@ -71,14 +72,14 @@ void Shader::Initialize(strgv shadername)
 	if (!vFileReader.open(vpath.c_str(), &err))
 	{
 		const strg errmsg = "Failed loading vertex shader of: " + strg(shadername);
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	bx::FileReader fFileReader;
 	if (!fFileReader.open(fpath.c_str(), &err))
 	{
 		const strg errmsg = "Failed loading fragment shader of: " + strg(shadername);
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	if (err.isOk())
@@ -110,14 +111,13 @@ void Shader::Release()
 
 void Shader::Submit(uint16 viewID, uint8 flags, const bool depth)
 {
-	bgfx::submit(viewID, mHandle, depth);
-	bgfx::discard(flags
+	bgfx::submit(viewID, mHandle, depth, 
+		flags
 		| BGFX_DISCARD_INDEX_BUFFER
 		| BGFX_DISCARD_VERTEX_STREAMS
-		| BGFX_DISCARD_BINDINGS
+		// | BGFX_DISCARD_BINDINGS
 		| BGFX_DISCARD_STATE
-		| BGFX_DISCARD_TRANSFORM
-	);
+		| BGFX_DISCARD_TRANSFORM);
 }
 
 void Shader::InitUniform(strgv name, bgfx::UniformType::Enum type, uint16 nmb)
@@ -173,7 +173,7 @@ strg Shader_CompileShader(strgv args)
 	if (!pipe)
 	{
 		const strg errmsg = "Failed opening 'Shaderc.exe': " + command.str();
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	std::ostringstream output;
@@ -184,7 +184,7 @@ strg Shader_CompileShader(strgv args)
 	if (_pclose(pipe) == -1)
 	{
 		const strg errmsg = "Failed closing 'Shaderc.exe': " + command.str();
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	return output.str();

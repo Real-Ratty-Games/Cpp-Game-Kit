@@ -3,7 +3,8 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "../Include/Window.hpp"
-#include <stdexcept>
+#include "../Include/FileSystem.hpp"
+#include "../Include/BigError.hpp"
 
 using namespace GameEngine;
 
@@ -15,7 +16,7 @@ void Window::Initialize()
 	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
 	{
 		const strg errmsg = "Failed initializing SDL3: " + strg(SDL_GetError());
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 }
 
@@ -24,9 +25,15 @@ void Window::Release()
 	SDL_Quit();
 }
 
-void Window::ShowSplashScreen()
+void Window::ShowSplashScreen(strgv filename)
 {
-	SDL_Surface* surface = SDL_LoadBMP("Data/Splash.bmp");
+	if (!FileSystem::Exists(filename))
+	{
+		const strg errmsg = "File does not exist: " + strg(filename);
+		throw BigError(errmsg);
+	}
+
+	SDL_Surface* surface = SDL_LoadBMP(filename.data());
 
 	sSplashWndHandle = SDL_CreateWindow("Splash", surface->w, surface->h, SDL_WINDOW_BORDERLESS | SDL_WINDOW_ALWAYS_ON_TOP);
 	sSplashWndRenderer = SDL_CreateRenderer(sSplashWndHandle, NULL);
@@ -70,7 +77,7 @@ void Window::Create(strgv title, uint width, uint height, bool fs)
 	if ((mWndHandle = SDL_CreateWindow(title.data(), (int)width, (int)height, (fs ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_HIDDEN)) == nullptr)
 	{
 		const strg errmsg = "Failed creating window: " + strg(SDL_GetError());
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 }
 

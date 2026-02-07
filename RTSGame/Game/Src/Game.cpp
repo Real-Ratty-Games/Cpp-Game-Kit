@@ -35,7 +35,7 @@ bool GameProgram::Initialize()
 
 	// setup shaders
 	Shader::SetShaderDirectory("Data/Shaders");
-	const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
+	// const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
 	LoadShaders();
 
 	// create back buffer surface
@@ -100,7 +100,6 @@ void GameProgram::Draw()
 		transf.Rotation = 0;
 		transf.Scale = vec2(1);
 		Renderer::DrawSpriteAnimation(mTestSprite, transf, &mTestAnimator);
-
 	}
 	Renderer::EndDraw();
 }

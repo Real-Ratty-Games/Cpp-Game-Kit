@@ -102,6 +102,9 @@
     <ClCompile Include="Source\DrawMath.cpp">
       <Filter>Math\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\BigError.cpp">
+      <Filter>Core\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Alarm.hpp">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="Include\Multiply.hpp">
       <Filter>Math\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\BigError.hpp">
+      <Filter>Core\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

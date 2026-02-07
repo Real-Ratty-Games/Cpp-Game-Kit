@@ -8,7 +8,6 @@
 #include "SystemTypes.hpp"
 #include <vector>
 #include <unordered_map>
-#include <stdexcept>
 
 namespace GameEngine
 {
