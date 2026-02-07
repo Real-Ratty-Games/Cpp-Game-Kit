@@ -4,7 +4,7 @@
 ======================================================*/
 #include "../Include/Window.hpp"
 #include "../Include/FileSystem.hpp"
-#include <stdexcept>
+#include "../Include/BigError.hpp"
 
 using namespace GameEngine;
 
@@ -16,7 +16,7 @@ void Window::Initialize()
 	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
 	{
 		const strg errmsg = "Failed initializing SDL3: " + strg(SDL_GetError());
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 }
 
@@ -28,7 +28,10 @@ void Window::Release()
 void Window::ShowSplashScreen(strgv filename)
 {
 	if (!FileSystem::Exists(filename))
-		throw std::runtime_error("File does not exist!");
+	{
+		const strg errmsg = "File does not exist: " + strg(filename);
+		throw BigError(errmsg);
+	}
 
 	SDL_Surface* surface = SDL_LoadBMP(filename.data());
 
@@ -74,7 +77,7 @@ void Window::Create(strgv title, uint width, uint height, bool fs)
 	if ((mWndHandle = SDL_CreateWindow(title.data(), (int)width, (int)height, (fs ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_HIDDEN)) == nullptr)
 	{
 		const strg errmsg = "Failed creating window: " + strg(SDL_GetError());
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 }
 

@@ -3,8 +3,8 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "../Include/Gamepad.hpp"
+#include "../Include/BigError.hpp"
 #include <SDL3/SDL_gamepad.h>
-#include <stdexcept>
 
 using namespace GameEngine;
 
@@ -15,7 +15,7 @@ void Gamepad::LoadConfig()
 	if (SDL_AddGamepadMappingsFromFile("Data/Gamepads.ini") == -1)
 	{
 		const strg errmsg = "Failed adding gamepad mapping: " + strg(SDL_GetError());
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 }
 

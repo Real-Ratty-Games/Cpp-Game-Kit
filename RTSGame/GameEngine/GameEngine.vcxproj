@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Alarm.cpp" />
+    <ClCompile Include="Source\BigError.cpp" />
     <ClCompile Include="Source\DrawMath.cpp" />
     <ClCompile Include="Source\DrawSurface3D.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
@@ -109,6 +110,7 @@
   <ItemGroup>
     <ClInclude Include="Include\Alarm.hpp" />
     <ClInclude Include="Include\API.hpp" />
+    <ClInclude Include="Include\BigError.hpp" />
     <ClInclude Include="Include\Clock.hpp" />
     <ClInclude Include="Include\Collider.hpp" />
     <ClInclude Include="Include\Collision.hpp" />

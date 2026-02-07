@@ -3,14 +3,14 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "../Include/Sprite.hpp"
-#include <stdexcept>
+#include "../Include/BigError.hpp"
 
 using namespace GameEngine;
 
 Sprite::Sprite(Texture* texture)
 {
 	if (texture == nullptr)
-		throw new std::runtime_error("Sprite creation failed: Texture cannot be nullptr!");
+		throw BigError("Sprite creation failed: Texture cannot be nullptr!");
 	pTexture	= texture;
 	Size		= pTexture->Size;
 }
@@ -18,7 +18,7 @@ Sprite::Sprite(Texture* texture)
 void Sprite::SetTexture(Texture* texture)
 {
 	if (texture == nullptr)
-		throw new std::runtime_error("Texture cannot be nullptr!");
+		throw BigError("Texture cannot be nullptr!");
 	pTexture = texture;
 }
 

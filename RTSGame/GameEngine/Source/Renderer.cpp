@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "../Include/Renderer.hpp"
+#include "../Include/BigError.hpp"
 #include "../Include/Window.hpp"
 #include "../Include/FileSystem.hpp"
 #include "../Include/Shader.hpp"
@@ -18,7 +19,6 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <unordered_set>
-#include <stdexcept>
 #include <fstream>
 #include <sstream>
 
@@ -64,7 +64,7 @@ bool Renderer::Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa)
 
 	if (!bgfx::init(init))
 	{
-		throw new std::runtime_error("Failed intializing bgfx!");
+		throw BigError("Failed intializing bgfx!");
 		return false;
 	}
 
@@ -152,7 +152,7 @@ void Renderer::LoadTextureFromFile(Texture& texture, strgv filename, uint64 flag
 	if (!data)
 	{
 		const strg errmsg = "Failed loading texture from file: " + strg(filename);
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	unsigned char* out = data;
@@ -176,7 +176,7 @@ void Renderer::LoadTextureFromFile(Texture& texture, strgv filename, uint64 flag
 	else
 	{
 		const strg errmsg = "Failed loading texture from file: " + strg(filename);
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	texture.Size = vec2i(width, height);
@@ -193,14 +193,22 @@ void Renderer::LoadTextureFromMemory(Texture& texture, std::vector<uint8>& data,
 
 		if (bgfx::isValid(texture.Handle))
 			bgfx::setName(texture.Handle, texturename.data());
-		else throw new std::runtime_error("Failed loading texture from memory!");
+		else
+		{
+			const strg errmsg = "Failed loading texture from memory: " + strg(texturename);
+			throw BigError(errmsg);
+		}
 
 		auto header = data.data();
 		int height = *reinterpret_cast<const char*>(header + 12);
 		int width = *reinterpret_cast<const char*>(header + 16);
 		texture.Size = vec2i(width, height);
 	}
-	else throw new std::runtime_error("Failed loading texture from memory; Data was empty!");
+	else
+	{
+		const strg errmsg = "Failed loading texture from memory; Data was empty: " + strg(texturename);
+		throw BigError(errmsg);
+	}
 }
 
 void Renderer::FreeTexture(Texture& tex)
@@ -445,7 +453,10 @@ void Renderer::DrawSpriteAnimation(Sprite* sprite, Transform2D& transformation, 
 void Renderer::LoadModelFromFile(Model3D& model, strgv filename)
 {
 	if (!FileSystem::Exists(filename))
-		throw new std::runtime_error("Model file could not be found!");
+	{
+		const strg errmsg = "Model file could not be found: " + strg(filename);
+		throw BigError(errmsg);
+	}
 
 	Assimp::Importer importer;
 	uint flags = aiProcess_FlipUVs
@@ -458,7 +469,12 @@ void Renderer::LoadModelFromFile(Model3D& model, strgv filename)
 	const aiScene* scene = importer.ReadFile(filename.data(), flags);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-		throw new std::runtime_error("Failed loading model!");
+	{
+		{
+			const strg errmsg = "Failed loading model: " + strg(filename);
+			throw BigError(errmsg);
+		}
+	}
 
 	Renderer_ModelProcessNode(model, scene->mRootNode, scene);
 }
@@ -476,7 +492,7 @@ void Renderer::LoadModelFromMemory(Model3D& model, std::vector<uint8>& data)
 	const aiScene* scene = importer.ReadFileFromMemory(data.data(), data.size(), flags);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-		throw new std::runtime_error("Failed loading model!");
+		throw BigError("Failed loading model!");
 
 	Renderer_ModelProcessNode(model, scene->mRootNode, scene);
 }
@@ -647,9 +663,9 @@ void Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata)
 {
 	modelMesh.VBH = Renderer::CreateVertexBuffer(mdata.Vertices.data(), mdata.Vertices.size() * sizeof(MeshVertex), _Mesh3DVBLayout);
 	if (!bgfx::isValid(modelMesh.VBH))
-		throw new std::runtime_error("Vertex Buffer is invalid!");
+		throw BigError("Vertex Buffer is invalid!");
 
 	modelMesh.IBH = Renderer::CreateIndexBuffer(mdata.Indices.data(), mdata.Indices.size() * sizeof(uint16));
 	if (!bgfx::isValid(modelMesh.IBH))
-		throw new std::runtime_error("Index Buffer is invalid!");
+		throw BigError("Index Buffer is invalid!");
 }

@@ -4,6 +4,7 @@
 ======================================================*/
 #include "../Include/Shader.hpp"
 #include "../Include/FileSystem.hpp"
+#include "../Include/BigError.hpp"
 #include <vector>
 #include <filesystem>
 #include <bx/bx.h>
@@ -71,14 +72,14 @@ void Shader::Initialize(strgv shadername)
 	if (!vFileReader.open(vpath.c_str(), &err))
 	{
 		const strg errmsg = "Failed loading vertex shader of: " + strg(shadername);
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	bx::FileReader fFileReader;
 	if (!fFileReader.open(fpath.c_str(), &err))
 	{
 		const strg errmsg = "Failed loading fragment shader of: " + strg(shadername);
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	if (err.isOk())
@@ -172,7 +173,7 @@ strg Shader_CompileShader(strgv args)
 	if (!pipe)
 	{
 		const strg errmsg = "Failed opening 'Shaderc.exe': " + command.str();
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	std::ostringstream output;
@@ -183,7 +184,7 @@ strg Shader_CompileShader(strgv args)
 	if (_pclose(pipe) == -1)
 	{
 		const strg errmsg = "Failed closing 'Shaderc.exe': " + command.str();
-		throw new std::runtime_error(errmsg);
+		throw BigError(errmsg);
 	}
 
 	return output.str();

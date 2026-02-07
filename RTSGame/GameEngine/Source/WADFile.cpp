@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "../Include/WADFile.hpp"
+#include "../Include/BigError.hpp"
 #include <fstream>
 #include <sstream>
 
@@ -47,7 +48,7 @@ void WADFile::Open(strgv filepath)
 		sstream.seekg(static_cast<std::streampos>(fileOffset), std::ios::beg);
 		std::vector<uint8> databuffer(fileSize);
 		if (!sstream.read(reinterpret_cast<char*>(databuffer.data()), fileSize))
-			throw new std::runtime_error("Failed reading data here!");
+			throw BigError("Failed reading data here!");
 		sstream.clear();
 
 		WADData data((EWADFileDataType)fileType, databuffer);
