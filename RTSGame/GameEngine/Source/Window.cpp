@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "../Include/Window.hpp"
+#include "../Include/FileSystem.hpp"
 #include <stdexcept>
 
 using namespace GameEngine;
@@ -24,9 +25,12 @@ void Window::Release()
 	SDL_Quit();
 }
 
-void Window::ShowSplashScreen()
+void Window::ShowSplashScreen(strgv filename)
 {
-	SDL_Surface* surface = SDL_LoadBMP("Data/Splash.bmp");
+	if (!FileSystem::Exists(filename))
+		throw std::runtime_error("File does not exist!");
+
+	SDL_Surface* surface = SDL_LoadBMP(filename.data());
 
 	sSplashWndHandle = SDL_CreateWindow("Splash", surface->w, surface->h, SDL_WINDOW_BORDERLESS | SDL_WINDOW_ALWAYS_ON_TOP);
 	sSplashWndRenderer = SDL_CreateRenderer(sSplashWndHandle, NULL);

@@ -342,7 +342,7 @@ void Renderer::DrawSpriteInstanced(SpriteInstanceData& idata)
 	bgfx::setVertexBuffer(0, _Quad2DVB);
 	bgfx::setInstanceDataBuffer(&idata.Buffer);
 	_ActiveShader->SetTexture(0, "s_texColor", *idata.pSprite->GetTexture());
-	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), true);
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), 0, true);
 }
 
 void Renderer::DrawSpriteAtlasInstanced(SpriteInstanceData& idata, Sprite* sprite, vec2 subSize)
@@ -577,8 +577,9 @@ void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2
 	_ActiveShader->SetUniform("color", ucolor.Ptr());
 
 	bgfx::setVertexBuffer(0, _Quad2DVB);
+
 	_ActiveShader->SetTexture(0, "s_texColor", *texture);
-	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), true);
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), 0, true);
 }
 
 void Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene)

@@ -110,14 +110,13 @@ void Shader::Release()
 
 void Shader::Submit(uint16 viewID, uint8 flags, const bool depth)
 {
-	bgfx::submit(viewID, mHandle, depth);
-	bgfx::discard(flags
+	bgfx::submit(viewID, mHandle, depth, 
+		flags
 		| BGFX_DISCARD_INDEX_BUFFER
 		| BGFX_DISCARD_VERTEX_STREAMS
-		| BGFX_DISCARD_BINDINGS
+		// | BGFX_DISCARD_BINDINGS
 		| BGFX_DISCARD_STATE
-		| BGFX_DISCARD_TRANSFORM
-	);
+		| BGFX_DISCARD_TRANSFORM);
 }
 
 void Shader::InitUniform(strgv name, bgfx::UniformType::Enum type, uint16 nmb)

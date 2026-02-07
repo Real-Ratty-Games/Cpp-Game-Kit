@@ -18,7 +18,7 @@ namespace GameEngine
 	public:
 		static void Initialize();
 		static void Release();
-		static void ShowSplashScreen();
+		static void ShowSplashScreen(strgv filename = "Data/Splash.bmp");
 		static void DestroySplashScreen();
 
 		/// <summary>
