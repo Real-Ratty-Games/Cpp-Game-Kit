@@ -8,8 +8,9 @@
 
 using namespace GameEngine;
 
-SDL_Window* Window::sSplashWndHandle		= nullptr;
-SDL_Renderer* Window::sSplashWndRenderer	= nullptr;
+SDL_Window*		Window::sSplashWndHandle	= nullptr;
+SDL_Renderer*	Window::sSplashWndRenderer	= nullptr;
+bool			Window::sbSplashWndVisible	= false;
 
 void Window::Initialize()
 {
@@ -50,6 +51,8 @@ void Window::ShowSplashScreen(strgv filename)
 		SDL_RenderTexture(sSplashWndRenderer, splashTexture, NULL, NULL);
 	}
 	SDL_RenderPresent(sSplashWndRenderer);
+
+	sbSplashWndVisible = true;
 }
 
 SDL_Cursor* Window::LoadHardwareCursorImage(strgv img)
@@ -69,6 +72,12 @@ void Window::DestroySplashScreen()
 {
 	SDL_DestroyRenderer(sSplashWndRenderer);
 	SDL_DestroyWindow(sSplashWndHandle);
+	sbSplashWndVisible = false;
+}
+
+bool Window::IsSplashScreenVisible()
+{
+	return sbSplashWndVisible;
 }
 
 void Window::Create(strgv title, uint width, uint height, bool fs)
