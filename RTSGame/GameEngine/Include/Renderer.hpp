@@ -51,6 +51,8 @@ namespace GameEngine
 		// Begin Sprite Rendering
 
 		GAMEENGINEAPI void BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport);
+		GAMEENGINEAPI void EndDrawSprite();
+
 		GAMEENGINEAPI void DrawSprite(Sprite* sprite, Transform2D& transformation);
 		GAMEENGINEAPI void DrawSpriteAtlas(Sprite* sprite, TransformAtlas2D& transformation, vec2 subSize);
 

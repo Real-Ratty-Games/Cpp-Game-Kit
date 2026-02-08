@@ -89,17 +89,19 @@ void GameProgram::Draw()
 	{
 		Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
 
-		Renderer::SetActiveShader(&mSprite2DAtlasIShader);
+			Renderer::SetActiveShader(&mSprite2DAtlasIShader);
 
-		Renderer::DrawSpriteFontText(mSpriteFont, _SimpleTextData);
+			Renderer::DrawSpriteFontText(mSpriteFont, _SimpleTextData);
 
-		Renderer::SetActiveShader(&mSprite2DAtlasShader);
+			Renderer::SetActiveShader(&mSprite2DAtlasShader);
 		
-		Transform2D transf;
-		transf.Location = vec2(500, 300);
-		transf.Rotation = 0;
-		transf.Scale = vec2(1);
-		Renderer::DrawSpriteAnimation(mTestSprite, transf, &mTestAnimator);
+			Transform2D transf;
+			transf.Location = vec2(500, 300);
+			transf.Rotation = 0;
+			transf.Scale = vec2(1);
+			Renderer::DrawSpriteAnimation(mTestSprite, transf, &mTestAnimator);
+
+		Renderer::EndDrawSprite();
 	}
 	Renderer::EndDraw();
 }

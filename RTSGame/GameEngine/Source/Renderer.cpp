@@ -42,6 +42,7 @@ static bgfx::VertexLayout		_Mesh3DVBLayout;
 /// For primitive 2D quad rendering
 static bgfx::VertexBufferHandle	_Quad2DVB;
 static float					_Quad2DView[16];
+static Texture*					_Quad2DLastTex = nullptr; // don't update sample if it's the same!
 
 static void	Renderer_Init3DLayout();
 static void	Renderer_Init2DQuad();
@@ -69,7 +70,7 @@ bool Renderer::Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa)
 	}
 
 #if _DEBUG
-	bgfx::setDebug(BGFX_DEBUG_TEXT); // BGFX_DEBUG_WIREFRAME
+	bgfx::setDebug(BGFX_DEBUG_TEXT);
 #endif
 
 	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH);
@@ -236,6 +237,11 @@ void Renderer::BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport)
 	bgfx::setViewTransform(_ActiveDrawSurface->ViewID(), _Quad2DView, proj);
 }
 
+void Renderer::EndDrawSprite()
+{
+	_Quad2DLastTex = nullptr;
+}
+
 void Renderer::DrawSprite(Sprite* sprite, Transform2D& transformation)
 {
 	Renderer_DrawTexture(sprite->GetTexture(), sprite->RotationPivot, sprite->Size, transformation);
@@ -349,8 +355,15 @@ void Renderer::DrawSpriteInstanced(SpriteInstanceData& idata)
 		BGFX_STATE_DEPTH_TEST_LESS);
 	bgfx::setVertexBuffer(0, _Quad2DVB);
 	bgfx::setInstanceDataBuffer(&idata.Buffer);
-	_ActiveShader->SetTexture(0, "s_texColor", *idata.pSprite->GetTexture());
-	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), 0, true);
+
+	Texture* usetex = idata.pSprite->GetTexture();
+	if (_Quad2DLastTex != usetex)
+	{
+		_Quad2DLastTex = usetex;
+		_ActiveShader->SetTexture(0, "s_texColor", *usetex);
+	}
+
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID());
 }
 
 void Renderer::DrawSpriteAtlasInstanced(SpriteInstanceData& idata, Sprite* sprite, vec2 subSize)
@@ -594,8 +607,13 @@ void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2
 
 	bgfx::setVertexBuffer(0, _Quad2DVB);
 
-	_ActiveShader->SetTexture(0, "s_texColor", *texture);
-	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), 0, true);
+	if (_Quad2DLastTex != texture)
+	{
+		_Quad2DLastTex = texture;
+		_ActiveShader->SetTexture(0, "s_texColor", *texture);
+	}
+
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID());
 }
 
 void Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene)

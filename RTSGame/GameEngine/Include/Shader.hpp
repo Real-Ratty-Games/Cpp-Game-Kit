@@ -23,7 +23,13 @@ namespace GameEngine
 		void Initialize(strgv shadername);
 		void Release();
 
-		void Submit(uint16 viewID, uint8 flags = 0, const bool depth = false);
+		void Submit(uint16 viewID, uint8 flags = 
+			BGFX_DISCARD_INDEX_BUFFER
+			| BGFX_DISCARD_VERTEX_STREAMS
+			// | BGFX_DISCARD_BINDINGS
+			| BGFX_DISCARD_STATE
+			| BGFX_DISCARD_TRANSFORM
+			, const bool depth = true);
 
 		void InitUniform(strgv name, bgfx::UniformType::Enum type, uint16 nmb = 1);
 		void SetUniform(strgv name, const void* vl, uint16 nmb = 1);
