@@ -11,6 +11,7 @@ using namespace GameEngine;
 SDL_Window*		Window::sSplashWndHandle	= nullptr;
 SDL_Renderer*	Window::sSplashWndRenderer	= nullptr;
 bool			Window::sbSplashWndVisible	= false;
+bool			Window::sbSDLInit			= false;
 
 void Window::Initialize()
 {
@@ -19,10 +20,12 @@ void Window::Initialize()
 		const strg errmsg = "Failed initializing SDL3: " + strg(SDL_GetError());
 		throw BigError(errmsg);
 	}
+	sbSDLInit = true;
 }
 
 void Window::Release()
 {
+	sbSDLInit = false;
 	SDL_Quit();
 }
 
@@ -78,6 +81,11 @@ void Window::DestroySplashScreen()
 bool Window::IsSplashScreenVisible()
 {
 	return sbSplashWndVisible;
+}
+
+bool Window::IsSDLInit()
+{
+	return sbSDLInit;
 }
 
 void Window::Create(strgv title, uint width, uint height, bool fs)

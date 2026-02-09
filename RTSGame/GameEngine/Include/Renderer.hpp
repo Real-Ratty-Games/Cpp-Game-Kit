@@ -37,8 +37,6 @@ namespace GameEngine
 		GAMEENGINEAPI void SetScissor(vec2i location, vec2i size);
 		GAMEENGINEAPI void SetViewScissor(uint16 viewid, vec2i location, vec2i size);
 
-		GAMEENGINEAPI void SetState(uint64 state);
-
 		GAMEENGINEAPI bgfx::VertexBufferHandle CreateVertexBuffer(const void* data, uint size, bgfx::VertexLayout& layout);
 		GAMEENGINEAPI bgfx::IndexBufferHandle CreateIndexBuffer(const void* data, uint size);
 

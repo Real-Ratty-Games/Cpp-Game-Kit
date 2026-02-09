@@ -25,6 +25,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#define GAMEENGINE_RENDERER_SPRITE_FLAGS (BGFX_DISCARD_INDEX_BUFFER | BGFX_DISCARD_STATE | BGFX_DISCARD_TRANSFORM)
+#define GAMEENGINE_RENDERER_SPRITE_STATE (BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A | BGFX_STATE_BLEND_ALPHA | BGFX_STATE_DEPTH_TEST_LESS)
+
 using namespace GameEngine;
 
 static struct RawMeshData
@@ -129,11 +132,6 @@ void Renderer::SetViewScissor(uint16 viewid, vec2i location, vec2i size)
 	bgfx::setViewScissor(viewid, location.X, location.Y, size.X, size.Y);
 }
 
-void Renderer::SetState(uint64 state)
-{
-	bgfx::setState(state);
-}
-
 bgfx::VertexBufferHandle Renderer::CreateVertexBuffer(const void* data, uint size, bgfx::VertexLayout& layout)
 {
 	return bgfx::createVertexBuffer(bgfx::copy(data, size), layout);
@@ -235,6 +233,8 @@ void Renderer::BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport)
 	bx::mtxOrtho(proj, viewport.Location.X, viewport.Size.X + viewport.Location.Y,
 		viewport.Size.Y + viewport.Location.Y, viewport.Location.Y, 0.1f, 100.0f, 0.0f, false);
 	bgfx::setViewTransform(_ActiveDrawSurface->ViewID(), _Quad2DView, proj);
+
+	bgfx::setVertexBuffer(0, _Quad2DVB);
 }
 
 void Renderer::EndDrawSprite()
@@ -349,11 +349,7 @@ void Renderer::PrepareSpriteAtlasInstancing(Sprite* sprite, SpriteInstanceData& 
 
 void Renderer::DrawSpriteInstanced(SpriteInstanceData& idata)
 {
-	SetState(BGFX_STATE_WRITE_RGB |
-		BGFX_STATE_WRITE_A |
-		BGFX_STATE_BLEND_ALPHA |
-		BGFX_STATE_DEPTH_TEST_LESS);
-	bgfx::setVertexBuffer(0, _Quad2DVB);
+	bgfx::setState(GAMEENGINE_RENDERER_SPRITE_STATE);
 	bgfx::setInstanceDataBuffer(&idata.Buffer);
 
 	Texture* usetex = idata.pSprite->GetTexture();
@@ -363,7 +359,7 @@ void Renderer::DrawSpriteInstanced(SpriteInstanceData& idata)
 		_ActiveShader->SetTexture(0, "s_texColor", *usetex);
 	}
 
-	_ActiveShader->Submit(_ActiveDrawSurface->ViewID());
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), GAMEENGINE_RENDERER_SPRITE_FLAGS, true);
 }
 
 void Renderer::DrawSpriteAtlasInstanced(SpriteInstanceData& idata, Sprite* sprite, vec2 subSize)
@@ -597,15 +593,11 @@ void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2
 	mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f), false);												// scale
 
 	bgfx::setTransform(mdl.Ptr());
-	Renderer::SetState(BGFX_STATE_WRITE_RGB |
-		BGFX_STATE_WRITE_A |
-		BGFX_STATE_BLEND_ALPHA |
-		BGFX_STATE_DEPTH_TEST_LESS);
+	bgfx::setState(GAMEENGINE_RENDERER_SPRITE_STATE);
 
 	vec4 ucolor = vec4(transformation.ImageColor.R, transformation.ImageColor.G, transformation.ImageColor.B, transformation.ImageColor.A);
 	_ActiveShader->SetUniform("color", ucolor.Ptr());
 
-	bgfx::setVertexBuffer(0, _Quad2DVB);
 
 	if (_Quad2DLastTex != texture)
 	{
@@ -613,7 +605,7 @@ void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2
 		_ActiveShader->SetTexture(0, "s_texColor", *texture);
 	}
 
-	_ActiveShader->Submit(_ActiveDrawSurface->ViewID());
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), GAMEENGINE_RENDERER_SPRITE_FLAGS, true);
 }
 
 void Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene)

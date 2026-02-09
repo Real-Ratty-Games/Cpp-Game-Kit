@@ -10,8 +10,11 @@ using namespace GameEngine;
 BigError::BigError(const strg& message) : std::runtime_error(message)
 {
 #if !_DEBUG
-	if (Window::IsSplashScreenVisible())
-		Window::DestroySplashScreen();
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Fatal Error", message.data(), nullptr);
+	if (Window::IsSDLInit())
+	{
+		if (Window::IsSplashScreenVisible())
+			Window::DestroySplashScreen();
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Fatal Error", message.data(), nullptr);
+	}
 #endif
 }
