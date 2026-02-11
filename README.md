@@ -5,6 +5,8 @@ Use it to develop your next game or as a learning resource for building somethin
 Written in C++20 using MSVC for Windows 10.  
 Should be easy to port to other platforms.
 
+<img width="1280" height="750" alt="screenshot" src="https://github.com/user-attachments/assets/4e50a2ef-691c-4ba0-85ea-949875abaea0" />
+
 ## Building
 * Requires VS2022 and Python to be installed
 * Run ```build.py```
