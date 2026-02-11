@@ -13,7 +13,7 @@ namespace GameEngine
 	class GAMEENGINEAPI DrawSurface
 	{
 	public:
-		DrawSurface(uint16 viewid, void* wndHandle);
+		DrawSurface(uint16 viewid, vec2 size, void* wndHandle);
 		void Release();
 		void Clear();
 		void OnResize(vec2 size);
@@ -23,12 +23,12 @@ namespace GameEngine
 	protected:
 		void DestroyFB();
 		void SetFBViewId();
-		virtual void UpdateFB(vec2i texSize, bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA8);
+		virtual void UpdateFB(vec2i texSize, bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA8) = 0;
 
 	public:
 		vec2i					Location;
 		vec2					Resolution;
-		vec2					AspectRatio;
+		float					AspectRatio;
 		uint					ClearColor;
 		bool					bTopMost;
 		bool					bTransparent;

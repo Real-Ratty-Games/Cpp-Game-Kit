@@ -14,7 +14,7 @@ namespace GameEngine
 	class GAMEENGINEAPI DrawSurface3D : public DrawSurface
 	{
 	public:
-		DrawSurface3D(uint16 viewid, void* wndHandle);
+		DrawSurface3D(uint16 viewid, vec2 size, void* wndHandle);
 		Texture& GetDepthTexture();
 
 	protected:

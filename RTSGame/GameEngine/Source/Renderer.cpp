@@ -10,6 +10,7 @@
 #include "../Include/Sprite.hpp"
 #include "../Include/Viewport3D.hpp"
 #include "../Include/DrawSurface.hpp"
+#include "../Include/DrawSurface2D.hpp"
 #include "../Include/DrawSurface3D.hpp"
 #include "../Include/Transformation.hpp"
 #include "../Include/SpriteAnimation.hpp"
@@ -24,6 +25,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+#define GAMEENGINE_RENDERER_SPRITE_FLAGS (BGFX_DISCARD_INDEX_BUFFER | BGFX_DISCARD_STATE | BGFX_DISCARD_TRANSFORM)
+#define GAMEENGINE_RENDERER_SPRITE_STATE (BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A | BGFX_STATE_BLEND_ALPHA | BGFX_STATE_DEPTH_TEST_LESS)
 
 using namespace GameEngine;
 
@@ -42,7 +46,9 @@ static bgfx::VertexLayout		_Mesh3DVBLayout;
 /// For primitive 2D quad rendering
 static bgfx::VertexBufferHandle	_Quad2DVB;
 static float					_Quad2DView[16];
+static Texture*					_Quad2DLastTex = nullptr; // don't update sample if it's the same!
 
+static inline void Renderer_ClearActives();
 static void	Renderer_Init3DLayout();
 static void	Renderer_Init2DQuad();
 static void	Renderer_Release2DQuad();
@@ -69,7 +75,7 @@ bool Renderer::Initialize(Window* window, DrawAPI api, bool vsync, MSAA msaa)
 	}
 
 #if _DEBUG
-	bgfx::setDebug(BGFX_DEBUG_TEXT); // BGFX_DEBUG_WIREFRAME
+	bgfx::setDebug(BGFX_DEBUG_TEXT);
 #endif
 
 	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH);
@@ -126,11 +132,6 @@ void Renderer::SetScissor(vec2i location, vec2i size)
 void Renderer::SetViewScissor(uint16 viewid, vec2i location, vec2i size)
 {
 	bgfx::setViewScissor(viewid, location.X, location.Y, size.X, size.Y);
-}
-
-void Renderer::SetState(uint64 state)
-{
-	bgfx::setState(state);
 }
 
 bgfx::VertexBufferHandle Renderer::CreateVertexBuffer(const void* data, uint size, bgfx::VertexLayout& layout)
@@ -225,7 +226,22 @@ void Renderer::SetActiveShader(Shader* shader)
 	_ActiveShader = shader;
 }
 
-void Renderer::BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport)
+Shader* Renderer::GetActiveShader()
+{
+	return _ActiveShader;
+}
+
+void Renderer::SetTransform(const mat4& mat)
+{
+	bgfx::setTransform(mat.Ptr());
+}
+
+void Renderer::SetState(uint64 state)
+{
+	bgfx::setState(state);
+}
+
+void Renderer::BeginDrawSprite(DrawSurface2D* surface, Viewport2D& viewport)
 {
 	_ActiveDrawSurface = surface;
 	_ActiveDrawSurface->Clear();
@@ -234,6 +250,14 @@ void Renderer::BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport)
 	bx::mtxOrtho(proj, viewport.Location.X, viewport.Size.X + viewport.Location.Y,
 		viewport.Size.Y + viewport.Location.Y, viewport.Location.Y, 0.1f, 100.0f, 0.0f, false);
 	bgfx::setViewTransform(_ActiveDrawSurface->ViewID(), _Quad2DView, proj);
+
+	bgfx::setVertexBuffer(0, _Quad2DVB);
+}
+
+void Renderer::EndDrawSprite()
+{
+	_Quad2DLastTex = nullptr;
+	Renderer_ClearActives();
 }
 
 void Renderer::DrawSprite(Sprite* sprite, Transform2D& transformation)
@@ -343,14 +367,17 @@ void Renderer::PrepareSpriteAtlasInstancing(Sprite* sprite, SpriteInstanceData& 
 
 void Renderer::DrawSpriteInstanced(SpriteInstanceData& idata)
 {
-	SetState(BGFX_STATE_WRITE_RGB |
-		BGFX_STATE_WRITE_A |
-		BGFX_STATE_BLEND_ALPHA |
-		BGFX_STATE_DEPTH_TEST_LESS);
-	bgfx::setVertexBuffer(0, _Quad2DVB);
+	bgfx::setState(GAMEENGINE_RENDERER_SPRITE_STATE);
 	bgfx::setInstanceDataBuffer(&idata.Buffer);
-	_ActiveShader->SetTexture(0, "s_texColor", *idata.pSprite->GetTexture());
-	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), 0, true);
+
+	Texture* usetex = idata.pSprite->GetTexture();
+	if (_Quad2DLastTex != usetex)
+	{
+		_Quad2DLastTex = usetex;
+		_ActiveShader->SetTexture(0, "s_texColor", *usetex);
+	}
+
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), GAMEENGINE_RENDERER_SPRITE_FLAGS, true);
 }
 
 void Renderer::DrawSpriteAtlasInstanced(SpriteInstanceData& idata, Sprite* sprite, vec2 subSize)
@@ -464,7 +491,9 @@ void Renderer::LoadModelFromFile(Model3D& model, strgv filename)
 		| aiProcess_GenSmoothNormals
 		| aiProcess_CalcTangentSpace
 		| aiProcess_SplitLargeMeshes
-		| aiProcess_OptimizeMeshes;
+		| aiProcess_OptimizeMeshes
+		| aiProcess_MakeLeftHanded
+		| aiProcess_FlipWindingOrder;
 
 	const aiScene* scene = importer.ReadFile(filename.data(), flags);
 
@@ -487,7 +516,9 @@ void Renderer::LoadModelFromMemory(Model3D& model, std::vector<uint8>& data)
 		| aiProcess_GenSmoothNormals
 		| aiProcess_CalcTangentSpace
 		| aiProcess_SplitLargeMeshes
-		| aiProcess_OptimizeMeshes;
+		| aiProcess_OptimizeMeshes
+		| aiProcess_MakeLeftHanded
+		| aiProcess_FlipWindingOrder;
 
 	const aiScene* scene = importer.ReadFileFromMemory(data.data(), data.size(), flags);
 
@@ -497,18 +528,29 @@ void Renderer::LoadModelFromMemory(Model3D& model, std::vector<uint8>& data)
 	Renderer_ModelProcessNode(model, scene->mRootNode, scene);
 }
 
-void Renderer::BeginDraw3D(DrawSurface3D* surface, Viewport3D& viewport)
+void Renderer::FreeModel(Model3D& model)
+{
+	for (auto& it : model.Meshes)
+	{
+		if (bgfx::isValid(it.VBH))
+			bgfx::destroy(it.VBH);
+		if (bgfx::isValid(it.IBH))
+			bgfx::destroy(it.IBH);
+	}
+}
+
+void Renderer::BeginDrawMesh(DrawSurface3D* surface, Viewport3D& viewport)
 {
 	_ActiveDrawSurface = surface;
 	_ActiveDrawSurface->Clear();
 
 	float proj[16];
-	bx::mtxProj(proj, viewport.Fov, surface->AspectRatio.X / surface->AspectRatio.Y, viewport.Near, viewport.Far,
+	bx::mtxProj(proj, viewport.Fov, surface->AspectRatio, viewport.Near, viewport.Far,
 		bgfx::getCaps()->homogeneousDepth);
 	bgfx::setViewTransform(surface->ViewID(), viewport.View().Ptr(), proj);
 }
 
-void Renderer::BeginDraw3D(DrawSurface3D* surface, ViewportOrtho3D& viewport)
+void Renderer::BeginDrawMesh(DrawSurface3D* surface, ViewportOrtho3D& viewport)
 {
 	_ActiveDrawSurface = surface;
 	_ActiveDrawSurface->Clear();
@@ -517,6 +559,22 @@ void Renderer::BeginDraw3D(DrawSurface3D* surface, ViewportOrtho3D& viewport)
 	bx::mtxOrtho(proj, viewport.Left, viewport.Right, viewport.Bottom, viewport.Top, viewport.Near,
 		viewport.Far, viewport.Offset, true);
 	bgfx::setViewTransform(surface->ViewID(), viewport.View().Ptr(), proj);
+}
+
+void Renderer::EndDrawMesh()
+{
+	Renderer_ClearActives();
+}
+
+void Renderer::SetMesh(uint8 stream, Mesh3D& mesh)
+{
+	bgfx::setVertexBuffer(stream, mesh.VBH);
+	bgfx::setIndexBuffer(mesh.IBH);
+}
+
+void Renderer::DrawMesh(uint8 flags)
+{
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), flags, true);
 }
 
 /*======================================================
@@ -584,18 +642,19 @@ void Renderer_DrawTexture(Texture* texture, vec2& rotpiv, vec2& size, Transform2
 	mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f), false);												// scale
 
 	bgfx::setTransform(mdl.Ptr());
-	Renderer::SetState(BGFX_STATE_WRITE_RGB |
-		BGFX_STATE_WRITE_A |
-		BGFX_STATE_BLEND_ALPHA |
-		BGFX_STATE_DEPTH_TEST_LESS);
+	bgfx::setState(GAMEENGINE_RENDERER_SPRITE_STATE);
 
 	vec4 ucolor = vec4(transformation.ImageColor.R, transformation.ImageColor.G, transformation.ImageColor.B, transformation.ImageColor.A);
 	_ActiveShader->SetUniform("color", ucolor.Ptr());
 
-	bgfx::setVertexBuffer(0, _Quad2DVB);
 
-	_ActiveShader->SetTexture(0, "s_texColor", *texture);
-	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), 0, true);
+	if (_Quad2DLastTex != texture)
+	{
+		_Quad2DLastTex = texture;
+		_ActiveShader->SetTexture(0, "s_texColor", *texture);
+	}
+
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), GAMEENGINE_RENDERER_SPRITE_FLAGS, true);
 }
 
 void Renderer_ModelProcessNode(Model3D& model, aiNode* node, const aiScene* scene)
@@ -668,4 +727,10 @@ void Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata)
 	modelMesh.IBH = Renderer::CreateIndexBuffer(mdata.Indices.data(), mdata.Indices.size() * sizeof(uint16));
 	if (!bgfx::isValid(modelMesh.IBH))
 		throw BigError("Index Buffer is invalid!");
+}
+
+inline void Renderer_ClearActives()
+{
+	_ActiveShader		= nullptr;
+	_ActiveDrawSurface	= nullptr;
 }

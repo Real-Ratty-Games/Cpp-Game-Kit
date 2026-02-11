@@ -105,6 +105,9 @@
     <ClCompile Include="Source\BigError.cpp">
       <Filter>Core\Src</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DrawSurface2D.cpp">
+      <Filter>Draw\Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Alarm.hpp">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="Include\BigError.hpp">
       <Filter>Core\Inc</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\DrawSurface2D.hpp">
+      <Filter>Draw\Inc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

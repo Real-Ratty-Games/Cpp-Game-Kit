@@ -8,7 +8,14 @@
 
 using namespace GameEngine;
 
-DrawSurface3D::DrawSurface3D(uint16 viewid, void* wndHandle) : DrawSurface(viewid, wndHandle) {}
+DrawSurface3D::DrawSurface3D(uint16 viewid, vec2 size, void* wndHandle) : DrawSurface(viewid, size, wndHandle)
+{
+	if (viewid != 0)
+	{
+		UpdateFB(size);
+		SetFBViewId();
+	}
+}
 
 Texture& DrawSurface3D::GetDepthTexture()
 {
@@ -47,7 +54,7 @@ void DrawSurface3D::UpdateFB(vec2i texSize, bgfx::TextureFormat::Enum format)
 			mFbTex.Handle		= fbtextures[0];
 			mFbTex.Size			= texSize;
 
-			mFbDepthTex.Handle	= fbtextures[0];
+			mFbDepthTex.Handle	= fbtextures[1];
 			mFbDepthTex.Size	= texSize;
 
 			mFbHandle = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);

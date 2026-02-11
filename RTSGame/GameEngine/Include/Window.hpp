@@ -20,6 +20,8 @@ namespace GameEngine
 		static void Release();
 		static void ShowSplashScreen(strgv filename = "Data/Splash.bmp");
 		static void DestroySplashScreen();
+		static bool IsSplashScreenVisible();
+		static bool IsSDLInit();
 
 		/// <summary>
 		/// Set hardware cursor image
@@ -60,8 +62,11 @@ namespace GameEngine
 
 		static SDL_Window*		sSplashWndHandle;
 		static SDL_Renderer*	sSplashWndRenderer;
+		static bool				sbSplashWndVisible;
 
 	private:
+		static bool sbSDLInit;
+
 		bool bFullscreen = false;
 	};
 }

@@ -23,7 +23,7 @@ void GameWindow::EventCallback()
 	case SDL_EVENT_WINDOW_RESIZED:
 	{
 		vec2i size = GetSize();
-		Renderer::OnResize(size, true, MSAA::X16);
+		Renderer::OnResize(size, true, MSAA::NONE);
 		dynamic_cast<GameProgram*>(pProgram)->OnResize(size);
 	}break;
 	}

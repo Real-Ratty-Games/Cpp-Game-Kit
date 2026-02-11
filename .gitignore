@@ -6,6 +6,7 @@
 #folders
 RTSGame/Thirdparty/
 GameDir/Data/Shaders/
+GameDir/temp/
 
 # User-specific files
 *.rsuser

@@ -37,7 +37,7 @@ namespace GameEngine
         V = 25,
         W = 26,
         X = 27,
-        Y = 28,
+        Y = 28,     // is z on ger keyboards
         Z = 29,
         N1 = 30,
         N2 = 31,

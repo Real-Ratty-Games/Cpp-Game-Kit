@@ -7,9 +7,10 @@
 #include <SystemTypes.hpp>
 #include <Program.hpp>
 #include <Clock.hpp>
-#include <DrawSurface.hpp>
 #include <Shader.hpp>
 #include <Sprite.hpp>
+#include <DrawSurface2D.hpp>
+#include <DrawSurface3D.hpp>
 #include <SpriteAnimation.hpp>
 
 using namespace GameEngine;
@@ -33,30 +34,17 @@ namespace MyGame
 		void LoadShaders();
 		void FreeShaders();
 
-		void LoadData();
-		void FreeData();
-
 	private:
 		GameWindow*		mWindow;
-		Clock			mClock = Clock(120.0f);
+		Clock			mClock = Clock(60.0f);
 
-		DrawSurface*	mBackBufferSurface;
-
+		Viewport2D		mCamera;
 		Shader			mSprite2DShader;
 		Shader			mSprite2DIShader;
 		Shader			mSprite2DAtlasShader;
 		Shader			mSprite2DAtlasIShader;
 
-		Viewport2D		mCamera;
-
-		Texture			mFontTexture;
-		Sprite*			mFontSprite;
-		SpriteFont		mSpriteFont;
-
-		Texture			mTestTexture;
-		Sprite*			mTestSprite;
-		SpriteAnimation mTestAnimation;
-		SpriteAnimator	mTestAnimator;
+		DrawSurface2D*	mBackBufferSurface;
 	};
 }
 #endif
