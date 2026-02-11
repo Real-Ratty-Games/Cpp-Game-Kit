@@ -10,9 +10,9 @@ namespace GameEngine
 {
 	struct EulerRotation
 	{
-		float Yaw;
-		float Pitch;
-		float Roll;
+		float Yaw;		// rotate up (y)
+		float Pitch;	// rotate right (x)
+		float Roll;		// rotate forward (z)
 
 		EulerRotation()
 		{

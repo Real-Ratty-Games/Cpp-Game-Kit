@@ -9,6 +9,8 @@
 
 namespace GameEngine
 {
+	/// Z is forward
+	/// Y is up
 	class GAMEENGINEAPI Viewport3D
 	{
 	public:
@@ -21,7 +23,7 @@ namespace GameEngine
 
 	public:
 		float Fov;
-		float Near;
+		float Near; // =-1000 for ortho
 		float Far;
 
 		vec3 Eye;
@@ -38,11 +40,11 @@ namespace GameEngine
 	class GAMEENGINEAPI ViewportOrtho3D : public Viewport3D
 	{
 	public:
-		float Offset;
-		float Bottom;
-		float Right;
-		float Left;
-		float Top;
+		float Offset	= 0.0f;
+		float Bottom	= -5.0f;
+		float Right		= 10.0f;
+		float Left		= -10.0f;
+		float Top		= 5.0f;
 	};
 }
 #endif

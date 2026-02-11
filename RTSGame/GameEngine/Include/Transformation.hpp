@@ -98,8 +98,9 @@ namespace GameEngine::Math
 	}
 
 	/// angle in radians
-	quat QuatFromAxisAngle(const vec3& axis, float angle);
-	quat QuatFromEulerAngles(const EulerRotation& rot);
+	GAMEENGINEAPI quat QuatFromAxisAngle(const vec3& axis, float angle);
+	GAMEENGINEAPI quat QuatFromEulerAngles(const EulerRotation& rot);
+	GAMEENGINEAPI quat QuatAddEulerRotation(const quat& q, const EulerRotation& rot, bool local);
 
 	template<typename T>
 	Matrix4<T> LookAtLH(const Vector3<T>& eye, const Vector3<T>& target, const Vector3<T>& sup,
@@ -121,9 +122,9 @@ namespace GameEngine::Math
 		up = yaxis;
 
 		return mat4(
-			xaxis.X, xaxis.Y, xaxis.Z, T(0),
-			yaxis.X, yaxis.Y, yaxis.Z, T(0),
-			zaxis.X, zaxis.Y, zaxis.Z, T(0),
+			xaxis.X, yaxis.X, zaxis.X, T(0),
+			xaxis.Y, yaxis.Y, zaxis.Y, T(0),
+			xaxis.Z, yaxis.Z, zaxis.Z, T(0),
 			-Vector3<T>::Dot(xaxis, eye),
 			-Vector3<T>::Dot(yaxis, eye),
 			-Vector3<T>::Dot(zaxis, eye),

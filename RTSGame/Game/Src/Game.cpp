@@ -7,10 +7,12 @@
 #include <Renderer.hpp>
 #include <Input.hpp>
 
+#include <Viewport3D.hpp>
+#include <DrawMath.hpp>
+
 using namespace MyGame;
 
-static SpriteInstanceData	_SimpleTextData;
-static SDL_Cursor*			_SdlCursor;
+static SDL_Cursor* _SdlCursor;
 
 void GameProgram::OnResize(vec2i& size)
 {
@@ -26,32 +28,24 @@ bool GameProgram::Initialize()
 	_SdlCursor = Window::LoadHardwareCursorImage("Data/Cursor.bmp");
 	Window::SetHardwareCursorImage(_SdlCursor);
 
+	const vec2 resolution(1280, 720);
+
 	mWindow = new GameWindow(this);
-	mWindow->Create("My Game", 1280, 720, false);
+	mWindow->Create("My Game", resolution.X, resolution.Y, false);
 
 	// init renderer
-	if (!Renderer::Initialize(mWindow, DrawAPI::DIRECT3D11, true, MSAA::X16))
+	if (!Renderer::Initialize(mWindow, DrawAPI::DIRECT3D11, true, MSAA::NONE))
 		return false;
 
 	// setup shaders
 	Shader::SetShaderDirectory("Data/Shaders");
-	// const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
+	const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
 	LoadShaders();
 
 	// create back buffer surface
-	mBackBufferSurface = new DrawSurface(0, mWindow->GetNativePtr());
+	mBackBufferSurface = new DrawSurface2D(0, resolution, mWindow->GetNativePtr());
 
-	// init camera
 	mCamera.Size = mWindow->GetSize();
-
-	LoadData();
-
-	Transform2D transf;
-	transf.Location = vec2(100, 100);
-	transf.Scale = vec2(1);
-	transf.Rotation = 0.0f;
-	transf.ImageColor = Color(1);
-	Renderer::PrepareSpriteFontText(mSpriteFont, transf, _SimpleTextData, "Hello, World!\nC++ is awesome!");
 
 	Window::DestroySplashScreen();
 	mWindow->Show();
@@ -65,20 +59,11 @@ void GameProgram::Tick()
 	mClock.Tick();
 	while (mClock.Wait())
 	{
-		mTestAnimator.Tick();
-
 		if (Keyboard::KeyPressed(KeyboardKey::N1))
 			mWindow->SwitchFullscreen();
 
 		if (Keyboard::KeyPressed(KeyboardKey::ESCAPE))
 			Quit();
-
-		if (Keyboard::KeyPressed(KeyboardKey::SPACE))
-			mTestAnimator.Replay();
-		else if (Keyboard::KeyPressed(KeyboardKey::P))
-			mTestAnimator.Pause(true);
-		else if (Keyboard::KeyPressed(KeyboardKey::O))
-			mTestAnimator.Pause(false);
 	}
 }
 
@@ -87,31 +72,16 @@ void GameProgram::Draw()
 	Renderer::BeginDraw();
 	if (!mWindow->IsIconified())
 	{
-		Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
-
-			Renderer::SetActiveShader(&mSprite2DAtlasIShader);
-
-			Renderer::DrawSpriteFontText(mSpriteFont, _SimpleTextData);
-
-			Renderer::SetActiveShader(&mSprite2DAtlasShader);
-		
-			Transform2D transf;
-			transf.Location = vec2(500, 300);
-			transf.Rotation = 0;
-			transf.Scale = vec2(1);
-			Renderer::DrawSpriteAnimation(mTestSprite, transf, &mTestAnimator);
-
-		Renderer::EndDrawSprite();
+		// Render here...
 	}
 	Renderer::EndDraw();
 }
 
 void GameProgram::Cleanup()
 {
-	FreeData();
-
 	if (mBackBufferSurface != nullptr)
 	{
+		mBackBufferSurface->Release();
 		delete mBackBufferSurface;
 		mBackBufferSurface = nullptr;
 	}
@@ -159,59 +129,4 @@ void GameProgram::FreeShaders()
 	mSprite2DIShader.Release();
 	mSprite2DAtlasShader.Release();
 	mSprite2DAtlasIShader.Release();
-}
-
-void GameProgram::LoadData()
-{
-	Renderer::LoadTextureFromFile(mFontTexture, "Data/Font.png", BGFX_SAMPLER_MIN_POINT |
-		BGFX_SAMPLER_MAG_POINT |
-		BGFX_SAMPLER_U_CLAMP |
-		BGFX_SAMPLER_V_CLAMP, "Font", false);
-
-	mFontSprite = new Sprite(&mFontTexture);
-
-	mSpriteFont.pSprite		= mFontSprite;
-	mSpriteFont.GlyphSize	= vec2(18, 30);
-	mSpriteFont.Glyphs		=
-		"AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
-		"ÄäÖöÜü"
-		"0123456789"
-		",;.:_-!?\"§$%&/()=*+~'#|<>²³{[]}\\";
-
-
-
-	Renderer::LoadTextureFromFile(mTestTexture, "Data/TestAnimation.png", BGFX_SAMPLER_MIN_POINT |
-		BGFX_SAMPLER_MAG_POINT |
-		BGFX_SAMPLER_U_CLAMP |
-		BGFX_SAMPLER_V_CLAMP, "TestAnimation", false);
-
-	mTestSprite = new Sprite(&mTestTexture);
-
-	mTestAnimation.FrameSize		= vec2(128);
-	mTestAnimation.StartIndex		= vec2(3, 1);
-	mTestAnimation.Speed			= 50;
-	mTestAnimation.RowCount			= 4;
-	mTestAnimation.TotalFrameCount	= 7;
-	mTestAnimation.Style			= ESpriteAnimationStyle::REVERSELOOP;
-
-	mTestAnimator.Play(&mTestAnimation);
-}
-
-void GameProgram::FreeData()
-{
-	if (mFontSprite != nullptr)
-	{
-		delete mFontSprite;
-		mFontSprite = nullptr;
-	}
-
-	Renderer::FreeTexture(mFontTexture);
-
-	if (mTestSprite != nullptr)
-	{
-		delete mTestSprite;
-		mTestSprite = nullptr;
-	}
-
-	Renderer::FreeTexture(mTestTexture);
 }

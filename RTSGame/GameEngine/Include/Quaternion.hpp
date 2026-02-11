@@ -54,7 +54,12 @@ namespace GameEngine
 			if (len == T(0))
 				return Quaternion<T>();
 
-			return Quaternion<T>(X / len, Y / len, Z / len, W / len);
+			return Quaternion<T>(
+				W / len,
+				X / len,
+				Y / len,
+				Z / len
+			);
 		}
 
 		Quaternion<T> Conjugate() const

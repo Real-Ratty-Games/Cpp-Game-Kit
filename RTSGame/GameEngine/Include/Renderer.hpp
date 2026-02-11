@@ -9,13 +9,15 @@
 #include "DrawData.hpp"
 #include <vector>
 
+#define GAMEENGINE_RENDERER_MESH_STATE (BGFX_DISCARD_INDEX_BUFFER | BGFX_DISCARD_VERTEX_STREAMS | BGFX_DISCARD_STATE)
+
 namespace GameEngine
 {
 	class Window;
 	class Shader;
 	class Sprite;
 	class Viewport3D;
-	class DrawSurface;
+	class DrawSurface2D;
 	class DrawSurface3D;
 	class SpriteAnimator;
 	class ViewportOrtho3D;
@@ -45,10 +47,14 @@ namespace GameEngine
 		GAMEENGINEAPI void FreeTexture(Texture& tex);
 
 		GAMEENGINEAPI void SetActiveShader(Shader* shader);
+		GAMEENGINEAPI Shader* GetActiveShader();
+
+		GAMEENGINEAPI void SetTransform(const mat4& mat);
+		GAMEENGINEAPI void SetState(uint64 state);
 
 		// Begin Sprite Rendering
 
-		GAMEENGINEAPI void BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport);
+		GAMEENGINEAPI void BeginDrawSprite(DrawSurface2D* surface, Viewport2D& viewport);
 		GAMEENGINEAPI void EndDrawSprite();
 
 		GAMEENGINEAPI void DrawSprite(Sprite* sprite, Transform2D& transformation);
@@ -70,11 +76,16 @@ namespace GameEngine
 
 		GAMEENGINEAPI void LoadModelFromFile(Model3D& model, strgv filename);
 		GAMEENGINEAPI void LoadModelFromMemory(Model3D& model, std::vector<uint8>& data);
+		GAMEENGINEAPI void FreeModel(Model3D& model);
 
 		// Begin 3D Rendering
 
-		GAMEENGINEAPI void BeginDraw3D(DrawSurface3D* surface, Viewport3D& viewport);
-		GAMEENGINEAPI void BeginDraw3D(DrawSurface3D* surface, ViewportOrtho3D& viewport);
+		GAMEENGINEAPI void BeginDrawMesh(DrawSurface3D* surface, Viewport3D& viewport);
+		GAMEENGINEAPI void BeginDrawMesh(DrawSurface3D* surface, ViewportOrtho3D& viewport);
+		GAMEENGINEAPI void EndDrawMesh();
+
+		GAMEENGINEAPI void SetMesh(uint8 stream, Mesh3D& mesh);
+		GAMEENGINEAPI void DrawMesh(uint8 flags = GAMEENGINE_RENDERER_MESH_STATE);
 
 		// End 3D Rendering
 	}

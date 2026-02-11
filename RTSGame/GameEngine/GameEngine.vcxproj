@@ -87,6 +87,7 @@
     <ClCompile Include="Source\Alarm.cpp" />
     <ClCompile Include="Source\BigError.cpp" />
     <ClCompile Include="Source\DrawMath.cpp" />
+    <ClCompile Include="Source\DrawSurface2D.cpp" />
     <ClCompile Include="Source\DrawSurface3D.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\Clock.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="Include\DrawData.hpp" />
     <ClInclude Include="Include\DrawMath.hpp" />
     <ClInclude Include="Include\DrawSurface.hpp" />
+    <ClInclude Include="Include\DrawSurface2D.hpp" />
     <ClInclude Include="Include\DrawSurface3D.hpp" />
     <ClInclude Include="Include\FileSystem.hpp" />
     <ClInclude Include="Include\Gamepad.hpp" />

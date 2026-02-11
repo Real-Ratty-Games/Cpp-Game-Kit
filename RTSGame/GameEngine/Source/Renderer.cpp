@@ -10,6 +10,7 @@
 #include "../Include/Sprite.hpp"
 #include "../Include/Viewport3D.hpp"
 #include "../Include/DrawSurface.hpp"
+#include "../Include/DrawSurface2D.hpp"
 #include "../Include/DrawSurface3D.hpp"
 #include "../Include/Transformation.hpp"
 #include "../Include/SpriteAnimation.hpp"
@@ -47,6 +48,7 @@ static bgfx::VertexBufferHandle	_Quad2DVB;
 static float					_Quad2DView[16];
 static Texture*					_Quad2DLastTex = nullptr; // don't update sample if it's the same!
 
+static inline void Renderer_ClearActives();
 static void	Renderer_Init3DLayout();
 static void	Renderer_Init2DQuad();
 static void	Renderer_Release2DQuad();
@@ -224,7 +226,22 @@ void Renderer::SetActiveShader(Shader* shader)
 	_ActiveShader = shader;
 }
 
-void Renderer::BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport)
+Shader* Renderer::GetActiveShader()
+{
+	return _ActiveShader;
+}
+
+void Renderer::SetTransform(const mat4& mat)
+{
+	bgfx::setTransform(mat.Ptr());
+}
+
+void Renderer::SetState(uint64 state)
+{
+	bgfx::setState(state);
+}
+
+void Renderer::BeginDrawSprite(DrawSurface2D* surface, Viewport2D& viewport)
 {
 	_ActiveDrawSurface = surface;
 	_ActiveDrawSurface->Clear();
@@ -240,6 +257,7 @@ void Renderer::BeginDrawSprite(DrawSurface* surface, Viewport2D& viewport)
 void Renderer::EndDrawSprite()
 {
 	_Quad2DLastTex = nullptr;
+	Renderer_ClearActives();
 }
 
 void Renderer::DrawSprite(Sprite* sprite, Transform2D& transformation)
@@ -473,7 +491,9 @@ void Renderer::LoadModelFromFile(Model3D& model, strgv filename)
 		| aiProcess_GenSmoothNormals
 		| aiProcess_CalcTangentSpace
 		| aiProcess_SplitLargeMeshes
-		| aiProcess_OptimizeMeshes;
+		| aiProcess_OptimizeMeshes
+		| aiProcess_MakeLeftHanded
+		| aiProcess_FlipWindingOrder;
 
 	const aiScene* scene = importer.ReadFile(filename.data(), flags);
 
@@ -496,7 +516,9 @@ void Renderer::LoadModelFromMemory(Model3D& model, std::vector<uint8>& data)
 		| aiProcess_GenSmoothNormals
 		| aiProcess_CalcTangentSpace
 		| aiProcess_SplitLargeMeshes
-		| aiProcess_OptimizeMeshes;
+		| aiProcess_OptimizeMeshes
+		| aiProcess_MakeLeftHanded
+		| aiProcess_FlipWindingOrder;
 
 	const aiScene* scene = importer.ReadFileFromMemory(data.data(), data.size(), flags);
 
@@ -506,18 +528,29 @@ void Renderer::LoadModelFromMemory(Model3D& model, std::vector<uint8>& data)
 	Renderer_ModelProcessNode(model, scene->mRootNode, scene);
 }
 
-void Renderer::BeginDraw3D(DrawSurface3D* surface, Viewport3D& viewport)
+void Renderer::FreeModel(Model3D& model)
+{
+	for (auto& it : model.Meshes)
+	{
+		if (bgfx::isValid(it.VBH))
+			bgfx::destroy(it.VBH);
+		if (bgfx::isValid(it.IBH))
+			bgfx::destroy(it.IBH);
+	}
+}
+
+void Renderer::BeginDrawMesh(DrawSurface3D* surface, Viewport3D& viewport)
 {
 	_ActiveDrawSurface = surface;
 	_ActiveDrawSurface->Clear();
 
 	float proj[16];
-	bx::mtxProj(proj, viewport.Fov, surface->AspectRatio.X / surface->AspectRatio.Y, viewport.Near, viewport.Far,
+	bx::mtxProj(proj, viewport.Fov, surface->AspectRatio, viewport.Near, viewport.Far,
 		bgfx::getCaps()->homogeneousDepth);
 	bgfx::setViewTransform(surface->ViewID(), viewport.View().Ptr(), proj);
 }
 
-void Renderer::BeginDraw3D(DrawSurface3D* surface, ViewportOrtho3D& viewport)
+void Renderer::BeginDrawMesh(DrawSurface3D* surface, ViewportOrtho3D& viewport)
 {
 	_ActiveDrawSurface = surface;
 	_ActiveDrawSurface->Clear();
@@ -526,6 +559,22 @@ void Renderer::BeginDraw3D(DrawSurface3D* surface, ViewportOrtho3D& viewport)
 	bx::mtxOrtho(proj, viewport.Left, viewport.Right, viewport.Bottom, viewport.Top, viewport.Near,
 		viewport.Far, viewport.Offset, true);
 	bgfx::setViewTransform(surface->ViewID(), viewport.View().Ptr(), proj);
+}
+
+void Renderer::EndDrawMesh()
+{
+	Renderer_ClearActives();
+}
+
+void Renderer::SetMesh(uint8 stream, Mesh3D& mesh)
+{
+	bgfx::setVertexBuffer(stream, mesh.VBH);
+	bgfx::setIndexBuffer(mesh.IBH);
+}
+
+void Renderer::DrawMesh(uint8 flags)
+{
+	_ActiveShader->Submit(_ActiveDrawSurface->ViewID(), flags, true);
 }
 
 /*======================================================
@@ -678,4 +727,10 @@ void Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata)
 	modelMesh.IBH = Renderer::CreateIndexBuffer(mdata.Indices.data(), mdata.Indices.size() * sizeof(uint16));
 	if (!bgfx::isValid(modelMesh.IBH))
 		throw BigError("Index Buffer is invalid!");
+}
+
+inline void Renderer_ClearActives()
+{
+	_ActiveShader		= nullptr;
+	_ActiveDrawSurface	= nullptr;
 }
