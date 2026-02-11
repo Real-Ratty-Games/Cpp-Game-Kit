@@ -8,8 +8,9 @@
 
 using namespace GameEngine;
 
-DrawSurface3D::DrawSurface3D(uint16 viewid, vec2 size, void* wndHandle) : DrawSurface(viewid, size, wndHandle)
+DrawSurface3D::DrawSurface3D(uint16 viewid, vec2 size, void* wndHandle, bool depthOnly) : DrawSurface(viewid, size, wndHandle)
 {
+	bDepthOnly = depthOnly;
 	if (viewid != 0)
 	{
 		UpdateFB(size);
@@ -30,34 +31,51 @@ void DrawSurface3D::UpdateFB(vec2i texSize, bgfx::TextureFormat::Enum format)
 			mFbHandle = bgfx::createFrameBuffer(pWindowHandle, texSize.X, texSize.Y, format, bgfx::TextureFormat::D32F);
 		else
 		{
-			bgfx::TextureHandle fbtextures[] =
+			if (bDepthOnly)
 			{
-				bgfx::createTexture2D(
-					(uint16)texSize.X
-					, (uint16)texSize.Y
-					, false
-					, 1
-					, format
-					, BGFX_TEXTURE_RT
-				),
-
-				bgfx::createTexture2D(
+				mFbDepthTex.Handle = bgfx::createTexture2D(
 					(uint16)texSize.X
 					, (uint16)texSize.Y
 					, false
 					, 1
 					, bgfx::TextureFormat::D32F
 					, BGFX_TEXTURE_RT | BGFX_SAMPLER_COMPARE_LEQUAL
-				)
-			};
+				);
+				mFbDepthTex.Size = texSize;
 
-			mFbTex.Handle		= fbtextures[0];
-			mFbTex.Size			= texSize;
+				mFbHandle = bgfx::createFrameBuffer(1, &mFbDepthTex.Handle, true);
+			}
+			else
+			{
+				bgfx::TextureHandle fbtextures[] =
+				{
+					bgfx::createTexture2D(
+						(uint16)texSize.X
+						, (uint16)texSize.Y
+						, false
+						, 1
+						, format
+						, BGFX_TEXTURE_RT
+					),
 
-			mFbDepthTex.Handle	= fbtextures[1];
-			mFbDepthTex.Size	= texSize;
+					bgfx::createTexture2D(
+						(uint16)texSize.X
+						, (uint16)texSize.Y
+						, false
+						, 1
+						, bgfx::TextureFormat::D32F
+						, BGFX_TEXTURE_RT | BGFX_SAMPLER_COMPARE_LEQUAL
+					)
+				};
 
-			mFbHandle = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);
+				mFbTex.Handle = fbtextures[0];
+				mFbTex.Size = texSize;
+
+				mFbDepthTex.Handle = fbtextures[1];
+				mFbDepthTex.Size = texSize;
+
+				mFbHandle = bgfx::createFrameBuffer(BX_COUNTOF(fbtextures), fbtextures, true);
+			}
 		}
 	}
 }

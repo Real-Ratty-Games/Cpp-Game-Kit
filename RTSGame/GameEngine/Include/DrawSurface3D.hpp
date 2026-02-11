@@ -14,7 +14,7 @@ namespace GameEngine
 	class GAMEENGINEAPI DrawSurface3D : public DrawSurface
 	{
 	public:
-		DrawSurface3D(uint16 viewid, vec2 size, void* wndHandle);
+		DrawSurface3D(uint16 viewid, vec2 size, void* wndHandle, bool depthOnly);
 		Texture& GetDepthTexture();
 
 	protected:
@@ -22,6 +22,7 @@ namespace GameEngine
 
 	private:
 		Texture	mFbDepthTex;
+		bool	bDepthOnly;
 	};
 }
 #endif

@@ -155,12 +155,5 @@ bool Window::GetFullscreen()
 void* Window::GetNativePtr()
 {
 	SDL_PropertiesID wid = SDL_GetWindowProperties(mWndHandle);
-#if _WIN32
-	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
-#elif APPLE
-	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_COCOA_WINDOW_POINTER, nullptr);
-#else
-	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_X11_WINDOW_NUMBER, nullptr);
-#endif
-	return hwnd;
+	return SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
 }

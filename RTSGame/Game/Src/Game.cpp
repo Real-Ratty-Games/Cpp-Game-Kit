@@ -7,9 +7,6 @@
 #include <Renderer.hpp>
 #include <Input.hpp>
 
-#include <Viewport3D.hpp>
-#include <DrawMath.hpp>
-
 using namespace MyGame;
 
 static SDL_Cursor* _SdlCursor;
@@ -56,14 +53,16 @@ void GameProgram::Tick()
 {
 	mWindow->PollEvent();
 
+	if (Keyboard::KeyPressed(KeyboardKey::N1))
+		mWindow->SwitchFullscreen();
+
+	if (Keyboard::KeyPressed(KeyboardKey::ESCAPE))
+		Quit();
+
 	mClock.Tick();
 	while (mClock.Wait())
 	{
-		if (Keyboard::KeyPressed(KeyboardKey::N1))
-			mWindow->SwitchFullscreen();
-
-		if (Keyboard::KeyPressed(KeyboardKey::ESCAPE))
-			Quit();
+		// Logic here...
 	}
 }
 
