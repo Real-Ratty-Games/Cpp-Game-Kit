@@ -26,42 +26,53 @@ target_link_libraries(Game PRIVATE bgfx::bgfx)
 target_link_libraries(Game PRIVATE bx::bx)
 target_link_libraries(Game PRIVATE bimg::bimg)
 
+
+
+
+
 if(APPLE)
+    # Choose Debug or Release folder for third-party dylibs
+    if(CMAKE_BUILD_TYPE MATCHES Debug)
+        set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug")
+    else()
+        set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release")
+    endif()
+
+    file(GLOB DYLIBS "${DYLIB_DIR}/*.dylib")
+
     set(GAME_FRAMEWORKS_DIR "$<TARGET_BUNDLE_DIR:Game>/Contents/Frameworks")
 
+    # Ensure Frameworks folder exists
     add_custom_command(TARGET Game POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
     )
 
+    # Copy dylibs, fix their install names, and codesign each
     foreach(dylib IN LISTS DYLIBS)
         get_filename_component(dylib_name "${dylib}" NAME)
 
         add_custom_command(TARGET Game POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy "${dylib}" "${GAME_FRAMEWORKS_DIR}/${dylib_name}"
-            COMMAND install_name_tool -change "@rpath/${dylib_name}" "@executable_path/../Frameworks/${dylib_name}" "$<TARGET_FILE:Game>"
+            COMMAND install_name_tool -id "@rpath/${dylib_name}" "${GAME_FRAMEWORKS_DIR}/${dylib_name}"
+            COMMAND codesign --force --sign "-" "${GAME_FRAMEWORKS_DIR}/${dylib_name}"
         )
     endforeach()
 
+    # Add rpath to the main executable
     add_custom_command(TARGET Game POST_BUILD
         COMMAND install_name_tool -add_rpath "@executable_path/../Frameworks" "$<TARGET_FILE:Game>"
     )
+
+    # Codesign the main app bundle
+    add_custom_command(TARGET Game POST_BUILD
+        COMMAND codesign --force --sign "-" "$<TARGET_BUNDLE_DIR:Game>"
+    )
 endif()
 
-if (WIN32)
-	target_link_libraries(Game PRIVATE GameEngine)
-	target_link_directories(Game PRIVATE
-			$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/../x64/Debug>
-			$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/../x64/Release>
-	)
-	include_directories(Game PRIVATE "../GameEngine/Include")
-else()
-	target_link_libraries(Game PRIVATE GameEngine)
-	target_link_directories(Game PRIVATE
-			$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/../arm64/Debug>
-			$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/../arm64/Release>
-	)
-	include_directories(Game PRIVATE "../GameEngine/Include")
-endif()
+
+
+
+
 
 if (WIN32)
 	set_target_properties(Game PROPERTIES
