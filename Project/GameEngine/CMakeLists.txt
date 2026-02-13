@@ -6,6 +6,15 @@ else()
 	add_library(GameEngine SHARED ${SOURCES})
 endif()
 
+if(APPLE)
+	set_target_properties(GameEngine PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_SOURCE_DIR}/arm64/Debug/
+		RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/arm64/Release/
+		ARCHIVE_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_SOURCE_DIR}/arm64/Debug/
+		ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/arm64/Release/
+	)
+endif()
+
 set(COREFILES_HEADER "Include/Alarm.hpp"
 "Include/API.hpp"
 "Include/BigError.hpp"
