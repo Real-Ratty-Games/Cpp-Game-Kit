@@ -18,8 +18,8 @@ if (WIN32)
 	)
 else()
 	set_target_properties(SoLoud::SoLoud PROPERTIES
-		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/.a"
-		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/.a"
+		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libsoloud_static.a"
+		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libsoloud_static.a"
 		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/Thirdparty/Inc"
 	)
 endif()
@@ -33,8 +33,8 @@ if (WIN32)
 	)
 else()
 	set_target_properties(SDL3::SDL3 PROPERTIES
-		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/.a"
-		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/.a"
+		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libSDL3.0.dylib"
+		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libSDL3.0.dylib"
 		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/Thirdparty/Inc"
 	)
 endif()
@@ -48,8 +48,8 @@ if (WIN32)
 	)
 else()
 	set_target_properties(Assimp::Assimp PROPERTIES
-		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/.a"
-		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/.a"
+		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libassimpd.6.0.4.dylib"
+		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libassimp.6.0.4.dylib"
 		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/Thirdparty/Inc"
 	)
 endif()
@@ -63,8 +63,8 @@ if (WIN32)
 	)
 else()
 	set_target_properties(bgfx::bgfx PROPERTIES
-		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/.a"
-		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/.a"
+		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libbgfxDebug.a"
+		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libbgfxRelease.a"
 		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/Thirdparty/Inc"
 	)
 endif()
@@ -78,8 +78,8 @@ if (WIN32)
 	)
 else()
 	set_target_properties(bx::bx PROPERTIES
-		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/.a"
-		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/.a"
+		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libbxDebug.a"
+		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libbxRelease.a"
 		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/Thirdparty/Inc"
 	)
 endif()
@@ -93,8 +93,8 @@ if (WIN32)
 	)
 else()
 	set_target_properties(bimg::bimg PROPERTIES
-		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/.a"
-		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/.a"
+		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libbimgDebug.a"
+		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libbimgRelease.a"
 		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/Thirdparty/Inc"
 	)
 endif()
