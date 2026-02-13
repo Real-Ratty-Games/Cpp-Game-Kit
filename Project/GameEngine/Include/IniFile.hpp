@@ -6,6 +6,7 @@
 #define INIFILE_HPP_
 #include "API.hpp"
 #include "SystemTypes.hpp"
+#include <vector>
 #include <unordered_map>
 
 namespace GameEngine

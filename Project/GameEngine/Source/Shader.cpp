@@ -6,6 +6,7 @@
 #include "../Include/FileSystem.hpp"
 #include "../Include/BigError.hpp"
 #include <vector>
+#include <sstream>
 #include <filesystem>
 #include <bx/bx.h>
 #include <bx/file.h>
