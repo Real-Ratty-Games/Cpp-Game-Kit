@@ -18,7 +18,7 @@ else()
 	
 	set_target_properties(Game PROPERTIES
 		BUILD_RPATH "${DYLIB_DIR}"
-		INSTALL_RPATH "@executable_path"
+		INSTALL_RPATH "@executable_path")
 endif()
 
 target_link_libraries(Game PRIVATE GameEngine)
