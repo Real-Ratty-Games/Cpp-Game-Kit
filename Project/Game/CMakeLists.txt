@@ -8,6 +8,10 @@ endif()
 
 file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
 
+find_library(ZLIB z)
+find_library(ICONV iconv)
+target_link_libraries(Game PRIVATE ${ZLIB} ${ICONV} pthread)
+
 if (WIN32)
     add_executable (Game ${SOURCES})
 	set_target_properties(Game PROPERTIES
