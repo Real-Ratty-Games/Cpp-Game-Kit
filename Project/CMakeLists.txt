@@ -6,8 +6,13 @@ endif()
 
 project ("CppGameKit")
 
-execute_process(COMMAND py build.py
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+if (WIN32)
+	execute_process(COMMAND py build.py
+   	 WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+else()
+	execute_process(COMMAND python3 build.py
+  	  WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+endif()
 
 add_library(SoLoud::SoLoud STATIC IMPORTED)
 if (WIN32)

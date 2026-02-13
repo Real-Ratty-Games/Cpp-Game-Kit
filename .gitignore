@@ -2,6 +2,9 @@
 Project/Thirdparty/
 GameDir/
 
+# macOS system files
+.DS_Store
+
 # CMake
 CMakeLists.txt.user
 CMakeCache.txt

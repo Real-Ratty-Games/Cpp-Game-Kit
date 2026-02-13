@@ -1,4 +1,4 @@
-﻿file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
+file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
 
 if (WIN32)
     add_executable (Game ${SOURCES})
@@ -6,7 +6,6 @@ if (WIN32)
 		VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../GameDir)
 else()
     add_executable(Game MACOSX_BUNDLE ${SOURCES})
-	set_target_properties(Game PROPERTIES)
 endif()
 
 # Thirdparty
@@ -33,17 +32,23 @@ else()
 	include_directories(Game PRIVATE "../GameEngine/Include")
 endif()
 
-set_target_properties(Game PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/x64/Debug
-    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/x64/Release
-    RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_SOURCE_DIR}/x64/RelWithDebInfo
-    RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_SOURCE_DIR}/x64/MinSizeRel
-)
-
 if (WIN32)
+	set_target_properties(Game PROPERTIES
+   	 	RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/x64/Debug
+    		RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/x64/Release
+    		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_SOURCE_DIR}/x64/RelWithDebInfo
+    		RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_SOURCE_DIR}/x64/MinSizeRel
+	)
 	if(MSVC)
 		target_compile_options(Game PRIVATE /Zc:__cplusplus /Zc:preprocessor)
 	endif()
+else()
+	set_target_properties(Game PROPERTIES
+   	 	RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/arm64/Debug
+    		RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/arm64/Release
+    		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_SOURCE_DIR}/arm64/RelWithDebInfo
+    		RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_SOURCE_DIR}/arm64/MinSizeRel
+	)
 endif()
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
