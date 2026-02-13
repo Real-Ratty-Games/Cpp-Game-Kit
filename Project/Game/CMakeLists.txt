@@ -4,7 +4,6 @@ if(APPLE)
     else()
         set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release")
     endif()
-)
 endif()
 
 file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
