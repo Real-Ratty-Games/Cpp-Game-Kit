@@ -29,7 +29,7 @@ else()
 	)
 endif()
 
-add_library(SDL3::SDL3 STATIC IMPORTED)
+add_library(SDL3::SDL3 SHARED IMPORTED)
 if (WIN32)
     set_target_properties(SDL3::SDL3 PROPERTIES
 		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/x64/Debug/SDL3.lib"
