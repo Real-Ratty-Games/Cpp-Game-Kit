@@ -35,6 +35,7 @@ strg Shader::CompileAllShaders(strgv dir)
 		const strg name = path.filename().string();
 		if (name == "Shared") continue;
 
+#if WIN32
 		const strg inpath = strg(dir) + "\\" + name + "\\" + name;
 		const strg outpathD3D = _ShaderDir + "/D3D/" + name;
 		const strg outpathVK = _ShaderDir + "/SPIRV/" + name;
@@ -50,6 +51,16 @@ strg Shader::CompileAllShaders(strgv dir)
 
 		const strg arg3 = "-f " + inpath + ".fs -o " + outpathVK + ".fsb --type f --platform windows -p spirv";
 		result += Shader_CompileShader(arg3) + "\n";
+#elif __APPLE__
+		const strg inpath = strg(dir) + "\\" + name + "\\" + name;
+		const strg outpathVK = _ShaderDir + "/SPIRV/" + name;
+
+		const strg arg2 = "-f " + inpath + ".vs -o " + outpathVK + ".vsb --type v --platform osx -p spirv";
+		result += Shader_CompileShader(arg2) + "\n";
+
+		const strg arg3 = "-f " + inpath + ".fs -o " + outpathVK + ".fsb --type f --platform osx -p spirv";
+		result += Shader_CompileShader(arg3) + "\n";
+#endif
 	}
 
 	return result;
@@ -162,9 +173,18 @@ const bgfx::Memory* Shader_GetMemory(bx::FileReader& filereader)
 strg Shader_CompileShader(strgv args)
 {
 	std::ostringstream command;
-	command << "Shaderc.exe " << args;
 
+#if WIN32
+	command << "Shaderc.exe " << args;
+#else
+	command << "./Shaderc " << args;
+#endif
+
+#if WIN32
 	FILE* pipe = _popen(command.str().c_str(), "r");
+#else
+	FILE* pipe = popen(command.str().c_str(), "r");
+#endif
 	if (!pipe)
 	{
 		const strg errmsg = "Failed opening 'Shaderc.exe': " + command.str();
@@ -176,7 +196,11 @@ strg Shader_CompileShader(strgv args)
 	while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
 		output << buffer;
 
+#if WIN32
 	if (_pclose(pipe) == -1)
+#else
+	if (pclose(pipe) == -1)
+#endif
 	{
 		const strg errmsg = "Failed closing 'Shaderc.exe': " + command.str();
 		throw BigError(errmsg);
