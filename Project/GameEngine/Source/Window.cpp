@@ -7,8 +7,7 @@
 #include "../Include/BigError.hpp"
 
 #if __APPLE__
-#include <SDL3/SDL_metal.h>
-#import <SDL3/SDL_system.h>
+extern "C" void* GetMetalLayerFromSDL(SDL_PropertiesID& wid);
 #endif
 
 using namespace GameEngine;
@@ -36,7 +35,7 @@ void Window::Release()
 
 void Window::ShowSplashScreen(strgv filename)
 {
-    const strg filePath = FileSystem::GetResourcePath(filename);
+	const strg filePath = FileSystem::GetResourcePath(filename).string();
 	if (!FileSystem::Exists(filePath))
 	{
 		const strg errmsg = "File does not exist: " + strg(filename);
@@ -163,8 +162,9 @@ void* Window::GetNativePtr()
 	SDL_PropertiesID wid = SDL_GetWindowProperties(mWndHandle);
 #if WIN32
 	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
+	return hwnd;
 #elif __APPLE__
-    return SDL_Metal_GetLayer(mWndHandle);
+    return GetMetalLayerFromSDL(wid);
 #endif
     throw BigError("Invalid Platform!");
 }

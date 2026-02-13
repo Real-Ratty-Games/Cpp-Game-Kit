@@ -38,6 +38,6 @@ namespace GameEngine::FileSystem
 	GAMEENGINEAPI  void					WriteBinaryFile(strgv filepath, std::vector<char>& data);
 	GAMEENGINEAPI  void					WriteTextFile(strgv filepath, strgv text);
 
-    std::filesystem::path GetResourcePath(strgv filename);
+	GAMEENGINEAPI std::filesystem::path GetResourcePath(strgv filename);
 }
 #endif

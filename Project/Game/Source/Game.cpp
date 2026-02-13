@@ -23,7 +23,7 @@ bool GameProgram::Initialize()
 	Window::Initialize();
 	Window::ShowSplashScreen();
 
-    const strg cursorPath = FileSystem::GetResourcePath("Data/Cursor.bmp");
+    const strg cursorPath = FileSystem::GetResourcePath("Data/Cursor.bmp").string();
 	_SdlCursor = Window::LoadHardwareCursorImage(cursorPath);
 	Window::SetHardwareCursorImage(_SdlCursor);
 

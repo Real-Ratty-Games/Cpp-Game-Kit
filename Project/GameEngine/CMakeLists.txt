@@ -71,13 +71,25 @@ set(MATHFILES_SOURCE "Source/Collision.cpp"
 )
 source_group("Math/Src/" FILES ${MATHFILES_SOURCE})
 
-set(OSFILES_HEADER "Include/Gamepad.hpp"
-"Include/Input.hpp"
-"Include/InputTypes.hpp"
-"Include/Sound.hpp"
-"Include/Window.hpp"
-)
-source_group("OS/Inc/" FILES ${OSFILES_HEADER})
+if(APPLE)
+	set(OSFILES_HEADER "Include/Gamepad.hpp"
+	"Include/Input.hpp"
+	"Include/InputTypes.hpp"
+	"Include/Sound.hpp"
+	"Include/Window.hpp"
+	"Private/SDLMetalBridge.mm"
+	)
+	source_group("OS/Inc/" FILES ${OSFILES_HEADER})
+
+else()
+	set(OSFILES_HEADER "Include/Gamepad.hpp"
+	"Include/Input.hpp"
+	"Include/InputTypes.hpp"
+	"Include/Sound.hpp"
+	"Include/Window.hpp"
+	)
+	source_group("OS/Inc/" FILES ${OSFILES_HEADER})
+endif()
 
 set(OSFILES_SOURCE "Source/Gamepad.cpp"
 "Source/Input.cpp"
