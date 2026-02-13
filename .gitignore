@@ -43,6 +43,17 @@ ipch/
 *.dll
 *.exe
 
+# Visual Studio project files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.user
+*.userosscache
+*.VC.db
+*.VC.opendb
+
 # Xcode
 build/
 DerivedData/
