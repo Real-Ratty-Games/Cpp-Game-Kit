@@ -1,6 +1,10 @@
 file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
 
-add_library(GameEngine SHARED ${SOURCES})
+if(APPLE)
+	add_library(GameEngine STATIC ${SOURCES})
+else()
+	add_library(GameEngine SHARED ${SOURCES})
+endif()
 
 set(COREFILES_HEADER "Include/Alarm.hpp"
 "Include/API.hpp"
