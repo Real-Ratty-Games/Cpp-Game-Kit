@@ -6,10 +6,6 @@
 #include "../Include/FileSystem.hpp"
 #include "../Include/BigError.hpp"
 
-#if __APPLE__
-extern "C" void* GetMetalLayerFromSDL(SDL_PropertiesID* wid);
-#endif
-
 using namespace GameEngine;
 
 SDL_Window*		Window::sSplashWndHandle	= nullptr;
@@ -164,7 +160,7 @@ void* Window::GetNativePtr()
 	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
 	return hwnd;
 #elif __APPLE__
-    return GetMetalLayerFromSDL(&wid);
+    return nullptr;
 #endif
     throw BigError("Invalid Platform!");
 }
