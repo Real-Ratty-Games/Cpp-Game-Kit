@@ -71,32 +71,30 @@ set(MATHFILES_SOURCE "Source/Collision.cpp"
 )
 source_group("Math/Src/" FILES ${MATHFILES_SOURCE})
 
+set(OSFILES_HEADER "Include/Gamepad.hpp"
+"Include/Input.hpp"
+"Include/InputTypes.hpp"
+"Include/Sound.hpp"
+"Include/Window.hpp"
+)
+source_group("OS/Inc/" FILES ${OSFILES_HEADER})
+
 if(APPLE)
-	set(OSFILES_HEADER "Include/Gamepad.hpp"
-	"Include/Input.hpp"
-	"Include/InputTypes.hpp"
-	"Include/Sound.hpp"
-	"Include/Window.hpp"
+	set(OSFILES_SOURCE "Source/Gamepad.cpp"
+	"Source/Input.cpp"
+	"Source/Sound.cpp"
+	"Source/Window.cpp"
 	"Private/SDLMetalBridge.mm"
 	)
-	source_group("OS/Inc/" FILES ${OSFILES_HEADER})
-
+	source_group("OS/Src/" FILES ${OSFILES_SOURCE})
 else()
-	set(OSFILES_HEADER "Include/Gamepad.hpp"
-	"Include/Input.hpp"
-	"Include/InputTypes.hpp"
-	"Include/Sound.hpp"
-	"Include/Window.hpp"
+	set(OSFILES_SOURCE "Source/Gamepad.cpp"
+	"Source/Input.cpp"
+	"Source/Sound.cpp"
+	"Source/Window.cpp"
 	)
-	source_group("OS/Inc/" FILES ${OSFILES_HEADER})
+	source_group("OS/Src/" FILES ${OSFILES_SOURCE})
 endif()
-
-set(OSFILES_SOURCE "Source/Gamepad.cpp"
-"Source/Input.cpp"
-"Source/Sound.cpp"
-"Source/Window.cpp"
-)
-source_group("OS/Src/" FILES ${OSFILES_SOURCE})
 
 target_compile_definitions(GameEngine PRIVATE GAMEENGINEAPI_EXPORT)
 
