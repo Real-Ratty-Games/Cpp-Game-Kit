@@ -3,7 +3,7 @@
 if (WIN32)
     add_executable (Game ${SOURCES})
 	set_target_properties(Game PROPERTIES
-    VS_DEBUGGER_ENVIRONMENT ${CMAKE_SOURCE_DIR}/../GameDir
+		VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../GameDir)
 else()
     add_executable(Game MACOSX_BUNDLE ${SOURCES})
 	set_target_properties(Game PROPERTIES)
@@ -33,10 +33,16 @@ else()
 	include_directories(Game PRIVATE "../GameEngine/Include")
 endif()
 
+set_target_properties(Game PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}/x64/Debug
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/x64/Release
+    RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_SOURCE_DIR}/x64/RelWithDebInfo
+    RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_SOURCE_DIR}/x64/MinSizeRel
+)
+
 if (WIN32)
 	if(MSVC)
 		target_compile_options(Game PRIVATE /Zc:__cplusplus /Zc:preprocessor)
-		target_compile_options(Game PRIVATE /WX /wd4251 /wd4275 /wd4267)
 	endif()
 endif()
 
