@@ -1,19 +1,6 @@
 file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
 
-if(APPLE)
-	add_library(GameEngine STATIC ${SOURCES})
-else()
-	add_library(GameEngine SHARED ${SOURCES})
-endif()
-
-if(APPLE)
-	set_target_properties(GameEngine PROPERTIES
-		RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_SOURCE_DIR}/arm64/Debug/
-		RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/arm64/Release/
-		ARCHIVE_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_SOURCE_DIR}/arm64/Debug/
-		ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/arm64/Release/
-	)
-endif()
+add_library(GameEngine SHARED ${SOURCES})
 
 set(COREFILES_HEADER "Include/Alarm.hpp"
 "Include/API.hpp"
@@ -93,11 +80,11 @@ set(OSFILES_HEADER "Include/Gamepad.hpp"
 source_group("OS/Inc/" FILES ${OSFILES_HEADER})
 
 set(OSFILES_SOURCE "Source/Gamepad.cpp"
-	"Source/Input.cpp"
-	"Source/Sound.cpp"
-	"Source/Window.cpp"
-	)
-	source_group("OS/Src/" FILES ${OSFILES_SOURCE})
+"Source/Input.cpp"
+"Source/Sound.cpp"
+"Source/Window.cpp"
+)
+source_group("OS/Src/" FILES ${OSFILES_SOURCE})
 
 target_compile_definitions(GameEngine PRIVATE GAMEENGINEAPI_EXPORT)
 
