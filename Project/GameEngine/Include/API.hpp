@@ -13,7 +13,7 @@
     #endif
 #elif __APPLE__
     #ifdef GAMEENGINEAPI_EXPORT
-        #define GAMEENGINEAPI __attribute__((visibility("default")))
+        #define GAMEENGINEAPI
     #else
         #define GAMEENGINEAPI
     #endif
