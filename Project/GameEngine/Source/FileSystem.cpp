@@ -6,6 +6,10 @@
 #include <filesystem>
 #include <fstream>
 
+#if __APPLE__
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 using namespace GameEngine;
 
 bool FileSystem::Exists(strgv filepath)
@@ -96,4 +100,19 @@ void FileSystem::WriteTextFile(strgv filepath, strgv text)
 	std::ofstream file(filepath.data());
 	file.write(text.data(), text.size());
 	file.close();
+}
+
+std::filesystem::path FileSystem::GetResourcePath(strgv filename)
+{
+#if __APPLE__
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+        CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
+        char path[PATH_MAX];
+        if (CFURLGetFileSystemRepresentation(resourcesURL, true, (uint8*)path, PATH_MAX)) {
+            CFRelease(resourcesURL);
+            return std::filesystem::path(path) / filename;
+        }
+        CFRelease(resourcesURL);
+#endif
+    return filename;
 }

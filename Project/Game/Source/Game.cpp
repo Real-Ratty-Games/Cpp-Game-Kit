@@ -4,6 +4,7 @@
 ======================================================*/
 #include "../Include/Game.hpp"
 #include "../Include/GameWindow.hpp"
+#include <FileSystem.hpp>
 #include <Renderer.hpp>
 #include <Input.hpp>
 
@@ -22,7 +23,8 @@ bool GameProgram::Initialize()
 	Window::Initialize();
 	Window::ShowSplashScreen();
 
-	_SdlCursor = Window::LoadHardwareCursorImage("Data/Cursor.bmp");
+    const strg cursorPath = FileSystem::GetResourcePath("Data/Cursor.bmp");
+	_SdlCursor = Window::LoadHardwareCursorImage(cursorPath);
 	Window::SetHardwareCursorImage(_SdlCursor);
 
 	const vec2 resolution(1280, 720);
@@ -31,13 +33,13 @@ bool GameProgram::Initialize()
 	mWindow->Create("My Game", resolution.X, resolution.Y, false);
 
 	// init renderer
-	if (!Renderer::Initialize(mWindow, DrawAPI::DIRECT3D11, true, MSAA::NONE))
-		return false;
+	if (!Renderer::Initialize(mWindow, DrawAPI::METAL, true, MSAA::NONE))
+		 return false;
 
 	// setup shaders
-	Shader::SetShaderDirectory("Data/Shaders");
-	const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
-	LoadShaders();
+	// Shader::SetShaderDirectory("Data/Shaders");
+	// const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
+	// LoadShaders();
 
 	// create back buffer surface
 	mBackBufferSurface = new DrawSurface2D(0, resolution, mWindow->GetNativePtr());
@@ -85,7 +87,7 @@ void GameProgram::Cleanup()
 		mBackBufferSurface = nullptr;
 	}
 
-	FreeShaders();
+	// FreeShaders();
 	Renderer::Release();
 
 	Window::SetHardwareCursorImage(nullptr);

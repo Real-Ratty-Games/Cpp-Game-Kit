@@ -6,6 +6,11 @@
 #include "../Include/FileSystem.hpp"
 #include "../Include/BigError.hpp"
 
+#if __APPLE__
+#include <SDL3/SDL_metal.h>
+#import <SDL3/SDL_system.h>
+#endif
+
 using namespace GameEngine;
 
 SDL_Window*		Window::sSplashWndHandle	= nullptr;
@@ -31,13 +36,14 @@ void Window::Release()
 
 void Window::ShowSplashScreen(strgv filename)
 {
-	if (!FileSystem::Exists(filename))
+    const strg filePath = FileSystem::GetResourcePath(filename);
+	if (!FileSystem::Exists(filePath))
 	{
 		const strg errmsg = "File does not exist: " + strg(filename);
 		throw BigError(errmsg);
 	}
 
-	SDL_Surface* surface = SDL_LoadBMP(filename.data());
+	SDL_Surface* surface = SDL_LoadBMP(filePath.data());
 
 	sSplashWndHandle = SDL_CreateWindow("Splash", surface->w, surface->h, SDL_WINDOW_BORDERLESS | SDL_WINDOW_ALWAYS_ON_TOP);
 	sSplashWndRenderer = SDL_CreateRenderer(sSplashWndHandle, NULL);
@@ -158,9 +164,7 @@ void* Window::GetNativePtr()
 #if WIN32
 	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
 #elif __APPLE__
-	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_COCOA_WINDOW_POINTER, nullptr);
-#else
-	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_X11_WINDOW_NUMBER, nullptr);
+    return SDL_Metal_GetLayer(mWndHandle);
 #endif
-	return hwnd;
+    throw BigError("Invalid Platform!");
 }

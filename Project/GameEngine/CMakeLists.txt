@@ -1,4 +1,4 @@
-﻿file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
+file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
 
 add_library(GameEngine SHARED ${SOURCES})
 
@@ -107,6 +107,18 @@ if (WIN32)
 	if(MSVC)
 		target_compile_options(GameEngine PRIVATE /Zc:__cplusplus /Zc:preprocessor)
 	endif()
+else()
+	find_library(COREAUDIO_FRAMEWORK CoreAudio)
+	find_library(AUDIOTOOLBOX_FRAMEWORK AudioToolbox)
+
+	find_library(METAL_FRAMEWORK Metal)
+	find_library(COCOA_FRAMEWORK Cocoa)
+	find_library(FOUNDATION_FRAMEWORK Foundation)
+	find_library(QUARTZCORE_FRAMEWORK QuartzCore)
+
+	find_library(COREFRAMEWORK CoreFoundation)
+	find_library(IOKIT_FRAMEWORK IOKit)
+		target_link_libraries(GameEngine PRIVATE ${COREFRAMEWORK} ${IOKIT_FRAMEWORK} ${METAL_FRAMEWORK} ${COCOA_FRAMEWORK} ${FOUNDATION_FRAMEWORK} ${QUARTZCORE_FRAMEWORK} ${COREAUDIO_FRAMEWORK} ${AUDIOTOOLBOX_FRAMEWORK})
 endif()
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

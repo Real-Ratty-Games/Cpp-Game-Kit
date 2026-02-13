@@ -24,7 +24,8 @@ namespace GameEngine
 	{
 		DIRECT3D11	= bgfx::RendererType::Direct3D11,
 		DIRECT3D12	= bgfx::RendererType::Direct3D12,
-		VULKAN		= bgfx::RendererType::Vulkan
+		VULKAN		= bgfx::RendererType::Vulkan,
+        METAL       = bgfx::RendererType::Metal
 	};
 
 	enum class MSAA : uint

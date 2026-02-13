@@ -1,6 +1,7 @@
 # Folders
 Project/Thirdparty/
 GameDir/
+Project/arm64
 
 # macOS system files
 .DS_Store

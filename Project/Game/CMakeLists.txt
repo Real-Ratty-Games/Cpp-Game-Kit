@@ -1,3 +1,13 @@
+if(APPLE)
+    if(CMAKE_BUILD_TYPE MATCHES Debug)
+        set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug")
+    else()
+        set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release")
+    endif()
+
+    file(GLOB DYLIBS "${DYLIB_DIR}/*.dylib")
+endif()
+
 file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
 
 if (WIN32)
@@ -15,6 +25,26 @@ target_link_libraries(Game PRIVATE Assimp::Assimp)
 target_link_libraries(Game PRIVATE bgfx::bgfx)
 target_link_libraries(Game PRIVATE bx::bx)
 target_link_libraries(Game PRIVATE bimg::bimg)
+
+if(APPLE)
+    set(GAME_FRAMEWORKS_DIR "$<TARGET_BUNDLE_DIR:Game>/Contents/Frameworks")
+
+    add_custom_command(TARGET Game POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
+    )
+
+        get_filename_component(dylib_name "${dylib}" NAME)
+
+        add_custom_command(TARGET Game POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy "${dylib}" "${GAME_FRAMEWORKS_DIR}/${dylib_name}"
+            COMMAND install_name_tool -change "@rpath/${dylib_name}" "@executable_path/../Frameworks/${dylib_name}" "$<TARGET_FILE:Game>"
+        )
+    endforeach()
+
+    add_custom_command(TARGET Game POST_BUILD
+        COMMAND install_name_tool -add_rpath "@executable_path/../Frameworks" "$<TARGET_FILE:Game>"
+    )
+endif()
 
 if (WIN32)
 	target_link_libraries(Game PRIVATE GameEngine)
@@ -49,6 +79,18 @@ else()
     		RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_SOURCE_DIR}/arm64/RelWithDebInfo
     		RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_SOURCE_DIR}/arm64/MinSizeRel
 	)
+
+	find_library(COREAUDIO_FRAMEWORK CoreAudio)
+	find_library(AUDIOTOOLBOX_FRAMEWORK AudioToolbox)
+
+	find_library(METAL_FRAMEWORK Metal)
+	find_library(COCOA_FRAMEWORK Cocoa)
+	find_library(FOUNDATION_FRAMEWORK Foundation)
+	find_library(QUARTZCORE_FRAMEWORK QuartzCore)
+
+	find_library(COREFRAMEWORK CoreFoundation)
+	find_library(IOKIT_FRAMEWORK IOKit)
+	target_link_libraries(Game PRIVATE ${COREFRAMEWORK} ${IOKIT_FRAMEWORK} ${METAL_FRAMEWORK} ${COCOA_FRAMEWORK} ${FOUNDATION_FRAMEWORK} ${QUARTZCORE_FRAMEWORK} ${COREAUDIO_FRAMEWORK} ${AUDIOTOOLBOX_FRAMEWORK})
 endif()
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

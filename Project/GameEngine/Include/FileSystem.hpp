@@ -6,6 +6,7 @@
 #define FILESYSTEM_HPP_
 #include "API.hpp"
 #include "SystemTypes.hpp"
+#include <filesystem>
 #include <vector>
 
 /// <summary>
@@ -36,5 +37,7 @@ namespace GameEngine::FileSystem
 	GAMEENGINEAPI  std::vector<char>	ReadBinaryFile(strgv filepath);
 	GAMEENGINEAPI  void					WriteBinaryFile(strgv filepath, std::vector<char>& data);
 	GAMEENGINEAPI  void					WriteTextFile(strgv filepath, strgv text);
+
+    std::filesystem::path GetResourcePath(strgv filename);
 }
 #endif
