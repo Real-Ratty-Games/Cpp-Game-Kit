@@ -4,10 +4,6 @@ if(APPLE)
     else()
         set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release")
     endif()
-	
-	set_target_properties(Game PROPERTIES
-    BUILD_RPATH "${DYLIB_DIR}"
-    INSTALL_RPATH "@executable_path"
 )
 endif()
 
@@ -19,6 +15,10 @@ if (WIN32)
 		VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../GameDir)
 else()
     add_executable(Game MACOSX_BUNDLE ${SOURCES})
+	
+	set_target_properties(Game PROPERTIES
+		BUILD_RPATH "${DYLIB_DIR}"
+		INSTALL_RPATH "@executable_path"
 endif()
 
 target_link_libraries(Game PRIVATE GameEngine)
