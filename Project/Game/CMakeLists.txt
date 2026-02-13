@@ -33,6 +33,7 @@ if(APPLE)
         COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
     )
 
+    foreach(dylib IN LISTS DYLIBS)
         get_filename_component(dylib_name "${dylib}" NAME)
 
         add_custom_command(TARGET Game POST_BUILD
