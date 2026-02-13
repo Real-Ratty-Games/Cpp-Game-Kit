@@ -23,18 +23,7 @@ else()
 endif()
 
 target_link_libraries(Game PRIVATE GameEngine)
-if(WIN32)
-	target_link_directories(Game PRIVATE
-			$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/x64/Debug/>
-			$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/x64/Release/>
-	)
-elseif(APPLE)
-	target_link_directories(Game PRIVATE
-			$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/arm64/Debug/>
-			$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/arm64/Release/>
-	)
-endif()
-include_directories(Game PRIVATE "../GameEngine/Include")
+target_include_directories(Game PRIVATE ../GameEngine/Include)
 
 # Thirdparty
 target_link_libraries(Game PRIVATE SoLoud::SoLoud)
