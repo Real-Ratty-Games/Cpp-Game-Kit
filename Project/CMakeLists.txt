@@ -38,8 +38,8 @@ if (WIN32)
 	)
 else()
 	set_target_properties(SDL3::SDL3 PROPERTIES
-		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libSDL3.0.dylib"
-		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libSDL3.0.dylib"
+		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libSDL3.dylib"
+		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libSDL3.dylib"
 		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/Thirdparty/Inc"
 	)
 endif()
@@ -53,8 +53,8 @@ if (WIN32)
 	)
 else()
 	set_target_properties(Assimp::Assimp PROPERTIES
-		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libassimpd.6.0.4.dylib"
-		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libassimp.6.0.4.dylib"
+		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/libassimpd.a"
+		IMPORTED_LOCATION_RELEASE "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/libassimp.a"
 		INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/Thirdparty/Inc"
 	)
 endif()

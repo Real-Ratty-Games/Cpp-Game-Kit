@@ -79,22 +79,12 @@ set(OSFILES_HEADER "Include/Gamepad.hpp"
 )
 source_group("OS/Inc/" FILES ${OSFILES_HEADER})
 
-if(APPLE)
-	set(OSFILES_SOURCE "Source/Gamepad.cpp"
-	"Source/Input.cpp"
-	"Source/Sound.cpp"
-	"Source/Window.cpp"
-	"Source/SDLMetalBridge.mm"
-	)
-	source_group("OS/Src/" FILES ${OSFILES_SOURCE})
-else()
-	set(OSFILES_SOURCE "Source/Gamepad.cpp"
+set(OSFILES_SOURCE "Source/Gamepad.cpp"
 	"Source/Input.cpp"
 	"Source/Sound.cpp"
 	"Source/Window.cpp"
 	)
 	source_group("OS/Src/" FILES ${OSFILES_SOURCE})
-endif()
 
 target_compile_definitions(GameEngine PRIVATE GAMEENGINEAPI_EXPORT)
 
