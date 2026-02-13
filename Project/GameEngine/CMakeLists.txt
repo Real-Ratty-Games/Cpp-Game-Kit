@@ -84,7 +84,7 @@ if(APPLE)
 	"Source/Input.cpp"
 	"Source/Sound.cpp"
 	"Source/Window.cpp"
-	"Private/SDLMetalBridge.mm"
+	"Source/SDLMetalBridge.mm"
 	)
 	source_group("OS/Src/" FILES ${OSFILES_SOURCE})
 else()
