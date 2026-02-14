@@ -1,16 +1,17 @@
 import platform
 import zipfile
+import tarfile
 import shutil
 import os
 
 os_name = platform.system()
-thp_zip_name = "Thirdparty.zip"
+thp_tar_name = "Thirdparty.tar.gz"
 data_zip_name = "Data.zip"
 tool_zip_name = "Tool.zip"
 gamedir_path = "../GameDir/"
-
-with zipfile.ZipFile(thp_zip_name, "r") as zipRef:
-    zipRef.extractall()
+    
+with tarfile.open(thp_tar_name, "r:*") as tar:
+    tar.extractall()
 
 os.makedirs(gamedir_path, exist_ok=True)
 
