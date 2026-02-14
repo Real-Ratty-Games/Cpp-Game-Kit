@@ -12,6 +12,7 @@ os_win                  = "Windows"
 os_mac                  = "Darwin"
 
 thirdparty_win_name     = "Thirdparty.zip"
+thirdparty_mac_name     = "Thirdparty.tar"
 data_zip_name           = "Data.zip"
 tool_zip_name           = "Tool.zip"
 gamedir_path            = "../GameDir/"
@@ -39,12 +40,7 @@ win_file_dest = [
     "x64/Debug/SDL3.dll",
     "x64/Release/assimp-vc143-mt.dll",
     "x64/Release/SDL3.dll"
-]
-
-
-#    with tarfile.open(thirdparty_win_name, "r:*") as tar:
-        #tar.extractall()
-        
+]       
 
 #---------------------
 # CODE
@@ -66,6 +62,9 @@ if os_name == os_win:
     with zipfile.ZipFile(tool_zip_name, 'r') as zip_ref:
         zip_ref.extract(shaderc_name_win, path=gamedir_path)
 elif os_name == os_mac:
+    with tarfile.open(thirdparty_mac_name, "r:*") as tar:
+        tar.extractall()
+    
     with zipfile.ZipFile(tool_zip_name, 'r') as zip_ref:
         zip_ref.extract(shaderc_name_mac, path=gamedir_path)
 
