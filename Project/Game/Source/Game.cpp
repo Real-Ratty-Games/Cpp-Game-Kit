@@ -12,11 +12,6 @@ using namespace MyGame;
 
 static SDL_Cursor* _SdlCursor;
 
-static SpriteInstanceData	_SimpleTextData;
-static Texture _ftex;
-static Sprite* _spriteFont;
-static SpriteFont _ffont;
-
 void GameProgram::OnResize(vec2i& size)
 {
 	mBackBufferSurface->OnResize(size);
@@ -48,9 +43,7 @@ bool GameProgram::Initialize()
 
 	// setup shaders
 	Shader::SetShaderDirectory("Data/Shaders");
-    
-    const strg shaderPath = FileSystem::GetResourcePath("Data\\Development\\Shaders").string();
-	const strg result = Shader::CompileAllShaders(shaderPath);
+	const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
 	LoadShaders();
 
 	// create back buffer surface
@@ -86,10 +79,7 @@ void GameProgram::Draw()
 	if (!mWindow->IsIconified())
 	{
         Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
-        
-			Renderer::SetActiveShader(&mSprite2DAtlasIShader);
-			Renderer::DrawSpriteFontText(_ffont, _SimpleTextData);
-
+		// Render here...
         Renderer::EndDrawSprite();
 	}
 	Renderer::EndDraw();
@@ -139,33 +129,6 @@ void GameProgram::LoadShaders()
 	mSprite2DAtlasIShader.Initialize("Sprite2DAtlasI");
 	mSprite2DAtlasIShader.InitUniform("s_texColor", bgfx::UniformType::Sampler);
 	mSprite2DAtlasIShader.InitUniform("atlasInfo", bgfx::UniformType::Vec4, 2);
-
-
-	const strg fontTexPath = FileSystem::GetResourcePath("Data/Font.png").string();
-	Renderer::LoadTextureFromFile(_ftex, fontTexPath, BGFX_SAMPLER_MIN_POINT |
-		BGFX_SAMPLER_MAG_POINT |
-		BGFX_SAMPLER_U_CLAMP |
-		BGFX_SAMPLER_V_CLAMP, "Font", false);
-
-	_spriteFont = new Sprite(&_ftex);
-
-	_ffont.pSprite = _spriteFont;
-	_ffont.GlyphSize = vec2(18, 30);
-	_ffont.Glyphs =
-		"AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
-		"ÄäÖöÜü"
-		"0123456789"
-		",;.:_-!?\"§$%&/()=*+~'#|<>²³{[]}\\";
-
-
-	Transform2D transf;
-	transf.Location = vec2(100, 100);
-	transf.Scale = vec2(1);
-	transf.Rotation = 0.0f;
-	transf.ImageColor = Color(1);
-	Renderer::PrepareSpriteFontText(_ffont, transf, _SimpleTextData, "This is now working on macOS!\nCool, right?");
-
-
 }
 
 void GameProgram::FreeShaders()
@@ -174,7 +137,4 @@ void GameProgram::FreeShaders()
 	mSprite2DIShader.Release();
 	mSprite2DAtlasShader.Release();
 	mSprite2DAtlasIShader.Release();
-
-	delete _spriteFont;
-	Renderer::FreeTexture(_ftex);
 }
