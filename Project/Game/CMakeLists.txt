@@ -26,8 +26,11 @@ target_link_libraries(Game PRIVATE bgfx::bgfx)
 target_link_libraries(Game PRIVATE bx::bx)
 target_link_libraries(Game PRIVATE bimg::bimg)
 
+
+
 if(APPLE)
-    set(GAME_FRAMEWORKS_DIR "$<TARGET_BUNDLE_DIR:Game>/Contents/Frameworks")
+    set(GAME_APP "$<TARGET_BUNDLE_DIR:Game>")
+    set(GAME_FRAMEWORKS_DIR "${GAME_APP}/Contents/Frameworks")
 
     add_custom_command(TARGET Game POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
@@ -35,17 +38,38 @@ if(APPLE)
 
     foreach(dylib IN LISTS DYLIBS)
         get_filename_component(dylib_name "${dylib}" NAME)
+        set(dest "${GAME_FRAMEWORKS_DIR}/${dylib_name}")
 
         add_custom_command(TARGET Game POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy "${dylib}" "${GAME_FRAMEWORKS_DIR}/${dylib_name}"
-            COMMAND install_name_tool -change "@rpath/${dylib_name}" "@executable_path/../Frameworks/${dylib_name}" "$<TARGET_FILE:Game>"
+            COMMAND ${CMAKE_COMMAND} -E copy "${dylib}" "${dest}"
+
+            # Fix dylib ID
+            COMMAND install_name_tool -id "@rpath/${dylib_name}" "${dest}"
+
+            # Make app look in Frameworks
+            COMMAND install_name_tool -change "@rpath/${dylib_name}"
+                    "@executable_path/../Frameworks/${dylib_name}"
+                    "$<TARGET_FILE:Game>"
+
+            # Sign the dylib
+            COMMAND codesign --force --sign - "${dest}"
         )
     endforeach()
 
+    # Add runtime search path
     add_custom_command(TARGET Game POST_BUILD
         COMMAND install_name_tool -add_rpath "@executable_path/../Frameworks" "$<TARGET_FILE:Game>"
     )
+
+    # Sign entire bundle LAST
+    add_custom_command(TARGET Game POST_BUILD
+        COMMAND codesign --force --deep --sign - "${GAME_APP}"
+    )
 endif()
+
+
+
+
 
 if (WIN32)
 	target_link_libraries(Game PRIVATE GameEngine)
