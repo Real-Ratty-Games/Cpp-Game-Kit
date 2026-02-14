@@ -10,7 +10,9 @@ A bare-bones C++ framework for game development.
 ## Building
 * Requires Python to be installed
 * Use CMake to build
-* On macOS, make sure the ```Data``` is inside the app bundles ```Resources``` folder
+* On macOS, make sure the ```Data``` is inside the app bundles ```Resources``` folder  
+  
+Preferably, use VS2022 or XCode.  
   
 ## Features
 * <b>Core</b>
