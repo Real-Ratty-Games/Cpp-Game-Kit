@@ -47,10 +47,10 @@ win_file_dest = [
 #---------------------
 os.makedirs(gamedir_path, exist_ok=True)
 
+with zipfile.ZipFile(thirdparty_win_name, 'r') as zip_ref:
+    zip_ref.extractall()
+
 if os_name == os_win:
-    with zipfile.ZipFile(thirdparty_win_name, 'r') as zip_ref:
-        zip_ref.extractall()
-    
     os.makedirs(debug_win_path, exist_ok=True)
     os.makedirs(release_win_path, exist_ok=True)
             

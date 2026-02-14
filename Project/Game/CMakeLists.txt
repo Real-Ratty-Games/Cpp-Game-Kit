@@ -6,6 +6,7 @@ if(APPLE)
     endif()
 
     file(GLOB DYLIBS "${DYLIB_DIR}/*.dylib")
+    list(FILTER DYLIBS EXCLUDE REGEX ".*/\\._.*")
 endif()
 
 file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
