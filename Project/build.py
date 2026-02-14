@@ -17,7 +17,7 @@ tool_zip_name           = "Tool.zip"
 gamedir_path            = "../GameDir/"
 
 shaderc_name_win        = "Shaderc.exe"
-shaderc_name_mac        = "Shaderc"
+shaderc_name_mac        = "shadercRelease"
 
 debug_win_path          = "x64/Debug"
 release_win_path        = "x64/Release"
