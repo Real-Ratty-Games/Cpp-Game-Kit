@@ -153,14 +153,14 @@ bool Window::GetFullscreen()
 	return bFullscreen;
 }
 
-void* Window::GetNativePtr()
+void* Window::GetNativePtr(uint metalViewTag)
 {
 	SDL_PropertiesID wid = SDL_GetWindowProperties(mWndHandle);
 #if WIN32
 	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
 	return hwnd;
 #elif __APPLE__
-    return nullptr;
+	return SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER, &metalViewTag);
 #endif
     throw BigError("Invalid Platform!");
 }

@@ -25,6 +25,7 @@ release_win_path        = "x64/Release"
 
 d3d_dir                 = "../GameDir/Data/Shaders/D3D"
 spirv_dir               = "../GameDir/Data/Shaders/SPIRV"
+metal_dir               = "../GameDir/Data/Shaders/METAL"
 
 win_file_copy = [
     "Thirdparty/x64/Debug/assimp-vc143-mtd.dll",
@@ -58,6 +59,7 @@ if os_name == os_win:
         shutil.copy2(src, dst)
 
     os.makedirs(d3d_dir, exist_ok=True)
+    os.makedirs(spirv_dir, exist_ok=True)
     
     with zipfile.ZipFile(tool_zip_name, 'r') as zip_ref:
         zip_ref.extract(shaderc_name_win, path=gamedir_path)
@@ -68,7 +70,7 @@ elif os_name == os_mac:
     with zipfile.ZipFile(tool_zip_name, 'r') as zip_ref:
         zip_ref.extract(shaderc_name_mac, path=gamedir_path)
 
-os.makedirs(spirv_dir, exist_ok=True)
+    os.makedirs(metal_dir, exist_ok=True)
 
 with zipfile.ZipFile(data_zip_name, "r") as zipRef:
         zipRef.extractall(gamedir_path)

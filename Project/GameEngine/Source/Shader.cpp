@@ -53,12 +53,12 @@ strg Shader::CompileAllShaders(strgv dir)
 		result += Shader_CompileShader(arg3) + "\n";
 #elif __APPLE__
 		const strg inpath = strg(dir) + "\\" + name + "\\" + name;
-		const strg outpathVK = _ShaderDir + "/SPIRV/" + name;
+		const strg outpathMT = _ShaderDir + "/METAL/" + name;
 
-		const strg arg2 = "-f " + inpath + ".vs -o " + outpathVK + ".vsb --type v --platform osx -p spirv";
+		const strg arg2 = "-f " + inpath + ".vs -o " + outpathMT + ".vsb --type v --platform metal -i shaders";
 		result += Shader_CompileShader(arg2) + "\n";
 
-		const strg arg3 = "-f " + inpath + ".fs -o " + outpathVK + ".fsb --type f --platform osx -p spirv";
+		const strg arg3 = "-f " + inpath + ".fs -o " + outpathMT + ".fsb --type f --platform metal -i shaders";
 		result += Shader_CompileShader(arg3) + "\n";
 #endif
 	}
@@ -72,12 +72,14 @@ void Shader::Initialize(strgv shadername)
 	strg typenm = "D3D";
 	if (type == bgfx::RendererType::Vulkan)
 		typenm = "SPIRV";
+	else if (type == bgfx::RendererType::Metal)
+		typenm = "METAL";
 
 	strg path(_ShaderDir);
 	path += "/" + typenm + "/" + strg(shadername);
 
-	strg vpath = path + ".vsb";
-	strg fpath = path + ".fsb";
+	strg vpath = FileSystem::GetResourcePath(path + ".vsb").string();
+	strg fpath = FileSystem::GetResourcePath(path + ".fsb").string();
 
 	bx::FileReader vFileReader;
 	bx::Error err;

@@ -14,7 +14,7 @@ static SDL_Cursor* _SdlCursor;
 
 void GameProgram::OnResize(vec2i& size)
 {
-	// mBackBufferSurface->OnResize(size);
+	mBackBufferSurface->OnResize(size);
 }
 
 bool GameProgram::Initialize()
@@ -33,18 +33,23 @@ bool GameProgram::Initialize()
 	mWindow->Create("My Game", resolution.X, resolution.Y, false);
 
 	// init renderer
-	// if (!Renderer::Initialize(mWindow, DrawAPI::METAL, true, MSAA::NONE))
-	//	 return false;
+	DrawAPI dapi = DrawAPI::DIRECT3D11;
+#if __APPLE__
+	dapi = DrawAPI::METAL;
+#endif
+
+	if (!Renderer::Initialize(mWindow, dapi, true, MSAA::NONE))
+		 return false;
 
 	// setup shaders
-	// Shader::SetShaderDirectory("Data/Shaders");
-	// const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
-	// LoadShaders();
+	Shader::SetShaderDirectory("Data/Shaders");
+	const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
+	LoadShaders();
 
 	// create back buffer surface
-	// mBackBufferSurface = new DrawSurface2D(0, resolution, mWindow->GetNativePtr());
+	mBackBufferSurface = new DrawSurface2D(0, resolution, mWindow->GetNativePtr());
 
-	// mCamera.Size = mWindow->GetSize();
+	mCamera.Size = mWindow->GetSize();
 
 	Window::DestroySplashScreen();
 	mWindow->Show();
@@ -70,25 +75,25 @@ void GameProgram::Tick()
 
 void GameProgram::Draw()
 {
-	// Renderer::BeginDraw();
+	Renderer::BeginDraw();
 	if (!mWindow->IsIconified())
 	{
 		// Render here...
 	}
-	// Renderer::EndDraw();
+	Renderer::EndDraw();
 }
 
 void GameProgram::Cleanup()
 {
-	// if (mBackBufferSurface != nullptr)
-	// {
-	// 	mBackBufferSurface->Release();
-	// 	delete mBackBufferSurface;
-	// 	mBackBufferSurface = nullptr;
-	// }
+	if (mBackBufferSurface != nullptr)
+	{
+		mBackBufferSurface->Release();
+		delete mBackBufferSurface;
+		mBackBufferSurface = nullptr;
+	}
 
-	// FreeShaders();
-	// Renderer::Release();
+	FreeShaders();
+	Renderer::Release();
 
 	Window::SetHardwareCursorImage(nullptr);
 	SDL_DestroyCursor(_SdlCursor);

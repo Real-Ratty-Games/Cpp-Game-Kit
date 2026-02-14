@@ -48,8 +48,9 @@ namespace GameEngine
 		/// <summary>
 		/// Returns native OS window handle
 		/// </summary>
+		/// <param name="metalViewTag">Metal View tag for macOS Metal layer</param>
 		/// <returns></returns>
-		void* GetNativePtr();
+		void* GetNativePtr(uint metalViewTag = 0);
 
 	protected:
 		virtual void EventCallback() = 0;
