@@ -80,12 +80,12 @@ void GameProgram::Draw()
 
 void GameProgram::Cleanup()
 {
-	if (mBackBufferSurface != nullptr)
-	{
-		mBackBufferSurface->Release();
-		delete mBackBufferSurface;
-		mBackBufferSurface = nullptr;
-	}
+	// if (mBackBufferSurface != nullptr)
+	// {
+	// 	mBackBufferSurface->Release();
+	// 	delete mBackBufferSurface;
+	// 	mBackBufferSurface = nullptr;
+	// }
 
 	// FreeShaders();
 	// Renderer::Release();

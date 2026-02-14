@@ -9,7 +9,7 @@ project ("CppGameKit")
 if (WIN32)
 	execute_process(COMMAND py build.py
    	 WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
-else()
+elseif(APPLE)
 	execute_process(COMMAND python3 build.py
   	  WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 endif()
@@ -29,7 +29,7 @@ else()
 	)
 endif()
 
-add_library(SDL3::SDL3 SHARED IMPORTED)
+add_library(SDL3::SDL3 STATIC IMPORTED)
 if (WIN32)
     set_target_properties(SDL3::SDL3 PROPERTIES
 		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/x64/Debug/SDL3.lib"
@@ -44,7 +44,7 @@ else()
 	)
 endif()
 
-add_library(Assimp::Assimp SHARED IMPORTED)
+add_library(Assimp::Assimp STATIC IMPORTED)
 if (WIN32)
     set_target_properties(Assimp::Assimp PROPERTIES
 		IMPORTED_LOCATION_DEBUG   "${CMAKE_SOURCE_DIR}/Thirdparty/x64/Debug/assimp-vc143-mtd.lib"

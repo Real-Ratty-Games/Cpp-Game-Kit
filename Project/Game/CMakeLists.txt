@@ -26,8 +26,6 @@ target_link_libraries(Game PRIVATE bgfx::bgfx)
 target_link_libraries(Game PRIVATE bx::bx)
 target_link_libraries(Game PRIVATE bimg::bimg)
 
-
-
 if(APPLE)
     set(GAME_APP "$<TARGET_BUNDLE_DIR:Game>")
     set(GAME_FRAMEWORKS_DIR "${GAME_APP}/Contents/Frameworks")
@@ -67,25 +65,19 @@ if(APPLE)
     )
 endif()
 
-
-
-
-
+target_link_libraries(Game PRIVATE GameEngine)
 if (WIN32)
-	target_link_libraries(Game PRIVATE GameEngine)
 	target_link_directories(Game PRIVATE
 			$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/../x64/Debug>
 			$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/../x64/Release>
 	)
-	include_directories(Game PRIVATE "../GameEngine/Include")
-else()
-	target_link_libraries(Game PRIVATE GameEngine)
+elseif(APPLE)
 	target_link_directories(Game PRIVATE
 			$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/../arm64/Debug>
 			$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/../arm64/Release>
 	)
-	include_directories(Game PRIVATE "../GameEngine/Include")
 endif()
+target_include_directories(Game PRIVATE "../GameEngine/Include")
 
 if (WIN32)
 	set_target_properties(Game PROPERTIES
