@@ -26,6 +26,10 @@ void Shader::SetShaderDirectory(strgv dir)
 
 strg Shader::CompileAllShaders(strgv dir)
 {
+#if __APPLE__
+	return "Cannot compile shaders on apple device!";
+#endif
+
 	strg result;
 
 	const std::vector<strg> shaders = FileSystem::SubDirectories(dir);
@@ -35,10 +39,10 @@ strg Shader::CompileAllShaders(strgv dir)
 		const strg name = path.filename().string();
 		if (name == "Shared") continue;
 
-#if WIN32
 		const strg inpath = strg(dir) + "\\" + name + "\\" + name;
 		const strg outpathD3D = _ShaderDir + "/D3D/" + name;
 		const strg outpathVK = _ShaderDir + "/SPIRV/" + name;
+		const strg outpathMT = _ShaderDir + "/METAL/" + name;
 
 		const strg arg0 = "-f " + inpath + ".vs -o " + outpathD3D + ".vsb --type v --platform windows -p s_5_0 -O 3";
 		result += Shader_CompileShader(arg0) + "\n";
@@ -51,16 +55,12 @@ strg Shader::CompileAllShaders(strgv dir)
 
 		const strg arg3 = "-f " + inpath + ".fs -o " + outpathVK + ".fsb --type f --platform windows -p spirv";
 		result += Shader_CompileShader(arg3) + "\n";
-#elif __APPLE__
-		const strg inpath = strg(dir) + "\\" + name + "\\" + name;
-		const strg outpathMT = _ShaderDir + "/METAL/" + name;
 
-		const strg arg2 = "-f " + inpath + ".vs -o " + outpathMT + ".vsb --type v --platform metal -i shaders";
-		result += Shader_CompileShader(arg2) + "\n";
+		const strg arg4 = "-f " + inpath + ".vs -o " + outpathMT + ".vsb --type v --platform osx -p metal";
+		result += Shader_CompileShader(arg4) + "\n";
 
-		const strg arg3 = "-f " + inpath + ".fs -o " + outpathMT + ".fsb --type f --platform metal -i shaders";
-		result += Shader_CompileShader(arg3) + "\n";
-#endif
+		const strg arg5 = "-f " + inpath + ".fs -o " + outpathMT + ".fsb --type f --platform osx -p metal";
+		result += Shader_CompileShader(arg5) + "\n";
 	}
 
 	return result;
@@ -174,19 +174,11 @@ const bgfx::Memory* Shader_GetMemory(bx::FileReader& filereader)
 
 strg Shader_CompileShader(strgv args)
 {
+#if WIN32
 	std::ostringstream command;
-
-#if WIN32
 	command << "Shaderc.exe " << args;
-#else
-	command << "./Shaderc " << args;
-#endif
 
-#if WIN32
 	FILE* pipe = _popen(command.str().c_str(), "r");
-#else
-	FILE* pipe = popen(command.str().c_str(), "r");
-#endif
 	if (!pipe)
 	{
 		const strg errmsg = "Failed opening 'Shaderc.exe': " + command.str();
@@ -198,15 +190,14 @@ strg Shader_CompileShader(strgv args)
 	while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
 		output << buffer;
 
-#if WIN32
 	if (_pclose(pipe) == -1)
-#else
-	if (pclose(pipe) == -1)
-#endif
 	{
 		const strg errmsg = "Failed closing 'Shaderc.exe': " + command.str();
 		throw BigError(errmsg);
 	}
 
 	return output.str();
+#else
+	return "";
+#endif
 }

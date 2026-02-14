@@ -46,7 +46,7 @@ bool GameProgram::Initialize()
     
     const strg shaderPath = FileSystem::GetResourcePath("Data\\Development\\Shaders").string();
 	const strg result = Shader::CompileAllShaders(shaderPath);
-	// LoadShaders();
+	LoadShaders();
 
 	// create back buffer surface
 	mBackBufferSurface = new DrawSurface2D(0, resolution, mWindow->GetNativePtr());
@@ -96,7 +96,7 @@ void GameProgram::Cleanup()
 		mBackBufferSurface = nullptr;
 	}
 
-	// FreeShaders();
+	FreeShaders();
 	Renderer::Release();
 
 	Window::SetHardwareCursorImage(nullptr);

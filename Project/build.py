@@ -14,11 +14,7 @@ os_mac                  = "Darwin"
 thirdparty_win_name     = "Thirdparty.zip"
 thirdparty_mac_name     = "Thirdparty.tar"
 data_zip_name           = "Data.zip"
-tool_zip_name           = "Tool.zip"
 gamedir_path            = "../GameDir/"
-
-shaderc_name_win        = "Shaderc.exe"
-shaderc_name_mac        = "shadercRelease"
 
 debug_win_path          = "x64/Debug"
 release_win_path        = "x64/Release"
@@ -60,17 +56,11 @@ if os_name == os_win:
 
     os.makedirs(d3d_dir, exist_ok=True)
     os.makedirs(spirv_dir, exist_ok=True)
-    
-    with zipfile.ZipFile(tool_zip_name, 'r') as zip_ref:
-        zip_ref.extract(shaderc_name_win, path=gamedir_path)
 elif os_name == os_mac:
     with tarfile.open(thirdparty_mac_name, "r:*") as tar:
         tar.extractall()
-    
-    with zipfile.ZipFile(tool_zip_name, 'r') as zip_ref:
-        zip_ref.extract(shaderc_name_mac, path=gamedir_path)
-
-    os.makedirs(metal_dir, exist_ok=True)
+        
+os.makedirs(metal_dir, exist_ok=True)
 
 with zipfile.ZipFile(data_zip_name, "r") as zipRef:
         zipRef.extractall(gamedir_path)
