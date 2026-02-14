@@ -92,11 +92,23 @@ bool Window::IsSDLInit()
 void Window::Create(strgv title, uint width, uint height, bool fs)
 {
 	bFullscreen = fs;
-	if ((mWndHandle = SDL_CreateWindow(title.data(), (int)width, (int)height, (fs ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_HIDDEN)) == nullptr)
+    
+    SDL_WindowFlags wflags = ((fs ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_HIDDEN);
+#if __APPLE__
+    wflags |= SDL_WINDOW_METAL;
+#endif
+    
+	if ((mWndHandle = SDL_CreateWindow(title.data(), (int)width, (int)height, wflags)) == nullptr)
 	{
 		const strg errmsg = "Failed creating window: " + strg(SDL_GetError());
 		throw BigError(errmsg);
 	}
+    
+#if __APPLE__
+    SDL_Renderer* mrenderer = SDL_CreateRenderer(mWndHandle, "Metal");
+    if (!mrenderer)
+        throw BigError("Failed creating SDL renderer: " + strg(SDL_GetError()));
+#endif
 }
 
 void Window::Show(bool vl)
@@ -153,14 +165,15 @@ bool Window::GetFullscreen()
 	return bFullscreen;
 }
 
-void* Window::GetNativePtr(uint metalViewTag)
+void* Window::GetNativePtr()
 {
 	SDL_PropertiesID wid = SDL_GetWindowProperties(mWndHandle);
 #if WIN32
 	void* hwnd = SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr);
 	return hwnd;
 #elif __APPLE__
-	return SDL_GetPointerProperty(wid, SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER, &metalViewTag);
+    SDL_Renderer* mrenderer = SDL_GetRenderer(mWndHandle);
+    return SDL_GetRenderMetalLayer(mrenderer);
 #endif
     throw BigError("Invalid Platform!");
 }

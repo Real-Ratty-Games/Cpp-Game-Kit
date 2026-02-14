@@ -43,12 +43,14 @@ bool GameProgram::Initialize()
 
 	// setup shaders
 	Shader::SetShaderDirectory("Data/Shaders");
-	const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
-	LoadShaders();
+    
+    const strg shaderPath = FileSystem::GetResourcePath("Data\\Development\\Shaders").string();
+	const strg result = Shader::CompileAllShaders(shaderPath);
+	// LoadShaders();
 
 	// create back buffer surface
 	mBackBufferSurface = new DrawSurface2D(0, resolution, mWindow->GetNativePtr());
-
+    
 	mCamera.Size = mWindow->GetSize();
 
 	Window::DestroySplashScreen();
@@ -69,7 +71,7 @@ void GameProgram::Tick()
 	mClock.Tick();
 	while (mClock.Wait())
 	{
-		// Logic here...
+        // Logic here...
 	}
 }
 
@@ -78,7 +80,9 @@ void GameProgram::Draw()
 	Renderer::BeginDraw();
 	if (!mWindow->IsIconified())
 	{
-		// Render here...
+        Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
+        
+        Renderer::EndDrawSprite();
 	}
 	Renderer::EndDraw();
 }
@@ -92,7 +96,7 @@ void GameProgram::Cleanup()
 		mBackBufferSurface = nullptr;
 	}
 
-	FreeShaders();
+	// FreeShaders();
 	Renderer::Release();
 
 	Window::SetHardwareCursorImage(nullptr);
