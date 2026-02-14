@@ -1,17 +1,16 @@
 # C++ Game Kit
-A simple C++ framework for game development.  
-Use it to develop your next game or as a learning resource for building something bigger.  
-
-Written in C++20 using MSVC for Windows 10.  
-Should be easy to port to other platforms.
-
+A bare-bones C++ framework for game development.  
+  
 <img width="1280" height="750" alt="screenshot" src="https://github.com/user-attachments/assets/4e50a2ef-691c-4ba0-85ea-949875abaea0" />
 
+## Supported Platforms
+* Windows 10 x64
+* macOS arm64
+
 ## Building
-* Requires VS2022 and Python to be installed
-* Run ```build.py```
-* Set working directory to ```GameDir```
-* Run ```Game```
+* Requires Python to be installed
+* Use CMake to build
+* On macOS, make sure the ```Data``` is inside the app bundles ```Resources``` folder
   
 ## Features
 * <b>Core</b>
