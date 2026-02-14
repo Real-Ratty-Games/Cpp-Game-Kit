@@ -141,7 +141,8 @@ void GameProgram::LoadShaders()
 	mSprite2DAtlasIShader.InitUniform("atlasInfo", bgfx::UniformType::Vec4, 2);
 
 
-	Renderer::LoadTextureFromFile(_ftex, "Data/Font.png", BGFX_SAMPLER_MIN_POINT |
+	const strg fontTexPath = FileSystem::GetResourcePath("Data/Font.png").string();
+	Renderer::LoadTextureFromFile(_ftex, fontTexPath, BGFX_SAMPLER_MIN_POINT |
 		BGFX_SAMPLER_MAG_POINT |
 		BGFX_SAMPLER_U_CLAMP |
 		BGFX_SAMPLER_V_CLAMP, "Font", false);
