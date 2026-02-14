@@ -13,6 +13,7 @@ os_mac                  = "Darwin"
 
 thirdparty_win_name     = "Thirdparty.zip"
 thirdparty_mac_name     = "Thirdparty.tar"
+shaderc_win_name        = "Shaderc.zip"
 data_zip_name           = "Data.zip"
 gamedir_path            = "../GameDir/"
 
@@ -50,6 +51,9 @@ with zipfile.ZipFile(thirdparty_win_name, 'r') as zip_ref:
 if os_name == os_win:
     os.makedirs(debug_win_path, exist_ok=True)
     os.makedirs(release_win_path, exist_ok=True)
+            
+    with zipfile.ZipFile(shaderc_win_name, 'r') as zip_ref:
+        zip_ref.extractall()
             
     for src, dst in zip(win_file_copy, win_file_dest):
         shutil.copy2(src, dst)
