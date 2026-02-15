@@ -53,7 +53,7 @@ if os_name == os_win:
     os.makedirs(release_win_path, exist_ok=True)
             
     with zipfile.ZipFile(shaderc_win_name, 'r') as zip_ref:
-        zip_ref.extractall()
+        zip_ref.extractall(gamedir_path)
             
     for src, dst in zip(win_file_copy, win_file_dest):
         shutil.copy2(src, dst)
