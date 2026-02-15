@@ -16,6 +16,15 @@ void Sound::LoadFromFile(SoundWav& obj, strgv filepath)
 	}
 }
 
+void Sound::StreamFromFile(SoundWavStream& obj, strgv filepath)
+{
+	if (obj.load(filepath.data()) != SoLoud::SO_NO_ERROR)
+	{
+		const strg errmsg = "Failed streaming sound file: " + strg(filepath);
+		throw BigError(errmsg);
+	}
+}
+
 void Sound::LoadFromMemory(SoundWav& obj, std::vector<uint8>& data)
 {
 	if (obj.loadMem(data.data(), data.size(), false, false) != SoLoud::SO_NO_ERROR)

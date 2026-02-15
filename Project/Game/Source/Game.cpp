@@ -23,6 +23,8 @@ bool GameProgram::Initialize()
 	Window::Initialize();
 	Window::ShowSplashScreen();
 
+	mSound.Initialize();
+
     const strg cursorPath = FileSystem::GetResourcePath("Data/Cursor.bmp").string();
 	_SdlCursor = Window::LoadHardwareCursorImage(cursorPath);
 	Window::SetHardwareCursorImage(_SdlCursor);
@@ -96,6 +98,8 @@ void GameProgram::Cleanup()
 
 	FreeShaders();
 	Renderer::Release();
+
+	mSound.Release();
 
 	Window::SetHardwareCursorImage(nullptr);
 	SDL_DestroyCursor(_SdlCursor);

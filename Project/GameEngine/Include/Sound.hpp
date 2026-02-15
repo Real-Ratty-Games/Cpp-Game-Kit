@@ -8,6 +8,7 @@
 #include "SystemTypes.hpp"
 #include <soloud/soloud.h>
 #include <soloud/soloud_wav.h>
+#include <soloud/soloud_wavstream.h>
 #include <vector>
 
 namespace GameEngine
@@ -15,6 +16,7 @@ namespace GameEngine
 	typedef SoLoud::handle		SoundHandle;
 	typedef SoLoud::AudioSource	SoundSrc;
 	typedef SoLoud::Wav			SoundWav;
+	typedef SoLoud::WavStream	SoundWavStream;
 	typedef SoLoud::Soloud		SoundCore;
 	typedef SoLoud::result		SoundResult;
 
@@ -25,6 +27,7 @@ namespace GameEngine
 	{
 	public:
 		static void LoadFromFile(SoundWav& obj, strgv filepath);
+		static void StreamFromFile(SoundWavStream& obj, strgv filepath);
 		static void LoadFromMemory(SoundWav& obj, std::vector<uint8>& data);
 
 		void Initialize();

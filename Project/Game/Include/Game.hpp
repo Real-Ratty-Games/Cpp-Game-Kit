@@ -7,6 +7,7 @@
 #include <SystemTypes.hpp>
 #include <Program.hpp>
 #include <Clock.hpp>
+#include <Sound.hpp>
 #include <Shader.hpp>
 #include <Sprite.hpp>
 #include <DrawSurface2D.hpp>
@@ -37,6 +38,8 @@ namespace MyGame
 	private:
 		GameWindow*		mWindow;
 		Clock			mClock = Clock(60.0f);
+
+		Sound			mSound;
 
 		Viewport2D		mCamera;
 		Shader			mSprite2DShader;
