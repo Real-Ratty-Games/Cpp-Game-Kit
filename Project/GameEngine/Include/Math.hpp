@@ -10,24 +10,6 @@
 namespace GameEngine::Math
 {
 	template<typename T>
-	constexpr T Min(T a, T b) noexcept
-	{
-		return a < b ? a : b;
-	}
-
-	template<typename T>
-	constexpr T Max(T a, T b) noexcept
-	{
-		return a > b ? a : b;
-	}
-
-	template<typename T>
-	constexpr T Abs(T v) noexcept
-	{
-		return v < T(0) ? -v : v;
-	}
-
-	template<typename T>
 	constexpr T ToRadians(const T& vl) noexcept
 	{
 		return (T(GAMEENGINE_MATH_PI) / T(180)) * vl;

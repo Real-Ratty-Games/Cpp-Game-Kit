@@ -183,7 +183,7 @@ namespace GameEngine
 
 			det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-			if (Math::Abs(det) < T(1e-6))
+			if (std::abs(det) < T(1e-6))
 				return false;
 
 			det = T(1) / det;
