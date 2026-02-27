@@ -27,7 +27,7 @@ void Sound::StreamFromFile(SoundWavStream& obj, strgv filepath)
 
 void Sound::LoadFromMemory(SoundWav& obj, std::vector<uint8>& data)
 {
-	if (obj.loadMem(data.data(), data.size(), false, false) != SoLoud::SO_NO_ERROR)
+	if (obj.loadMem(data.data(), static_cast<uint>(data.size()), false, false) != SoLoud::SO_NO_ERROR)
 		throw BigError("Failed loading sound file from memory!");
 }
 

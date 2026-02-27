@@ -416,7 +416,7 @@ void Renderer::PrepareSpriteFontText(SpriteFont& font, Transform2D& transformati
 
 		auto pos = font.Glyphs.find(it);
 		if (pos != strg::npos)
-			result.Index.X = static_cast<int>(pos);
+			result.Index.X = static_cast<float>(pos);
 		else continue;
 
 		tdata.push_back(result);
@@ -457,7 +457,7 @@ void Renderer::DrawSpriteFontText(SpriteFont& font, Transform2D& transformation,
 
 		auto pos = font.Glyphs.find(it);
 		if (pos != strg::npos)
-			result.Index.X = static_cast<int>(pos);
+			result.Index.X = static_cast<float>(pos);
 		else continue;
 		
 		DrawSpriteAtlas(font.pSprite, result, font.GlyphSize);
