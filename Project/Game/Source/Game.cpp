@@ -10,7 +10,7 @@
 
 using namespace MyGame;
 
-static SDL_Cursor* _SdlCursor;
+static WindowCursor* _SdlCursor;
 
 void GameProgram::OnResize(vec2i& size)
 {
@@ -32,7 +32,7 @@ bool GameProgram::Initialize()
 	const vec2 resolution(1280, 720);
 
 	mWindow = new GameWindow(this);
-	mWindow->Create("My Game", resolution.X, resolution.Y, false);
+	mWindow->Create("My Game", (uint)resolution.X, (uint)resolution.Y, false);
 
 	// init renderer
 	DrawAPI dapi = DrawAPI::DIRECT3D11;
@@ -102,7 +102,7 @@ void GameProgram::Cleanup()
 	mSound.Release();
 
 	Window::SetHardwareCursorImage(nullptr);
-	SDL_DestroyCursor(_SdlCursor);
+	Window::DestroyCursor(_SdlCursor);
 
 	if (mWindow != nullptr)
 	{

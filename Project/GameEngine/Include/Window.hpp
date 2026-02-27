@@ -9,6 +9,8 @@
 
 namespace GameEngine
 {
+	typedef SDL_Cursor WindowCursor;
+
 	/// <summary>
 	/// Managing window creation and cleanup
 	/// </summary>
@@ -26,8 +28,9 @@ namespace GameEngine
 		/// Set hardware cursor image
 		/// </summary>
 		/// <param name="img">format must be bmp</param>
-		static SDL_Cursor*	LoadHardwareCursorImage(strgv img);
-		static void			SetHardwareCursorImage(SDL_Cursor* cursor);
+		static WindowCursor*	LoadHardwareCursorImage(strgv img);
+		static void				SetHardwareCursorImage(WindowCursor* cursor);
+		static void				DestroyCursor(WindowCursor* cursor);
 
 		void Create(strgv title, uint width, uint height, bool fs);
 		void Show(bool vl = true);
