@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef PROGRAM_HPP_
 #define PROGRAM_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 
 namespace GameEngine
@@ -12,7 +11,7 @@ namespace GameEngine
 	/// <summary>
 	/// Template for main program logic
 	/// </summary>
-	class GAMEENGINEAPI Program
+	class Program
 	{
 	public:
 		void Run();

@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef GAMEPAD_HPP_
 #define GAMEPAD_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "InputTypes.hpp"
 #include <vector>
@@ -16,7 +15,7 @@ namespace GameEngine
 	/// <summary>
 	/// Manages gamepad functionalities
 	/// </summary>
-	class GAMEENGINEAPI Gamepad
+	class Gamepad
 	{
     public:
         /// <summary>

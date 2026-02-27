@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef CLOCK_HPP_
 #define CLOCK_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 
 namespace GameEngine
@@ -12,7 +11,7 @@ namespace GameEngine
 	/// <summary>
 	/// Managing fixed timestep
 	/// </summary>
-	class GAMEENGINEAPI Clock
+	class Clock
 	{
 	public:
 		Clock(double framerate);

@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef WADFILE_HPP_
 #define WADFILE_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include <vector>
 #include <unordered_map>
@@ -46,7 +45,7 @@ namespace GameEngine
 	/// <summary>
 	/// Read data from a wad file
 	/// </summary>
-	class GAMEENGINEAPI WADFile
+	class WADFile
 	{
 	public:
 		void								Open(strgv filepath);

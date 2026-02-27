@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef SHADER_HPP_
 #define SHADER_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "DrawData.hpp"
 #include <unordered_map>
@@ -14,7 +13,7 @@ namespace GameEngine
 	/// <summary>
 	/// Manages a shader
 	/// </summary>
-	class GAMEENGINEAPI Shader
+	class Shader
 	{
 	public:
 		static void SetShaderDirectory(strgv dir);

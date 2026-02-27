@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef WADMAKER_HPP_
 #define WADMAKER_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "WADFile.hpp"
 #include <unordered_map>
@@ -17,7 +16,7 @@ namespace GameEngine::WADMaker
 	/// <param name="filepath"></param>
 	/// <param name="outloc"></param>
 	/// <param name="saveExt"></param>
-	GAMEENGINEAPI void Make(strgv inpath, strgv outloc, bool saveExt = false);
+	void Make(strgv inpath, strgv outloc, bool saveExt = false);
 
 	/// <summary>
 	/// Create multiple new wad archives from existing directory structure
@@ -25,7 +24,7 @@ namespace GameEngine::WADMaker
 	/// <param name="fileroot"></param>
 	/// <param name="outloc"></param>
 	/// <param name="saveExt"></param>
-	GAMEENGINEAPI void MakeAll(strgv fileroot, strgv outloc, bool saveExt = false);
+	void MakeAll(strgv fileroot, strgv outloc, bool saveExt = false);
 
 	/// <summary>
 	/// Create new wad archive from memory
@@ -33,6 +32,6 @@ namespace GameEngine::WADMaker
 	/// <param name="filename"></param>
 	/// <param name="outloc"></param>
 	/// <param name="data"></param>
-	GAMEENGINEAPI void MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg, WADData>& data);
+	void MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg, WADData>& data);
 }
 #endif

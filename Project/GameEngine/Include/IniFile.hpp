@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef INIFILE_HPP_
 #define INIFILE_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include <vector>
 #include <unordered_map>
@@ -14,7 +13,7 @@ namespace GameEngine
 	/// <summary>
 	/// Reading and writing a ini file
 	/// </summary>
-	class GAMEENGINEAPI IniFile
+	class IniFile
 	{
 	public:
 		using Section = std::unordered_map<strg, strg>;

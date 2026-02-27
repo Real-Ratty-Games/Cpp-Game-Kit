@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef DRAWDATA_HPP_
 #define DRAWDATA_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "Transformation.hpp"
 #if _DEBUG

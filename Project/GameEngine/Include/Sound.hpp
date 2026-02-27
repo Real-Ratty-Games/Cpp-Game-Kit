@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef SOUND_HPP_
 #define SOUND_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include <soloud/soloud.h>
 #include <soloud/soloud_wav.h>
@@ -23,7 +22,7 @@ namespace GameEngine
 	/// <summary>
 	/// Manages audio
 	/// </summary>
-	class GAMEENGINEAPI Sound
+	class Sound
 	{
 	public:
 		static void LoadFromFile(SoundWav& obj, strgv filepath);

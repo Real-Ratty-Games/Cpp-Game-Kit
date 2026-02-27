@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef WINDOW_HPP_
 #define WINDOW_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include <SDL3/SDL.h>
 
@@ -13,7 +12,7 @@ namespace GameEngine
 	/// <summary>
 	/// Managing window creation and cleanup
 	/// </summary>
-	class GAMEENGINEAPI Window
+	class Window
 	{
 	public:
 		static void Initialize();
