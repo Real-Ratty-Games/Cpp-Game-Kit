@@ -6,10 +6,17 @@
 #define WADMAKER_HPP_
 #include "SystemTypes.hpp"
 #include "WADFile.hpp"
-#include <unordered_map>
+#include <vector>
 
 namespace GameEngine::WADMaker
 {
+	struct WADMemItem
+	{
+		strg				Name;
+		WADItem				Item;
+		std::vector<uint8>	Data;
+	};
+
 	/// <summary>
 	/// Generate new wad archive from existing directory structure
 	/// </summary>
@@ -32,6 +39,6 @@ namespace GameEngine::WADMaker
 	/// <param name="filename"></param>
 	/// <param name="outloc"></param>
 	/// <param name="data"></param>
-	void MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg, WADData>& data);
+	void MakeUnique(strgv filename, strgv outloc, std::vector<WADMemItem>& data);
 }
 #endif

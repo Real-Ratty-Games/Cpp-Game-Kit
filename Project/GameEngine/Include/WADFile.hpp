@@ -24,21 +24,24 @@ namespace GameEngine
 	/// <summary>
 	/// WAD file entry
 	/// </summary>
-	struct WADData
+	struct WADItem
 	{
-	public:
+		uint				Size;
+		uint				Offset;
 		EWADFileDataType	Type;
-		std::vector<uint8>	Buffer;
 
-		WADData()
+		WADItem()
 		{
-			Type = EWADFileDataType::RAW;
+			Size	= 0;
+			Offset	= 0;
+			Type	= EWADFileDataType::RAW;
 		}
 
-		WADData(EWADFileDataType type, std::vector<uint8> buffer)
+		WADItem(uint size, uint offset, uint8 type)
 		{
-			Type = type;
-			Buffer = buffer;
+			Size	= size;
+			Offset	= offset;
+			Type	= (EWADFileDataType)type;
 		}
 	};
 
@@ -49,13 +52,13 @@ namespace GameEngine
 	{
 	public:
 		void								Open(strgv filepath);
-		WADData*							Read(strgv itemname);
-		std::unordered_map<strg, WADData>&	Data();
-		int									Size();
-		void								Close();
+		void								Read(strgv itemname, std::vector<uint8>& data);
+		std::unordered_map<strg, WADItem>&	Items();
+		void								Clear();
 
 	private:
-		std::unordered_map<strg, WADData>	mData;
+		strg								mFilepath;
+		std::unordered_map<strg, WADItem>	mItems;
 	};
 }
 #endif
