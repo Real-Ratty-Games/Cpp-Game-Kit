@@ -21,7 +21,7 @@ namespace GameEngine
 	struct AlarmModule
 	{
 		std::function<int64()>	Method;
-		int						Count = 0;
+        int64					Count = 0;
 		bool					bPaused = false;
 	};
 

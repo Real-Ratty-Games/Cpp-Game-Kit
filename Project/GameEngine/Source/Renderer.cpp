@@ -31,7 +31,7 @@
 
 using namespace GameEngine;
 
-static struct RawMeshData
+struct RawMeshData
 {
 	std::vector<MeshVertex>	Vertices;
 	std::vector<uint16>		Indices;
@@ -190,7 +190,7 @@ void Renderer::LoadTextureFromMemory(Texture& texture, std::vector<uint8>& data,
 {
 	if (!data.empty())
 	{
-		texture.Handle = bgfx::createTexture(bgfx::copy(data.data(), data.size()), flags);
+		texture.Handle = bgfx::createTexture(bgfx::copy(data.data(), (uint)data.size()), flags);
 
 		if (bgfx::isValid(texture.Handle))
 			bgfx::setName(texture.Handle, texturename.data());
@@ -276,7 +276,7 @@ void Renderer::DrawSpriteAtlas(Sprite* sprite, TransformAtlas2D& transformation,
 
 void Renderer::PrepareSpriteInstancing(Sprite* sprite, SpriteInstanceData& idata, std::vector<Transform2D>& tdata)
 {
-	const int insCnt = tdata.size();
+	const int insCnt = (int)tdata.size();
 	const uint16 insStride = 64 + sizeof(vec4);
 	uint drawnIns = bgfx::getAvailInstanceDataBuffer(insCnt, insStride);
 
@@ -318,7 +318,7 @@ void Renderer::PrepareSpriteInstancing(Sprite* sprite, SpriteInstanceData& idata
 
 void Renderer::PrepareSpriteAtlasInstancing(Sprite* sprite, SpriteInstanceData& idata, std::vector<TransformAtlas2D>& tdata, vec2 subSize)
 {
-	const int insCnt = tdata.size();
+	const int insCnt = (int)tdata.size();
 	const uint16 insStride = 64 + sizeof(vec4);
 	uint drawnIns = bgfx::getAvailInstanceDataBuffer(insCnt, insStride);
 
@@ -720,11 +720,11 @@ void Renderer_ModelProcessMesh(Mesh3D& modelMesh, aiMesh* mesh, const aiScene* s
 
 void Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata)
 {
-	modelMesh.VBH = Renderer::CreateVertexBuffer(mdata.Vertices.data(), mdata.Vertices.size() * sizeof(MeshVertex), _Mesh3DVBLayout);
+	modelMesh.VBH = Renderer::CreateVertexBuffer(mdata.Vertices.data(), (uint)mdata.Vertices.size() * sizeof(MeshVertex), _Mesh3DVBLayout);
 	if (!bgfx::isValid(modelMesh.VBH))
 		throw BigError("Vertex Buffer is invalid!");
 
-	modelMesh.IBH = Renderer::CreateIndexBuffer(mdata.Indices.data(), mdata.Indices.size() * sizeof(uint16));
+	modelMesh.IBH = Renderer::CreateIndexBuffer(mdata.Indices.data(), (uint)mdata.Indices.size() * sizeof(uint16));
 	if (!bgfx::isValid(modelMesh.IBH))
 		throw BigError("Index Buffer is invalid!");
 }
