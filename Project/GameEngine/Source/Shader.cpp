@@ -29,6 +29,8 @@ strg Shader::CompileAllShaders(strgv dir)
 	strg result;
 
 	const std::vector<strg> shaders = FileSystem::SubDirectories(dir);
+	const strg ishaders = " -i " + strg(dir) + "/Shared";
+
 	for (auto& it : shaders)
 	{
 		std::filesystem::path path(it);
@@ -41,25 +43,25 @@ strg Shader::CompileAllShaders(strgv dir)
 		const strg outpathD3D = _ShaderDir + "/D3D/" + name;
 		const strg outpathVK = _ShaderDir + "/SPIRV/" + name;
 
-		const strg arg0 = "-f " + inpath + ".vs -o " + outpathD3D + ".vsb --type v --platform windows -p s_5_0 -O 3";
+		const strg arg0 = "-f " + inpath + ".vs -o " + outpathD3D + ".vsb --type v --platform windows -p s_5_0 -O 3" + ishaders;
 		result += Shader_CompileShader(arg0) + "\n";
 
-		const strg arg1 = "-f " + inpath + ".fs -o " + outpathD3D + ".fsb --type f --platform windows -p s_5_0 -O 3";
+		const strg arg1 = "-f " + inpath + ".fs -o " + outpathD3D + ".fsb --type f --platform windows -p s_5_0 -O 3" + ishaders;
 		result += Shader_CompileShader(arg1) + "\n";
 
-		const strg arg2 = "-f " + inpath + ".vs -o " + outpathVK + ".vsb --type v --platform windows -p spirv";
+		const strg arg2 = "-f " + inpath + ".vs -o " + outpathVK + ".vsb --type v --platform windows -p spirv" + ishaders;
 		result += Shader_CompileShader(arg2) + "\n";
 
-		const strg arg3 = "-f " + inpath + ".fs -o " + outpathVK + ".fsb --type f --platform windows -p spirv";
+		const strg arg3 = "-f " + inpath + ".fs -o " + outpathVK + ".fsb --type f --platform windows -p spirv" + ishaders;
 		result += Shader_CompileShader(arg3) + "\n";
 
 #elif __APPLE__
 		const strg outpathMT = _ShaderDir + "/METAL/" + name;
 
-		const strg arg4 = "-f " + inpath + ".vs -o " + outpathMT + ".vsb --type v --platform osx -p metal";
+		const strg arg4 = "-f " + inpath + ".vs -o " + outpathMT + ".vsb --type v --platform osx -p metal" + ishaders;
 		result += Shader_CompileShader(arg4) + "\n";
 
-		const strg arg5 = "-f " + inpath + ".fs -o " + outpathMT + ".fsb --type f --platform osx -p metal";
+		const strg arg5 = "-f " + inpath + ".fs -o " + outpathMT + ".fsb --type f --platform osx -p metal" + ishaders;
 		result += Shader_CompileShader(arg5) + "\n";
 #endif
 	}
