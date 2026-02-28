@@ -32,8 +32,7 @@ if(APPLE)
 	add_custom_command(TARGET Game POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_directory
 			"$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>"
-		COMMAND ${CMAKE_COMMAND} -E remove
-			"${GAME_FRAMEWORKS_DIR}/*.a")
+			"${GAME_FRAMEWORKS_DIR}")
 
     add_custom_command(TARGET Game POST_BUILD
         COMMAND codesign --force --deep --sign - "${GAME_APP}"
