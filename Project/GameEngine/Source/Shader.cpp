@@ -35,7 +35,7 @@ strg Shader::CompileAllShaders(strgv dir)
 		const strg name = path.filename().string();
 		if (name == "Shared") continue;
 
-		const strg inpath = strg(dir) + "\\" + name + "\\" + name;
+		const strg inpath = strg(dir) + "/" + name + "/" + name;
 
 #if _WIN32
 		const strg outpathD3D = _ShaderDir + "/D3D/" + name;
