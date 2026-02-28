@@ -4,14 +4,13 @@
 ======================================================*/
 #ifndef VIEWPORT3D_HPP_
 #define VIEWPORT3D_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 
 namespace GameEngine
 {
 	/// Z is forward
 	/// Y is up
-	class GAMEENGINEAPI Viewport3D
+	class Viewport3D
 	{
 	public:
 		Viewport3D();
@@ -37,7 +36,7 @@ namespace GameEngine
 		vec3 mUp;
 	};
 
-	class GAMEENGINEAPI ViewportOrtho3D : public Viewport3D
+	class ViewportOrtho3D : public Viewport3D
 	{
 	public:
 		float Offset	= 0.0f;

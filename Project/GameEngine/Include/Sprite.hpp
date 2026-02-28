@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef SPRITE_HPP_
 #define SPRITE_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "DrawData.hpp"
 
@@ -13,7 +12,7 @@ namespace GameEngine
 	/// <summary>
 	/// 2D Quad Sprite
 	/// </summary>
-	class GAMEENGINEAPI Sprite
+	class Sprite
 	{
 	public:
 		Sprite(Texture* texture);

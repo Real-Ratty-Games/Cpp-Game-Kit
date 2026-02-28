@@ -11,6 +11,7 @@ using namespace GameEngine;
 bool IniFile::Open(strgv filename)
 {
     mFilepath = filename;
+    mMemBuffer = nullptr;
 
     std::fstream file(mFilepath);
     if (!file) return false;

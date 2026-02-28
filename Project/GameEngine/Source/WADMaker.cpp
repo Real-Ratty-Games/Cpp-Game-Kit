@@ -24,8 +24,8 @@ void WADMaker::Make(strgv inpath, strgv outloc, bool saveExt)
 
 	IniFile ini;
 	ini.Open(infoFilepath);
-	strg outname = ini.Read("default", "vaultname", "UNKNOWN");
-	outname += "." + ini.Read("default", "extension", "tv");
+	strg outname = ini.Read("default", "name", "UNKNOWN");
+	outname += "." + ini.Read("default", "extension", "wad");
 	ini.Close();
 
 	std::vector<strg> files = WADMaker_GetFilesinDir(inpath);
@@ -52,7 +52,7 @@ void WADMaker::Make(strgv inpath, strgv outloc, bool saveExt)
 
 	std::ofstream OUT(soutloc + outname, std::ios::binary);
 
-	uint fileCnt = filenames.size();
+	uint fileCnt = static_cast<uint>(filenames.size());
 	OUT.write(reinterpret_cast<const char*>(&fileCnt), sizeof(fileCnt));
 
 	uint currentOffset = sizeof(fileCnt);
@@ -60,7 +60,7 @@ void WADMaker::Make(strgv inpath, strgv outloc, bool saveExt)
 	for (uint i = 0; i < fileCnt; ++i)
 	{
 		currentOffset += sizeof(uint16);
-		currentOffset += filenames[i].size();
+		currentOffset += static_cast<uint>(filenames[i].size());
 		currentOffset += sizeof(uint);
 		currentOffset += sizeof(uint);
 		currentOffset += sizeof(uint8);
@@ -68,8 +68,8 @@ void WADMaker::Make(strgv inpath, strgv outloc, bool saveExt)
 
 	for (uint i = 0; i < fileCnt; ++i)
 	{
-		uint16 nameLength = filenames[i].size();
-		uint fileSize = data[i].size();
+		uint16 nameLength = static_cast<uint>(filenames[i].size());
+		uint fileSize = static_cast<uint>(data[i].size());
 		uint fileOffset = currentOffset;
 		uint8 fileType = filetypes[i];
 
@@ -100,13 +100,13 @@ void WADMaker::MakeAll(strgv fileroot, strgv outloc, bool saveExt)
 	for (auto& it : totalpaths) Make(it, outloc, saveExt);
 }
 
-void WADMaker::MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg, WADData>& data)
+void WADMaker::MakeUnique(strgv filename, strgv outloc, std::vector<WADMemItem>& data)
 {
 	const strg soutloc(outloc);
 	strg OUTPATH = soutloc + strg(filename);
 	std::ofstream OUT(OUTPATH.data(), std::ios::binary);
 
-	uint fileCnt = data.size();
+	uint fileCnt = static_cast<uint>(data.size());
 	OUT.write(reinterpret_cast<const char*>(&fileCnt), sizeof(fileCnt));
 
 	uint currentOffset = sizeof(fileCnt);
@@ -114,7 +114,7 @@ void WADMaker::MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg,
 	for (auto& it : data)
 	{
 		currentOffset += sizeof(uint16);
-		currentOffset += it.first.size();
+		currentOffset += static_cast<uint>(it.Name.size());
 		currentOffset += sizeof(uint);
 		currentOffset += sizeof(uint);
 		currentOffset += sizeof(uint8);
@@ -122,13 +122,13 @@ void WADMaker::MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg,
 
 	for (auto& it : data)
 	{
-		uint16 nameLength = it.first.size();
-		uint fileSize = it.second.Buffer.size();
+		uint16 nameLength = static_cast<uint16>(it.Name.size());
+		uint fileSize = static_cast<uint>(it.Data.size());
 		uint fileOffset = currentOffset;
-		uint8 fileType = (uint8)it.second.Type;
+		uint8 fileType = (uint8)it.Item.Type;
 
 		OUT.write(reinterpret_cast<const char*>(&nameLength), sizeof(nameLength));
-		OUT.write(it.first.data(), nameLength);
+		OUT.write(it.Name.data(), nameLength);
 		OUT.write(reinterpret_cast<const char*>(&fileSize), sizeof(fileSize));
 		OUT.write(reinterpret_cast<const char*>(&fileOffset), sizeof(fileOffset));
 		OUT.write(reinterpret_cast<const char*>(&fileType), sizeof(fileType));
@@ -137,7 +137,7 @@ void WADMaker::MakeUnique(strgv filename, strgv outloc, std::unordered_map<strg,
 	}
 
 	for (auto& it : data)
-		OUT.write(reinterpret_cast<const char*>(it.second.Buffer.data()), it.second.Buffer.size());
+		OUT.write(reinterpret_cast<const char*>(it.Data.data()), it.Data.size());
 
 	OUT.close();
 }

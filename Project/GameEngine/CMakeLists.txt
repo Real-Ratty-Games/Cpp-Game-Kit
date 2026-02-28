@@ -1,6 +1,6 @@
 file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
 
-add_library(GameEngine SHARED ${SOURCES})
+add_library(GameEngine STATIC ${SOURCES})
 
 set(COREFILES_HEADER "Include/Alarm.hpp"
 "Include/API.hpp"
@@ -85,8 +85,6 @@ set(OSFILES_SOURCE "Source/Gamepad.cpp"
 "Source/Window.cpp"
 )
 source_group("OS/Src/" FILES ${OSFILES_SOURCE})
-
-target_compile_definitions(GameEngine PRIVATE GAMEENGINEAPI_EXPORT)
 
 # Thirdparty
 target_link_libraries(GameEngine PRIVATE SoLoud::SoLoud)

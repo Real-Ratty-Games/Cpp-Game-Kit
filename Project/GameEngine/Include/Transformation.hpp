@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef TRANSFORMATION_HPP_
 #define TRANSFORMATION_HPP_
-#include "API.hpp"
 #include "EulerRotation.hpp"
 
 namespace GameEngine::Math
@@ -98,9 +97,9 @@ namespace GameEngine::Math
 	}
 
 	/// angle in radians
-	GAMEENGINEAPI quat QuatFromAxisAngle(const vec3& axis, float angle);
-	GAMEENGINEAPI quat QuatFromEulerAngles(const EulerRotation& rot);
-	GAMEENGINEAPI quat QuatAddEulerRotation(const quat& q, const EulerRotation& rot, bool local);
+	quat QuatFromAxisAngle(const vec3& axis, float angle);
+	quat QuatFromEulerAngles(const EulerRotation& rot);
+	quat QuatAddEulerRotation(const quat& q, const EulerRotation& rot, bool local);
 
 	template<typename T>
 	Matrix4<T> LookAtLH(const Vector3<T>& eye, const Vector3<T>& target, const Vector3<T>& sup,

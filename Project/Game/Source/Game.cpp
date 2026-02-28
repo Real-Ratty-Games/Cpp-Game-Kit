@@ -10,7 +10,7 @@
 
 using namespace MyGame;
 
-static SDL_Cursor* _SdlCursor;
+static WindowCursor* _SdlCursor;
 
 void GameProgram::OnResize(vec2i& size)
 {
@@ -32,7 +32,7 @@ bool GameProgram::Initialize()
 	const vec2 resolution(1280, 720);
 
 	mWindow = new GameWindow(this);
-	mWindow->Create("My Game", resolution.X, resolution.Y, false);
+	mWindow->Create("My Game", (uint)resolution.X, (uint)resolution.Y, false);
 
 	// init renderer
 	DrawAPI dapi = DrawAPI::DIRECT3D11;
@@ -44,8 +44,15 @@ bool GameProgram::Initialize()
 		 return false;
 
 	// setup shaders
-	Shader::SetShaderDirectory("Data/Shaders");
-	const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
+	const strg shaderPath = FileSystem::GetResourcePath("Data/Shaders").string();
+	const strg shaderDevPath = FileSystem::GetResourcePath("Data/Development/Shaders").string();
+
+	Shader::SetShaderDirectory(shaderPath);
+	const strg result = Shader::CompileAllShaders(shaderDevPath);
+    
+    const strg shdErrPath = FileSystem::GetResourcePath("ShaderErr.log").string();
+    FileSystem::WriteTextFile(shdErrPath, result);
+    
 	LoadShaders();
 
 	// create back buffer surface
@@ -102,7 +109,7 @@ void GameProgram::Cleanup()
 	mSound.Release();
 
 	Window::SetHardwareCursorImage(nullptr);
-	SDL_DestroyCursor(_SdlCursor);
+	Window::DestroyCursor(_SdlCursor);
 
 	if (mWindow != nullptr)
 	{

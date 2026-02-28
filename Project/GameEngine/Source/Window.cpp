@@ -59,17 +59,31 @@ void Window::ShowSplashScreen(strgv filename)
 	sbSplashWndVisible = true;
 }
 
-SDL_Cursor* Window::LoadHardwareCursorImage(strgv img)
+WindowCursor* Window::LoadHardwareCursorImage(strgv img)
 {
 	SDL_Surface* cursorSurface = SDL_LoadBMP(img.data());
 	if (cursorSurface != nullptr)
-		return SDL_CreateColorCursor(cursorSurface, 0, 0);
+	{
+		WindowCursor* result = SDL_CreateColorCursor(cursorSurface, 0, 0);
+		SDL_DestroySurface(cursorSurface);
+		return result;
+	}
 	return nullptr;
 }
 
-void Window::SetHardwareCursorImage(SDL_Cursor* cursor)
+void Window::SetHardwareCursorImage(WindowCursor* cursor)
 {
 	SDL_SetCursor(cursor);
+}
+
+void Window::DestroyCursor(WindowCursor* cursor)
+{
+	SDL_DestroyCursor(cursor);
+}
+
+void Window::ShowMessageBox(SDL_MessageBoxFlags flags, strgv header, strgv message, Window* window)
+{
+	SDL_ShowSimpleMessageBox(flags, header.data(), message.data(), (window == nullptr) ? nullptr : window->mWndHandle);
 }
 
 void Window::DestroySplashScreen()

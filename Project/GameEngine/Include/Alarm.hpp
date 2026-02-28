@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef ALARM_HPP_
 #define ALARM_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include <functional>
 #include <unordered_map>
@@ -21,14 +20,14 @@ namespace GameEngine
 	struct AlarmModule
 	{
 		std::function<int64()>	Method;
-		int						Count = 0;
+        int64					Count = 0;
 		bool					bPaused = false;
 	};
 
 	/// <summary>
 	/// Alarm system for timed logic
 	/// </summary>
-	class GAMEENGINEAPI Alarm
+	class Alarm
 	{
 	public:
 		void PushModule(strgv name, std::function<int64()> method, int64 count);

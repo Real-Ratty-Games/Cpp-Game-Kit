@@ -4,13 +4,12 @@
 ======================================================*/
 #ifndef DRAWSURFACE_HPP_
 #define DRAWSURFACE_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "DrawData.hpp"
 
 namespace GameEngine
 {
-	class GAMEENGINEAPI DrawSurface
+	class DrawSurface
 	{
 	public:
 		DrawSurface(uint16 viewid, vec2 size, void* wndHandle);

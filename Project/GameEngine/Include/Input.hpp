@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef KEYBOARD_HPP_
 #define KEYBOARD_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "InputTypes.hpp"
 
@@ -15,9 +14,9 @@ namespace GameEngine
 	/// </summary>
 	namespace Keyboard
 	{
-		GAMEENGINEAPI bool	KeyDown(KeyboardKey key);
-		GAMEENGINEAPI bool	KeyUp(KeyboardKey key);
-		GAMEENGINEAPI bool	KeyPressed(KeyboardKey key);
+		bool	KeyDown(KeyboardKey key);
+		bool	KeyUp(KeyboardKey key);
+		bool	KeyPressed(KeyboardKey key);
 	}
 
 	/// <summary>
@@ -25,10 +24,10 @@ namespace GameEngine
 	/// </summary>
 	namespace Mouse
 	{
-		GAMEENGINEAPI bool	ButtonDown(MouseButton button);
-		GAMEENGINEAPI bool	ButtonUp(MouseButton button);
-		GAMEENGINEAPI bool	ButtonPressed(MouseButton button);
-		GAMEENGINEAPI vec2	CursorLocation();
+		bool	ButtonDown(MouseButton button);
+		bool	ButtonUp(MouseButton button);
+		bool	ButtonPressed(MouseButton button);
+		vec2	CursorLocation();
 	}
 }
 #endif

@@ -4,7 +4,6 @@
 ======================================================*/
 #ifndef SPRITEANIMATION_HPP_
 #define SPRITEANIMATION_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "Alarm.hpp"
 
@@ -37,7 +36,7 @@ namespace GameEngine
 	/// <summary>
 	/// Manages sprite animation
 	/// </summary>
-	class GAMEENGINEAPI SpriteAnimator
+	class SpriteAnimator
 	{
 	public:
 		SpriteAnimator();

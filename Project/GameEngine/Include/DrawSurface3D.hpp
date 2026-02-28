@@ -4,14 +4,13 @@
 ======================================================*/
 #ifndef DRAWSURFACE3D_HPP_
 #define DRAWSURFACE3D_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include "DrawData.hpp"
 #include "DrawSurface.hpp"
 
 namespace GameEngine
 {
-	class GAMEENGINEAPI DrawSurface3D : public DrawSurface
+	class DrawSurface3D : public DrawSurface
 	{
 	public:
 		DrawSurface3D(uint16 viewid, vec2 size, void* wndHandle, bool depthOnly);

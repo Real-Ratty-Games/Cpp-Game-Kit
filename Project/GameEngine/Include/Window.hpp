@@ -4,16 +4,17 @@
 ======================================================*/
 #ifndef WINDOW_HPP_
 #define WINDOW_HPP_
-#include "API.hpp"
 #include "SystemTypes.hpp"
 #include <SDL3/SDL.h>
 
 namespace GameEngine
 {
+	typedef SDL_Cursor WindowCursor;
+
 	/// <summary>
 	/// Managing window creation and cleanup
 	/// </summary>
-	class GAMEENGINEAPI Window
+	class Window
 	{
 	public:
 		static void Initialize();
@@ -27,8 +28,11 @@ namespace GameEngine
 		/// Set hardware cursor image
 		/// </summary>
 		/// <param name="img">format must be bmp</param>
-		static SDL_Cursor*	LoadHardwareCursorImage(strgv img);
-		static void			SetHardwareCursorImage(SDL_Cursor* cursor);
+		static WindowCursor*	LoadHardwareCursorImage(strgv img);
+		static void				SetHardwareCursorImage(WindowCursor* cursor);
+		static void				DestroyCursor(WindowCursor* cursor);
+
+		static void ShowMessageBox(SDL_MessageBoxFlags flags, strgv header, strgv message, Window* window = nullptr);
 
 		void Create(strgv title, uint width, uint height, bool fs);
 		void Show(bool vl = true);
