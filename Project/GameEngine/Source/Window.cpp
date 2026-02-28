@@ -81,6 +81,11 @@ void Window::DestroyCursor(WindowCursor* cursor)
 	SDL_DestroyCursor(cursor);
 }
 
+void Window::ShowMessageBox(SDL_MessageBoxFlags flags, strgv header, strgv message, Window* window)
+{
+	SDL_ShowSimpleMessageBox(flags, header.data(), message.data(), (window == nullptr) ? nullptr : window->mWndHandle);
+}
+
 void Window::DestroySplashScreen()
 {
 	SDL_DestroyRenderer(sSplashWndRenderer);

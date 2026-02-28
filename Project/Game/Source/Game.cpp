@@ -44,8 +44,11 @@ bool GameProgram::Initialize()
 		 return false;
 
 	// setup shaders
-	Shader::SetShaderDirectory("Data/Shaders");
-	const strg result = Shader::CompileAllShaders("Data\\Development\\Shaders");
+	const strg shaderPath = FileSystem::GetResourcePath("Data/Shaders").string();
+	const strg shaderDevPath = FileSystem::GetResourcePath("Data\\Development\\Shaders").string();
+
+	Shader::SetShaderDirectory(shaderPath);
+	const strg result = Shader::CompileAllShaders(shaderDevPath);
 	LoadShaders();
 
 	// create back buffer surface

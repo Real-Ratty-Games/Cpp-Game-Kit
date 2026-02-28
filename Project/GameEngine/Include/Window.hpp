@@ -32,6 +32,8 @@ namespace GameEngine
 		static void				SetHardwareCursorImage(WindowCursor* cursor);
 		static void				DestroyCursor(WindowCursor* cursor);
 
+		static void ShowMessageBox(SDL_MessageBoxFlags flags, strgv header, strgv message, Window* window = nullptr);
+
 		void Create(strgv title, uint width, uint height, bool fs);
 		void Show(bool vl = true);
 		void PollEvent();
