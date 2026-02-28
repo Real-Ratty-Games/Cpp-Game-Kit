@@ -54,15 +54,29 @@ if(APPLE)
 	#		"$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>"
 	#		"${GAME_FRAMEWORKS_DIR}")
 			
-	set(THIRD_PARTY_LIBS libassimpd.6.0.4.dylib libassimpd.6.dylib libassimpd.dylib libSDL3.0.dylib libSDL3.dylib libassimp.6.0.4.dylib libassimp.6.dylib libassimp.dylib)
+	set(THIRD_PARTY_LIBSD libassimpd.6.0.4.dylib libassimpd.6.dylib libassimpd.dylib)
+	set(THIRD_PARTY_LIBSR libassimp.6.0.4.dylib libassimp.6.dylib libassimp.dylib)
+	set(THIRD_PARTY_LIBSS libSDL3.0.dylib libSDL3.dylib)
 
-	foreach(lib ${THIRD_PARTY_LIBS})
+	foreach(lib ${THIRD_PARTY_LIBSS})
 		add_custom_command(TARGET Game POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
-			COMMAND ${CMAKE_COMMAND} -E copy_if_different
-				"$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/${lib},${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/${lib}>"
-				"${GAME_FRAMEWORKS_DIR}/"
-		)
+			COMMAND ${CMAKE_COMMAND} -E copy "$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>" "${GAME_FRAMEWORKS_DIR}/"
+			COMMENT "Copying ${lib} for $<CONFIG> build" )
+	endforeach()
+	
+	foreach(lib ${THIRD_PARTY_LIBSD})
+		add_custom_command(TARGET Game POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
+			COMMAND ${CMAKE_COMMAND} -E copy "$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>" "${GAME_FRAMEWORKS_DIR}/"
+			COMMENT "Copying ${lib} for $<CONFIG> build" )
+	endforeach()
+	
+	foreach(lib ${THIRD_PARTY_LIBSR})
+		add_custom_command(TARGET Game POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
+			COMMAND ${CMAKE_COMMAND} -E copy "$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>" "${GAME_FRAMEWORKS_DIR}/"
+			COMMENT "Copying ${lib} for $<CONFIG> build" )
 	endforeach()
 
     add_custom_command(TARGET Game POST_BUILD
