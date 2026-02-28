@@ -49,6 +49,10 @@ bool GameProgram::Initialize()
 
 	Shader::SetShaderDirectory(shaderPath);
 	const strg result = Shader::CompileAllShaders(shaderDevPath);
+    
+    const strg tmppath = FileSystem::GetResourcePath("issue.txt").string();
+    FileSystem::WriteTextFile(tmppath, result);
+    
 	LoadShaders();
 
 	// create back buffer surface
