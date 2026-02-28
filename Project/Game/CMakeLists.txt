@@ -49,11 +49,22 @@ if(APPLE)
     #     )
     # endforeach()
 	
-	add_custom_command(TARGET Game POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory
-			"$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>"
-			"${GAME_FRAMEWORKS_DIR}"
-)
+	#add_custom_command(TARGET Game POST_BUILD
+	#	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	#		"$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>"
+	#		"${GAME_FRAMEWORKS_DIR}")
+			
+	set(THIRD_PARTY_LIBS libassimpd.6.0.4.dylib libassimpd.6.dylib libassimpd.dylib libSDL3.0.dylib libSDL3.dylib libassimp.6.0.4.dylib libassimp.6.dylib libassimp.dylib)
+
+	foreach(lib ${THIRD_PARTY_LIBS})
+		add_custom_command(TARGET Game POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
+			COMMAND ${CMAKE_COMMAND} -E copy
+				"$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>"
+				"${GAME_FRAMEWORKS_DIR}/"
+			COMMENT "Copying ${lib} for $<CONFIG> build"
+		)
+	endforeach()
 
     add_custom_command(TARGET Game POST_BUILD
         COMMAND codesign --force --deep --sign - "${GAME_APP}"
