@@ -60,7 +60,7 @@ if(APPLE)
 
 	foreach(lib ${THIRD_PARTY_LIBSS})
 		add_custom_command(TARGET Game POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy "$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/${lib},${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/${lib}>"
+			COMMAND ${CMAKE_COMMAND} -E copy "$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/${lib},${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/${lib}>")
 	endforeach()
 	
 	#foreach(lib ${THIRD_PARTY_LIBSD})
