@@ -1,14 +1,3 @@
-if(APPLE)
-    if(CMAKE_BUILD_TYPE MATCHES Debug)
-        set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug")
-    else()
-        set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release")
-    endif()
-
-    file(GLOB DYLIBS "${DYLIB_DIR}/*.dylib")
-    list(FILTER DYLIBS EXCLUDE REGEX ".*/\\._.*")
-endif()
-
 file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
 
 if (WIN32)
@@ -28,8 +17,22 @@ target_link_libraries(Game PRIVATE bx::bx)
 target_link_libraries(Game PRIVATE bimg::bimg)
 
 if(APPLE)
+    if(CMAKE_BUILD_TYPE MATCHES Debug)
+        set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug")
+    else()
+        set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release")
+    endif()
+
+    file(GLOB DYLIBS "${DYLIB_DIR}/*.dylib")
+    list(FILTER DYLIBS EXCLUDE REGEX ".*/\\._.*")
+
     set(GAME_APP "$<TARGET_BUNDLE_DIR:Game>")
     set(GAME_FRAMEWORKS_DIR "${GAME_APP}/Contents/Frameworks")
+
+    set_target_properties(Game PROPERTIES
+        BUILD_RPATH "@executable_path/../Frameworks"
+        INSTALL_RPATH "@executable_path/../Frameworks"
+    )
 
     add_custom_command(TARGET Game POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
@@ -41,24 +44,10 @@ if(APPLE)
 
         add_custom_command(TARGET Game POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy "${dylib}" "${dest}"
-
-            # Fix dylib ID
             COMMAND install_name_tool -id "@rpath/${dylib_name}" "${dest}"
-
-            # Make app look in Frameworks
-            COMMAND install_name_tool -change "@rpath/${dylib_name}"
-                    "@executable_path/../Frameworks/${dylib_name}"
-                    "$<TARGET_FILE:Game>"
-
-            # Sign the dylib
             COMMAND codesign --force --sign - "${dest}"
         )
     endforeach()
-
-    # Add runtime search path
-    add_custom_command(TARGET Game POST_BUILD
-        COMMAND install_name_tool -add_rpath "@executable_path/../Frameworks" "$<TARGET_FILE:Game>"
-    )
 
     # Sign entire bundle LAST
     add_custom_command(TARGET Game POST_BUILD
