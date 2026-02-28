@@ -17,15 +17,6 @@ target_link_libraries(Game PRIVATE bx::bx)
 target_link_libraries(Game PRIVATE bimg::bimg)
 
 if(APPLE)
-    # if(CMAKE_BUILD_TYPE MATCHES Debug)
-    #     set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug")
-    # else()
-    #     set(DYLIB_DIR "${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release")
-    # endif()
-
-    #file(GLOB DYLIBS "${DYLIB_DIR}/*.dylib")
-    #list(FILTER DYLIBS EXCLUDE REGEX ".*/\\._.*")
-
     set(GAME_APP "$<TARGET_BUNDLE_DIR:Game>")
     set(GAME_FRAMEWORKS_DIR "${GAME_APP}/Contents/Frameworks")
 
@@ -37,45 +28,12 @@ if(APPLE)
     add_custom_command(TARGET Game POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
     )
-
-    # foreach(dylib IN LISTS DYLIBS)
-    #     get_filename_component(dylib_name "${dylib}" NAME)
-    #     set(dest "${GAME_FRAMEWORKS_DIR}/${dylib_name}")
-	# 
-    #     add_custom_command(TARGET Game POST_BUILD
-    #         COMMAND ${CMAKE_COMMAND} -E copy "${dylib}" "${dest}"
-    #         COMMAND install_name_tool -id "@rpath/${dylib_name}" "${dest}"
-    #         COMMAND codesign --force --sign - "${dest}"
-    #     )
-    # endforeach()
 	
-	#add_custom_command(TARGET Game POST_BUILD
-	#	COMMAND ${CMAKE_COMMAND} -E copy_directory
-	#		"$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>"
-	#		"${GAME_FRAMEWORKS_DIR}")
-			
-	set(THIRD_PARTY_LIBSD libassimpd.6.0.4.dylib libassimpd.6.dylib libassimpd.dylib)
-	set(THIRD_PARTY_LIBSR libassimp.6.0.4.dylib libassimp.6.dylib libassimp.dylib)
-	set(THIRD_PARTY_LIBSS libSDL3.0.dylib libSDL3.dylib)
-
-	foreach(lib ${THIRD_PARTY_LIBSS})
-		add_custom_command(TARGET Game POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy "$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug/${lib},${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release/${lib}>")
-	endforeach()
-	
-	#foreach(lib ${THIRD_PARTY_LIBSD})
-	#	add_custom_command(TARGET Game POST_BUILD
-	#		COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
-	#		COMMAND ${CMAKE_COMMAND} -E copy "$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>" "${GAME_FRAMEWORKS_DIR}/"
-	#		COMMENT "Copying ${lib} for $<CONFIG> build" )
-	#endforeach()
-	#
-	#foreach(lib ${THIRD_PARTY_LIBSR})
-	#	add_custom_command(TARGET Game POST_BUILD
-	#		COMMAND ${CMAKE_COMMAND} -E make_directory "${GAME_FRAMEWORKS_DIR}"
-	#		COMMAND ${CMAKE_COMMAND} -E copy "$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>" "${GAME_FRAMEWORKS_DIR}/"
-	#		COMMENT "Copying ${lib} for $<CONFIG> build" )
-	#endforeach()
+	add_custom_command(TARGET Game POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+			"$<IF:$<CONFIG:Debug>,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Debug,${CMAKE_SOURCE_DIR}/Thirdparty/arm64/Release>"
+		COMMAND ${CMAKE_COMMAND} -E remove
+			"${GAME_FRAMEWORKS_DIR}/*.a")
 
     add_custom_command(TARGET Game POST_BUILD
         COMMAND codesign --force --deep --sign - "${GAME_APP}"
