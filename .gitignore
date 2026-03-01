@@ -1,10 +1,10 @@
 # Folders
 Project/Thirdparty/
 GameDir/
-Project/arm64/
-Project/__MACOSX/
 
 # macOS system files
+Project/arm64/
+Project/__MACOSX/
 .DS_Store
 
 # CMake
