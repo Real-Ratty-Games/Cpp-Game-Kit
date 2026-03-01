@@ -50,8 +50,8 @@ bool GameProgram::Initialize()
 	Shader::SetShaderDirectory(shaderPath);
 	const strg result = Shader::CompileAllShaders(shaderDevPath);
     
-    const strg shdErrPath = FileSystem::GetResourcePath("ShaderErr.log").string();
-    FileSystem::WriteTextFile(shdErrPath, result);
+	const strg shdErrPath = FileSystem::GetResourcePath("ShaderErr.log").string();
+	FileSystem::WriteTextFile(shdErrPath, result);
     
 	LoadShaders();
 
