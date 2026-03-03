@@ -25,7 +25,7 @@ bool GameProgram::Initialize()
 
 	mSound.Initialize();
 
-    const strg cursorPath = FileSystem::GetResourcePath("Data/Cursor.bmp").string();
+	const strg cursorPath = FileSystem::GetResourcePath("Data/Cursor.bmp").string();
 	_SdlCursor = Window::LoadHardwareCursorImage(cursorPath);
 	Window::SetHardwareCursorImage(_SdlCursor);
 
@@ -41,7 +41,7 @@ bool GameProgram::Initialize()
 #endif
 
 	if (!Renderer::Initialize(mWindow, dapi, true, MSAA::NONE))
-		 return false;
+		return false;
 
 	// setup shaders
 	const strg shaderPath = FileSystem::GetResourcePath("Data/Shaders").string();
@@ -49,15 +49,15 @@ bool GameProgram::Initialize()
 
 	Shader::SetShaderDirectory(shaderPath);
 	const strg result = Shader::CompileAllShaders(shaderDevPath);
-    
+
 	const strg shdErrPath = FileSystem::GetResourcePath("ShaderErr.log").string();
 	FileSystem::WriteTextFile(shdErrPath, result);
-    
+
 	LoadShaders();
 
 	// create back buffer surface
 	mBackBufferSurface = new DrawSurface2D(0, resolution, mWindow->GetNativePtr());
-    
+
 	mCamera.Size = mWindow->GetSize();
 
 	Window::DestroySplashScreen();
@@ -78,7 +78,7 @@ void GameProgram::Tick()
 	mClock.Tick();
 	while (mClock.Wait())
 	{
-        // Logic here...
+		// Logic here...
 	}
 }
 
@@ -87,9 +87,9 @@ void GameProgram::Draw()
 	Renderer::BeginDraw();
 	if (!mWindow->IsIconified())
 	{
-        Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
+		Renderer::BeginDrawSprite(mBackBufferSurface, mCamera);
 		// Render here...
-        Renderer::EndDrawSprite();
+		Renderer::EndDrawSprite();
 	}
 	Renderer::EndDraw();
 }
