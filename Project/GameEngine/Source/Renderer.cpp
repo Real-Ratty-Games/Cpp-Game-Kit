@@ -26,6 +26,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#include <stb_image_resize2.h>
+
 #define GAMEENGINE_RENDERER_SPRITE_FLAGS (BGFX_DISCARD_INDEX_BUFFER | BGFX_DISCARD_STATE | BGFX_DISCARD_TRANSFORM)
 #define GAMEENGINE_RENDERER_SPRITE_STATE (BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A | BGFX_STATE_BLEND_ALPHA | BGFX_STATE_DEPTH_TEST_LESS)
 
@@ -48,6 +51,8 @@ static bgfx::VertexBufferHandle	_Quad2DVB;
 static float					_Quad2DView[16];
 static Texture*					_Quad2DLastTex = nullptr; // don't update sample if it's the same!
 
+static inline void Renderer_LoadTexture(Texture& texture, uint8* data, uint64 flags, int nrComponents,
+	strgv texturename, int width, int height, bool mipgen);
 static inline void Renderer_ClearActives();
 static void	Renderer_Init3DLayout();
 static void	Renderer_Init2DQuad();
@@ -144,7 +149,7 @@ bgfx::IndexBufferHandle Renderer::CreateIndexBuffer(const void* data, uint size)
 	return bgfx::createIndexBuffer(bgfx::copy(data, size));
 }
 
-void Renderer::LoadTextureFromFile(Texture& texture, strgv filename, uint64 flags, strgv texturename, bool flipUV)
+void Renderer::LoadTextureFromFile(Texture& texture, strgv filename, uint64 flags, strgv texturename, bool flipUV, bool mipgen)
 {
 	stbi_set_flip_vertically_on_load(flipUV);
 	int width, height, nrComponents;
@@ -156,60 +161,22 @@ void Renderer::LoadTextureFromFile(Texture& texture, strgv filename, uint64 flag
 		throw BigError(errmsg);
 	}
 
-	unsigned char* out = data;
-	bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R8;
-	if (nrComponents == 3)
-		format = bgfx::TextureFormat::RGB8;
-	else if (nrComponents == 4)
-		format = bgfx::TextureFormat::RGBA8;
-
-	texture.Handle = bgfx::createTexture2D(
-		static_cast<uint16>(width),
-		static_cast<uint16>(height),
-		false,
-		0,
-		format,
-		flags,
-		bgfx::copy(out, width * height * nrComponents));
-
-	if (bgfx::isValid(texture.Handle))
-		bgfx::setName(texture.Handle, texturename.data());
-	else
-	{
-		const strg errmsg = "Failed loading texture from file: " + strg(filename);
-		throw BigError(errmsg);
-	}
-
-	texture.Size = vec2i(width, height);
-
-	stbi_image_free(out);
-	stbi_set_flip_vertically_on_load(false);
+	Renderer_LoadTexture(texture, data, flags, nrComponents, texturename, width, height, mipgen);
 }
 
-void Renderer::LoadTextureFromMemory(Texture& texture, std::vector<uint8>& data, uint64 flags, strgv texturename)
+void Renderer::LoadTextureFromMemory(Texture& texture, std::vector<uint8>& memData, uint64 flags, strgv texturename, bool flipUV, bool mipgen)
 {
-	if (!data.empty())
-	{
-		texture.Handle = bgfx::createTexture(bgfx::copy(data.data(), (uint)data.size()), flags);
+	stbi_set_flip_vertically_on_load(flipUV);
+	int width, height, nrComponents;
+	uint8* data = stbi_load_from_memory(memData.data(), memData.size(), &width, &height, &nrComponents, 0);
 
-		if (bgfx::isValid(texture.Handle))
-			bgfx::setName(texture.Handle, texturename.data());
-		else
-		{
-			const strg errmsg = "Failed loading texture from memory: " + strg(texturename);
-			throw BigError(errmsg);
-		}
-
-		auto header = data.data();
-		int height = *reinterpret_cast<const char*>(header + 12);
-		int width = *reinterpret_cast<const char*>(header + 16);
-		texture.Size = vec2i(width, height);
-	}
-	else
+	if (!data)
 	{
-		const strg errmsg = "Failed loading texture from memory; Data was empty: " + strg(texturename);
+		const strg errmsg = "Failed loading texture from memory: " + strg(texturename);
 		throw BigError(errmsg);
 	}
+
+	Renderer_LoadTexture(texture, data, flags, nrComponents, texturename, width, height, mipgen);
 }
 
 void Renderer::FreeTexture(Texture& tex)
@@ -580,6 +547,89 @@ void Renderer::DrawMesh(uint8 flags)
 /*======================================================
 ======================================================*/
 
+inline void Renderer_LoadTexture(Texture& texture, uint8* data, uint64 flags, int nrComponents, strgv texturename,
+	int width, int height, bool mipgen)
+{
+	bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R8;
+	if (nrComponents == 3)
+		format = bgfx::TextureFormat::RGB8;
+	else if (nrComponents == 4)
+		format = bgfx::TextureFormat::RGBA8;
+
+	if (mipgen)
+	{
+		int nmips = std::max(width, height);
+		nmips = 1 + static_cast<int>(std::floor(std::log2(nmips)));
+
+		texture.Handle = bgfx::createTexture2D(
+			static_cast<uint16>(width),
+			static_cast<uint16>(height),
+			true,
+			1,
+			format,
+			flags,
+			nullptr);
+
+		int mipWidth = width;
+		int mipHeight = height;
+		stbi_uc* mipData = data;
+
+		for (int i = 0; i < nmips; i++)
+		{
+			bgfx::updateTexture2D(
+				texture.Handle,
+				0,
+				i,
+				0, 0,
+				static_cast<uint16>(mipWidth),
+				static_cast<uint16>(mipHeight),
+				bgfx::copy(mipData, mipWidth * mipHeight * nrComponents));
+
+			mipWidth = std::max(1, mipWidth / 2);
+			mipHeight = std::max(1, mipHeight / 2);
+			stbi_uc* nextMip = (stbi_uc*)malloc(mipWidth * mipHeight * nrComponents);
+
+			stbir_resize_uint8_linear(mipData, mipWidth * 2, mipHeight * 2, 0, nextMip, mipWidth, mipHeight, 0,
+				(stbir_pixel_layout)nrComponents);
+
+			if (mipData != data) free(mipData);
+			mipData = nextMip;
+		}
+
+		if (mipData != data) free(mipData);
+	}
+	else
+	{
+		texture.Handle = bgfx::createTexture2D(
+			static_cast<uint16>(width),
+			static_cast<uint16>(height),
+			false,
+			0,
+			format,
+			flags,
+			bgfx::copy(data, width * height * nrComponents));
+	}
+
+	if (bgfx::isValid(texture.Handle))
+		bgfx::setName(texture.Handle, texturename.data());
+	else
+	{
+		const strg errmsg = "Failed loading texture: " + strg(texturename);
+		throw BigError(errmsg);
+	}
+
+	texture.Size = vec2i(width, height);
+
+	stbi_image_free(data);
+	stbi_set_flip_vertically_on_load(false);
+}
+
+inline void Renderer_ClearActives()
+{
+	_ActiveShader = nullptr;
+	_ActiveDrawSurface = nullptr;
+}
+
 void Renderer_Init3DLayout()
 {
 	_Mesh3DVBLayout.begin()
@@ -727,10 +777,4 @@ void Renderer_CreateMesh(Mesh3D& modelMesh, RawMeshData& mdata)
 	modelMesh.IBH = Renderer::CreateIndexBuffer(mdata.Indices.data(), (uint)mdata.Indices.size() * sizeof(uint16));
 	if (!bgfx::isValid(modelMesh.IBH))
 		throw BigError("Index Buffer is invalid!");
-}
-
-inline void Renderer_ClearActives()
-{
-	_ActiveShader		= nullptr;
-	_ActiveDrawSurface	= nullptr;
 }
