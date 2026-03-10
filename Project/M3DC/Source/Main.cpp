@@ -8,9 +8,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "../../GameEngine/Include/Globals.hpp"
-#include "../../GameEngine/Include/SystemTypes.hpp"
-#include "../../GameEngine/Include/FileSystem.hpp"
+#include "../../GameEngine/Core/Include/Globals.hpp"
+#include "../../GameEngine/Core/Include/SystemTypes.hpp"
+#include "../../GameEngine/Core/Include/FileSystem.hpp"
 
 using namespace GameEngine;
 

@@ -1,4 +1,4 @@
-file(GLOB_RECURSE SOURCES "Source/*.cpp" "../GameEngine/Source/FileSystem.cpp")
+file(GLOB_RECURSE SOURCES "Source/*.cpp" "../GameEngine/Core/Source/FileSystem.cpp")
 
 if (WIN32)
     add_executable (M3DC ${SOURCES})

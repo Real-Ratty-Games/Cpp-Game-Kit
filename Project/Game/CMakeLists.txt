@@ -52,7 +52,11 @@ elseif(APPLE)
 			$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/../arm64/Release>
 	)
 endif()
-target_include_directories(Game PRIVATE "../GameEngine/Include")
+target_include_directories(Game PRIVATE "../GameEngine/Core/Include"
+"../GameEngine/Draw/Include"
+"../GameEngine/Math/Include"
+"../GameEngine/Net/Include"
+"../GameEngine/OS/Include")
 
 if (WIN32)
 	set_target_properties(Game PROPERTIES
