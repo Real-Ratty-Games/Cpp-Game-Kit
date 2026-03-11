@@ -20,7 +20,11 @@ using namespace GameEngine;
 
 void NetServerUDP::Initialize(uint16 port, strgv ip)
 {
-	mSocket = INVALID_SOCKET;
+#if _WIN32
+    mSocket = INVALID_SOCKET;
+#else
+	mSocket = -1;
+#endif
 	mSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	NetServer::Initialize(port, ip);
 }
@@ -44,9 +48,17 @@ int NetServerUDP::Recv(NetClientDataUDP& client, char* buffer, int size, int fla
 	sockaddr_in clientAddr;
 	socklen_t	clientLen = sizeof(clientAddr);
 
-	int bytes = recvfrom(mSocket, buffer, size, flags, (SOCKADDR*)&clientAddr, &clientLen);
+#if _WIN32
+    int bytes = recvfrom(mSocket, buffer, size, flags, (SOCKADDR*)&clientAddr, &clientLen);
+#else
+    int bytes = recvfrom(mSocket, buffer, size, flags, (sockaddr*)&clientAddr, &clientLen);
+#endif
 
-	if (bytes == SOCKET_ERROR)
+#if _WIN32
+    if (bytes == SOCKET_ERROR)
+#else
+	if (bytes == -1)
+#endif
 		return GAMEENGINE_NET_UDP_NOTHING; // return WSAGetLastError()
 
 	char ip[INET_ADDRSTRLEN];
@@ -64,5 +76,9 @@ int NetServerUDP::Recv(NetClientDataUDP& client, char* buffer, int size, int fla
 
 int NetServerUDP::Send(const NetClientDataUDP& client, const char* buffer, int size, int flags)
 {
-	return sendto(mSocket, buffer, size, flags, (SOCKADDR*)&client.SocketAddr, client.SocketLen);
+#if _WIN32
+    return sendto(mSocket, buffer, size, flags, (SOCKADDR*)&client.SocketAddr, client.SocketLen);
+#else
+    return sendto(mSocket, buffer, size, flags, (sockaddr*)&client.SocketAddr, client.SocketLen);
+#endif
 }

@@ -20,7 +20,11 @@ using namespace GameEngine;
 
 void NetClientUDP::Initialize(uint16 port, strgv ip)
 {
-	mSocket = INVALID_SOCKET;
+#if _WIN32
+    mSocket = INVALID_SOCKET;
+#else
+	mSocket = -1;
+#endif
 	mSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	NetClient::Initialize(port, ip);
 	mServiceLen = sizeof(mService);
@@ -33,10 +37,18 @@ int NetClientUDP::Run()
 
 int NetClientUDP::Recv(char* buffer, int size, int flags)
 {
+#if _WIN32
 	return recvfrom(mSocket, buffer, size, flags, (SOCKADDR*)&mService, &mServiceLen);
+#else
+    return recvfrom(mSocket, buffer, size, flags, (sockaddr*)&mService, &mServiceLen);
+#endif
 }
 
 int NetClientUDP::Send(const char* buffer, int size, int flags)
 {
-	return sendto(mSocket, buffer, size, flags, (SOCKADDR*)&mService, mServiceLen);
+#if _WIN32
+    return sendto(mSocket, buffer, size, flags, (SOCKADDR*)&mService, mServiceLen);
+#else
+    return sendto(mSocket, buffer, size, flags, (sockaddr*)&mService, mServiceLen);
+#endif
 }

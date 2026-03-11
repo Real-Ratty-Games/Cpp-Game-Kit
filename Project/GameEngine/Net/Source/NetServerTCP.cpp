@@ -12,6 +12,7 @@
 #else
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/ioctl.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
@@ -23,10 +24,18 @@ using namespace GameEngine;
 // 55555, "127.0.0.1"
 void NetServerTCP::Initialize(uint16 port, strgv ip)
 {
-	mSocket = INVALID_SOCKET;
+#if _WIN32
+    mSocket = INVALID_SOCKET;
+#else
+	mSocket = -1;
+#endif
 	mSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	NetServer::Initialize(port, ip);
-	if (listen(mSocket, SOMAXCONN) == SOCKET_ERROR)
+#if _WIN32
+    if (listen(mSocket, SOMAXCONN) == SOCKET_ERROR)
+#else
+	if (listen(mSocket, SOMAXCONN) == -1)
+#endif
 #if _WIN32
 		throw BigError("Failed to listen server: " + std::to_string(WSAGetLastError()));
 #else
@@ -66,14 +75,14 @@ int NetServerTCP::Connect()
 
 #if _WIN32
 	SOCKET client = accept(mSocket, (sockaddr*)&clientAddr, &clientLen);
+    
+    if (client == INVALID_SOCKET)
+        return WSAGetLastError();
 #else
 	int client = accept(mSocket, (sockaddr*)&clientAddr, &clientLen);
-#endif
-	if (client == INVALID_SOCKET)
-#if _WIN32
-		return WSAGetLastError();
-#else
-		return errno;
+    
+    if (client == -1)
+        return errno;
 #endif
 
 	char ip[INET_ADDRSTRLEN];
@@ -86,7 +95,11 @@ int NetServerTCP::Connect()
 		}))
 	{
 		ulong nb = 1;
+#if _WIN32
 		ioctlsocket(client, FIONBIO, &nb); // set non-blocking
+#else
+        ioctl(mSocket, FIONBIO, &nb);
+#endif
 		mClients.push_back({ client, cport, ip });
 	}
 	return GAMEENGINE_NET_TCP_NOTHING;
@@ -103,7 +116,7 @@ int NetServerTCP::Listen()
 #if _WIN32
 			else if (code == GAMEENGINE_NET_TCP_NOTHING && WSAGetLastError() == WSAECONNRESET)
 #else
-			else if (code == GAMEENGINE_NET_TCP_NOTHING && errno == WSAECONNRESET)
+			else if (code == GAMEENGINE_NET_TCP_NOTHING && errno == ENETRESET)
 #endif
 				remv = true;
 
@@ -125,5 +138,9 @@ int NetServerTCP::Send(const NetClientDataTCP& client, const char* buffer, int s
 
 void NetServerTCP::Disconnect(const NetClientDataTCP& client)
 {
-	closesocket(client.Socket);
+#if _WIN32
+    closesocket(client.Socket);
+#else
+    close(client.Socket);
+#endif
 }

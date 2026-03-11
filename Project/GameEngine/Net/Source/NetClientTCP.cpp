@@ -20,14 +20,22 @@ using namespace GameEngine;
 
 void NetClientTCP::Initialize(uint16 port, strgv ip)
 {
-	mSocket = INVALID_SOCKET;
+#if _WIN32
+    mSocket = INVALID_SOCKET;
+#else
+	mSocket = -1;
+#endif
 	mSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	NetClient::Initialize(port, ip);
 }
 
 int NetClientTCP::TryConnecting()
 {
-	connect(mSocket, (SOCKADDR*)&mService, sizeof(mService));
+#if _WIN32
+    connect(mSocket, (SOCKADDR*)&mService, sizeof(mService));
+#else
+	connect(mSocket, (sockaddr*)&mService, sizeof(mService));
+#endif
 
 	fd_set writeSet;
 	FD_ZERO(&writeSet);
@@ -37,14 +45,23 @@ int NetClientTCP::TryConnecting()
 	FD_ZERO(&exceptSet);
 	FD_SET(mSocket, &exceptSet);
 
-	TIMEVAL timeout = { 0, 0 }; // non-blocking check
+#if _WIN32
+    TIMEVAL timeout = { 0, 0 }; // non-blocking check
+#else
+	timeval timeout = { 0, 0 };
+#endif
 
 	int result = select(0, nullptr, &writeSet, &exceptSet, &timeout);
 	if (result > 0)
 	{
 		int err = 0;
-		int len = sizeof(err);
-		getsockopt(mSocket, SOL_SOCKET, SO_ERROR, (char*)&err, &len);
+#if _WIN32
+        int len = sizeof(err);
+        getsockopt(mSocket, SOL_SOCKET, SO_ERROR, (char*)&err, &len);
+#else
+        socklen_t len = sizeof(err);
+        getsockopt(mSocket, SOL_SOCKET, SO_ERROR, &err, &len);
+#endif
 		if (err == 0)
 			mStatus = ENetClientStatusTCP::BUSY;
 		else return err;
@@ -67,7 +84,7 @@ int NetClientTCP::Run()
 #if _WIN32
 			(code == GAMEENGINE_NET_TCP_NOTHING && WSAGetLastError() == WSAECONNRESET))
 #else
-			(code == GAMEENGINE_NET_TCP_NOTHING && errno == WSAECONNRESET))
+			(code == GAMEENGINE_NET_TCP_NOTHING && errno == ECONNRESET))
 #endif
 			mStatus = ENetClientStatusTCP::DEAD;
 		return code;
