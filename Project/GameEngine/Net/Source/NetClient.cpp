@@ -17,7 +17,7 @@ void NetClient::Initialize(uint16 port, strgv ip)
         throw BigError("Failed creating client socket: " + std::to_string(Network::GetError()));
     
     Network::SetSocketNB(mSocket);
-    Network::InetPton(mService, ip);
+    Network::Pton(mService, ip);
 
     mService.sin_family = AF_INET;
     mService.sin_port = htons(port);

@@ -24,7 +24,7 @@ protected:
 		char buffer[13];
 		const int bytes = Recv(client, buffer, sizeof(buffer));
 
-		if (bytes != GAMEENGINE_NET_UDP_NOTHING)
+		if (bytes != GAMEENGINE_NET_NOTHING)
 		{
 			buffer[bytes - 1] = '\0';
 			const strg header = "Message from Client: " + client.IP;
@@ -45,7 +45,7 @@ public:
 			Send(buffer, strlen(buffer));
 		}
 
-		return GAMEENGINE_NET_UDP_NOTHING;
+		return GAMEENGINE_NET_NOTHING;
 	}
 };
 
@@ -64,7 +64,7 @@ bool GameProgram::Initialize()
 	const vec2 resolution(1280, 720);
 
 	mWindow = new GameWindow(this);
-	mWindow->Create("Server", (uint)resolution.X, (uint)resolution.Y, false);
+	mWindow->Create("Client", (uint)resolution.X, (uint)resolution.Y, false);
 
 	Network::Initialize();
 	_inst.Initialize(55555, "127.0.0.1");

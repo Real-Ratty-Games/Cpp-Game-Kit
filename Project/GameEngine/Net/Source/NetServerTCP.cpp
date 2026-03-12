@@ -10,7 +10,6 @@
 
 using namespace GameEngine;
 
-// 55555, "127.0.0.1"
 void NetServerTCP::Initialize(uint16 port, strgv ip)
 {
     mSocket = GAMEENGINE_NET_SOCKET_INVALID;
@@ -63,7 +62,7 @@ int NetServerTCP::Connect()
         Network::SetSocketNB(client);
 		mClients.push_back({ client, cport, ip });
 	}
-	return GAMEENGINE_NET_TCP_NOTHING;
+	return GAMEENGINE_NET_NOTHING;
 }
 
 int NetServerTCP::Listen()
@@ -74,7 +73,7 @@ int NetServerTCP::Listen()
 			bool remv = false;
 			code = ListenToClient(client);
 			if (code == GAMEENGINE_NET_TCP_DISCONNECTED) remv = true;
-			else if (code == GAMEENGINE_NET_TCP_NOTHING && Network::GetError() == GAMEENGINE_NET_CONNRESET)
+			else if (code == GAMEENGINE_NET_NOTHING && Network::GetError() == GAMEENGINE_NET_CONNRESET)
 				remv = true;
 
 			if (remv) Disconnect(client);

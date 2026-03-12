@@ -63,7 +63,7 @@ int Network::GetError()
 #endif
 }
 
-void Network::InetPton(sockaddr_in& service, strgv ip)
+void Network::Pton(sockaddr_in& service, strgv ip)
 {
 #if _WIN32
     InetPton(AF_INET, ip.data(), &service.sin_addr.s_addr);

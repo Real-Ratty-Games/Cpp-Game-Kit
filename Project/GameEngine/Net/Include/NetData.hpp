@@ -17,8 +17,7 @@
 #endif
 
 #define GAMEENGINE_NET_TCP_DISCONNECTED	0
-#define GAMEENGINE_NET_TCP_NOTHING		-1
-#define GAMEENGINE_NET_UDP_NOTHING		-1
+#define GAMEENGINE_NET_NOTHING			-1
 #define GAMEENGINE_NET_SOCKET_INVALID   -1
 #if _WIN32
 #define GAMEENGINE_NET_CONNRESET        WSAECONNRESET
@@ -41,8 +40,8 @@ typedef sockaddr    NetSockaddr;
 	struct NetClientDataTCP
 	{
         NetSocket	Socket;
-		uint16	Port;
-		strg	IP;
+		uint16		Port;
+		strg		IP;
 	};
 
 	struct NetClientDataUDP

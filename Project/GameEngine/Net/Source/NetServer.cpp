@@ -22,7 +22,7 @@ void NetServer::Initialize(uint16 port, strgv ip)
 	service.sin_family = AF_INET;
     service.sin_port = htons(port);
     
-    Network::InetPton(service, ip);
+    Network::Pton(service, ip);
 
     if (bind(mSocket, (NetSockaddr*)&service, sizeof(service)) == GAMEENGINE_NET_SOCKET_INVALID)
 		throw BigError("Failed binding server: " + std::to_string(Network::GetError()));

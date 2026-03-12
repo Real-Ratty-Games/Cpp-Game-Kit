@@ -59,12 +59,12 @@ int NetClientTCP::Run()
 	{
 		const int code = ListenToServer();
 		if((code == GAMEENGINE_NET_TCP_DISCONNECTED) ||
-			(code == GAMEENGINE_NET_TCP_NOTHING && Network::GetError() == GAMEENGINE_NET_CONNRESET))
+			(code == GAMEENGINE_NET_NOTHING && Network::GetError() == GAMEENGINE_NET_CONNRESET))
 			mStatus = ENetClientStatusTCP::DEAD;
 		return code;
 	}break;
 	}
-	return GAMEENGINE_NET_TCP_NOTHING;
+	return GAMEENGINE_NET_NOTHING;
 }
 
 ENetClientStatusTCP NetClientTCP::Status()
