@@ -73,14 +73,12 @@ int NetServerTCP::Connect()
 	sockaddr_in clientAddr;
 	socklen_t	clientLen = sizeof(clientAddr);
 
-#if _WIN32
-	SOCKET client = accept(mSocket, (sockaddr*)&clientAddr, &clientLen);
+    NetSocket client = accept(mSocket, (sockaddr*)&clientAddr, &clientLen);
     
+#if _WIN32
     if (client == INVALID_SOCKET)
         return WSAGetLastError();
 #else
-	int client = accept(mSocket, (sockaddr*)&clientAddr, &clientLen);
-    
     if (client == -1)
         return errno;
 #endif

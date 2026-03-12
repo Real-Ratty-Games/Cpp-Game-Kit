@@ -19,9 +19,25 @@
 #define GAMEENGINE_NET_TCP_DISCONNECTED	0
 #define GAMEENGINE_NET_TCP_NOTHING		-1
 #define GAMEENGINE_NET_UDP_NOTHING		-1
+#define GAMEENGINE_NET_SOCKET_INVALID   -1
+#if _WIN32
+#define GAMEENGINE_NET_CONNRESET        WSAECONNRESET
+#else
+#define GAMEENGINE_NET_CONNRESET        ECONNRESET
+#endif
 
 namespace GameEngine
 {
+#if _WIN32
+typedef SOCKET      NetSocket;
+typedef TIMEVAL     NetTimeval;
+typedef SOCKADDR    NetSockaddr;
+#else
+typedef int         NetSocket;
+typedef timeval     NetTimeval;
+typedef sockaddr    NetSockaddr;
+#endif
+
 	struct NetClientDataTCP
 	{
 #if _WIN32

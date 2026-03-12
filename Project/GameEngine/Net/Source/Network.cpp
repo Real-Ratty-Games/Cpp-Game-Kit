@@ -5,10 +5,12 @@
 #include "Network.hpp"
 #include "SystemTypes.hpp"
 #include "BigError.hpp"
-#if _WIN32
-#include <WinSock2.h>
-
+#ifdef _WIN32
+#include <ws2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
+#else
+#include <sys/ioctl.h>
+#include <errno.h>
 #endif
 
 using namespace GameEngine;
@@ -30,5 +32,42 @@ void Network::Release()
 {
 #if _WIN32
 	WSACleanup();
+#endif
+}
+
+void Network::SetSocketNB(NetSocket& socket)
+{
+    ulong nb = 1;
+#if _WIN32
+    ioctlsocket(socket, FIONBIO, &nb);
+#else
+    ioctl(socket, FIONBIO, &nb);
+#endif
+}
+
+void Network::CloseSocket(NetSocket& socket)
+{
+#if _WIN32
+    closesocket(socket);
+#else
+    close(socket);
+#endif
+}
+
+int Network::GetError()
+{
+#if _WIN32
+    return WSAGetLastError();
+#else
+    return errno;
+#endif
+}
+
+void Network::InetPton(sockaddr_in& service, strgv ip)
+{
+#if _WIN32
+    InetPton(AF_INET, ip.data(), &service.sin_addr.s_addr);
+#else
+    inet_pton(AF_INET, ip.data(), &service.sin_addr.s_addr);
 #endif
 }

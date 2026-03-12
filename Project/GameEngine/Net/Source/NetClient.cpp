@@ -4,6 +4,7 @@
 ======================================================*/
 #include "NetClient.hpp"
 #include "BigError.hpp"
+#include "Network.hpp"
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -21,38 +22,20 @@ using namespace GameEngine;
 
 void NetClient::Initialize(uint16 port, strgv ip)
 {
-	mPort	= port;
-	mIP		= ip;
+    mPort    = port;
+    mIP        = ip;
 
-#if _WIN32
-    if (mSocket == INVALID_SOCKET)
-		throw BigError("Failed creating client socket: " + std::to_string(WSAGetLastError()));
-#else
-    if (mSocket == -1)
-		throw BigError("Failed creating client socket: " + std::to_string(errno));
-#endif
+    if (mSocket == GAMEENGINE_NET_SOCKET_INVALID)
+        throw BigError("Failed creating client socket: " + std::to_string(Network::GetError()));
+    
+    Network::SetSocketNB(mSocket);
+    Network::InetPton(mService, ip);
 
-	ulong nb = 1;
-#if _WIN32
-	ioctlsocket(mSocket, FIONBIO, &nb); // set non-blocking
-#else
-    ioctl(mSocket, FIONBIO, &nb);
-#endif
-
-	mService.sin_family = AF_INET;
-#if _WIN32
-    InetPton(AF_INET, ip.data(), &mService.sin_addr.s_addr);
-#else
-	inet_pton(AF_INET, ip.data(), &mService.sin_addr.s_addr);
-#endif
-	mService.sin_port = htons(port);
+    mService.sin_family = AF_INET;
+    mService.sin_port = htons(port);
 }
 
 void NetClient::Release()
 {
-#if _WIN32
-	closesocket(mSocket);
-#else
-	close(mSocket);
-#endif
+    Network::CloseSocket(mSocket);
 }

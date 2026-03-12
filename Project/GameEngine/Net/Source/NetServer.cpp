@@ -4,6 +4,7 @@
 ======================================================*/
 #include "NetServer.hpp"
 #include "BigError.hpp"
+#include "Network.hpp"
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -24,34 +25,17 @@ void NetServer::Initialize(uint16 port, strgv ip)
 	mPort	= port;
 	mIP		= ip;
 
-#if _WIN32
-    if (mSocket == INVALID_SOCKET)
-		throw BigError("Failed creating server socket: " + std::to_string(WSAGetLastError()));
-#else
-    if (mSocket == -1)
-		throw BigError("Failed creating server socket: " + std::to_string(errno));
-#endif
-
-	ulong nb = 1;
-#if _WIN32
-	ioctlsocket(mSocket, FIONBIO, &nb); // set non-blocking
-#else
-    ioctl(mSocket, FIONBIO, &nb);
-#endif
+    if (mSocket == GAMEENGINE_NET_SOCKET_INVALID)
+		throw BigError("Failed creating server socket: " + std::to_string(Network::GetError()));
+    
+    Network::SetSocketNB(mSocket);
     
 	sockaddr_in service;
 	service.sin_family = AF_INET;
-#if _WIN32
-    InetPton(AF_INET, ip.data(), &service.sin_addr.s_addr);
-#else
-    inet_pton(AF_INET, ip.data(), &service.sin_addr.s_addr);
-#endif
-	service.sin_port = htons(port);
-#if _WIN32
-    if (bind(mSocket, (SOCKADDR*)&service, sizeof(service)) == SOCKET_ERROR)
-		throw BigError("Failed binding server: " + std::to_string(WSAGetLastError()));
-#else
-    if (bind(mSocket, (sockaddr*)&service, sizeof(service)) == -1)
-		throw BigError("Failed binding server: " + std::to_string(errno));
-#endif
+    service.sin_port = htons(port);
+    
+    Network::InetPton(service, ip);
+
+    if (bind(mSocket, (NetSockaddr*)&service, sizeof(service)) == GAMEENGINE_NET_SOCKET_INVALID)
+		throw BigError("Failed binding server: " + std::to_string(Network::GetError()));
 }

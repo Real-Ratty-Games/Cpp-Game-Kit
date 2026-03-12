@@ -4,6 +4,7 @@
 ======================================================*/
 #include "NetClientTCP.hpp"
 #include "BigError.hpp"
+#include "Network.hpp"
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -45,11 +46,7 @@ int NetClientTCP::TryConnecting()
 	FD_ZERO(&exceptSet);
 	FD_SET(mSocket, &exceptSet);
 
-#if _WIN32
-    TIMEVAL timeout = { 0, 0 }; // non-blocking check
-#else
-	timeval timeout = { 0, 0 };
-#endif
+    NetTimeval timeout = { 0, 0 }; // non-blocking check
 
 	int result = select(0, nullptr, &writeSet, &exceptSet, &timeout);
 	if (result > 0)
@@ -81,11 +78,7 @@ int NetClientTCP::Run()
 	{
 		const int code = ListenToServer();
 		if((code == GAMEENGINE_NET_TCP_DISCONNECTED) ||
-#if _WIN32
-			(code == GAMEENGINE_NET_TCP_NOTHING && WSAGetLastError() == WSAECONNRESET))
-#else
-			(code == GAMEENGINE_NET_TCP_NOTHING && errno == ECONNRESET))
-#endif
+			(code == GAMEENGINE_NET_TCP_NOTHING && Network::GetError() == GAMEENGINE_NET_CONNRESET))
 			mStatus = ENetClientStatusTCP::DEAD;
 		return code;
 	}break;

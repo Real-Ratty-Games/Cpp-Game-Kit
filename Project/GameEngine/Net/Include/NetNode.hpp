@@ -27,13 +27,9 @@ namespace GameEngine
 		virtual int	 Run() = 0;
 
 	protected:
-#if _WIN32
-		SOCKET	mSocket;
-#else
-		int		mSocket;
-#endif
-		uint16	mPort;
-		strg	mIP;
+        NetSocket   mSocket;
+		uint16	    mPort;
+		strg	    mIP;
 	};
 }
 #endif

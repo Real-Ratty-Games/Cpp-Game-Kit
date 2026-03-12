@@ -20,11 +20,7 @@ using namespace GameEngine;
 
 void NetClientUDP::Initialize(uint16 port, strgv ip)
 {
-#if _WIN32
-    mSocket = INVALID_SOCKET;
-#else
-	mSocket = -1;
-#endif
+    mSocket = GAMEENGINE_NET_SOCKET_INVALID;
 	mSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	NetClient::Initialize(port, ip);
 	mServiceLen = sizeof(mService);
