@@ -23,6 +23,9 @@ Preferably, use VS2022 or XCode.
 * <b>OS</b>
   * Window management
   * Keyboard, mouse and gamepad input
+* <b>Networking</b>
+  * TCP Server/Client
+  * UDP Server/Client
 * <b>Math</b>
   * Vector 2D
   * Vector 3D
