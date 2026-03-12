@@ -28,8 +28,9 @@ int NetClientTCP::TryConnecting()
 	FD_SET(mSocket, &exceptSet);
 
     NetTimeval timeout = { 0, 0 }; // non-blocking check
+    int nfds = (int)mSocket + 1;
 
-	int result = select(0, nullptr, &writeSet, &exceptSet, &timeout);
+	int result = select(nfds, nullptr, &writeSet, &exceptSet, &timeout);
 	if (result > 0)
 	{
 		int err = 0;

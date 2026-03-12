@@ -62,7 +62,7 @@ void GameProgram::OnResize(vec2i& size)
 	// EMPTY
 }
 
-static MyServer _inst;
+static MyClient _inst;
 
 bool GameProgram::Initialize()
 {
@@ -75,7 +75,8 @@ bool GameProgram::Initialize()
 	mWindow->Create("Server", (uint)resolution.X, (uint)resolution.Y, false);
 
 	Network::Initialize();
-	_inst.Initialize(54000, "0.0.0.0");
+	_inst.Initialize(54000, "192.168.178.70");
+    // "192.168.178.70"
 	// 55555, "127.0.0.1"
 
 	mWindow->Show();
@@ -90,6 +91,9 @@ void GameProgram::Tick()
 		Quit();
 
 	_inst.Run();
+    
+    //if(_inst.Status() == ENetClientStatusTCP::BUSY)
+    //    Quit();
 }
 
 void GameProgram::Draw()
