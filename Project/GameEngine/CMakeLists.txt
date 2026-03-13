@@ -1,91 +1,48 @@
-file(GLOB_RECURSE SOURCES "Source/*.cpp" "Include/*.hpp")
+file(GLOB_RECURSE SOURCES "Core/Source/*.cpp" "Core/Include/*.hpp"
+"Draw/Source/*.cpp" "Draw/Include/*.hpp"
+"Math/Source/*.cpp" "Math/Include/*.hpp"
+"Net/Source/*.cpp" "Net/Include/*.hpp"
+"OS/Source/*.cpp" "OS/Include/*.hpp")
 
 add_library(GameEngine STATIC ${SOURCES})
 
-set(COREFILES_HEADER "Include/Alarm.hpp"
-"Include/API.hpp"
-"Include/BigError.hpp"
-"Include/Clock.hpp"
-"Include/DebugHelp.hpp"
-"Include/FileSystem.hpp"
-"Include/Globals.hpp"
-"Include/IniFile.hpp"
-"Include/Program.hpp"
-"Include/SystemTypes.hpp"
-"Include/WADFile.hpp"
-"Include/WADMaker.hpp"
-)
+file(GLOB COREFILES_HEADER "Core/Include/*.hpp")
 source_group("Core/Inc/" FILES ${COREFILES_HEADER})
 
-set(COREFILES_SOURCE "Source/Alarm.cpp"
-"Source/BigError.cpp"
-"Source/Clock.cpp"
-"Source/FileSystem.cpp"
-"Source/IniFile.cpp"
-"Source/Program.cpp"
-"Source/WADFile.cpp"
-"Source/WADMaker.cpp"
-)
-source_group("Core/Src/" FILES ${COREFILES_SOURCE})
+file(GLOB COREFILES_SOURCE "Core/Source/*.cpp")
+source_group("Core/Src" FILES ${COREFILES_SOURCE})
 
-set(DRAWFILES_HEADER "Include/DrawData.hpp"
-"Include/DrawSurface.hpp"
-"Include/DrawSurface2D.hpp"
-"Include/DrawSurface3D.hpp"
-"Include/Renderer.hpp"
-"Include/Shader.hpp"
-"Include/Sprite.hpp"
-"Include/SpriteAnimation.hpp"
-"Include/Viewport3D.hpp"
-)
+file(GLOB DRAWFILES_HEADER "Draw/Include/*.hpp")
 source_group("Draw/Inc/" FILES ${DRAWFILES_HEADER})
 
-set(DRAWFILES_SOURCE "Source/DrawSurface.cpp"
-"Source/DrawSurface2D.cpp"
-"Source/DrawSurface3D.cpp"
-"Source/Renderer.cpp"
-"Source/Shader.cpp"
-"Source/Sprite.cpp"
-"Source/SpriteAnimation.cpp"
-"Source/Viewport3D.cpp"
-)
+file(GLOB DRAWFILES_SOURCE "Draw/Source/*.cpp")
 source_group("Draw/Src/" FILES ${DRAWFILES_SOURCE})
 
-set(MATHFILES_HEADER "Include/Collider.hpp"
-"Include/Collision.hpp"
-"Include/DrawMath.hpp"
-"Include/EulerRotation.hpp"
-"Include/Math.hpp"
-"Include/Matrix4.hpp"
-"Include/Multiply.hpp"
-"Include/Quaternion.hpp"
-"Include/Transformation.hpp"
-"Include/Vector2.hpp"
-"Include/Vector3.hpp"
-"Include/Vector4.hpp"
-)
+file(GLOB MATHFILES_HEADER "Math/Include/*.hpp")
 source_group("Math/Inc/" FILES ${MATHFILES_HEADER})
 
-set(MATHFILES_SOURCE "Source/Collision.cpp"
-"Source/DrawMath.cpp"
-"Source/Transformation.cpp"
-)
+file(GLOB MATHFILES_SOURCE "Math/Source/*.cpp")
 source_group("Math/Src/" FILES ${MATHFILES_SOURCE})
 
-set(OSFILES_HEADER "Include/Gamepad.hpp"
-"Include/Input.hpp"
-"Include/InputTypes.hpp"
-"Include/Sound.hpp"
-"Include/Window.hpp"
-)
+file(GLOB NETFILES_HEADER "Net/Include/*.hpp")
+source_group("Net/Inc/" FILES ${NETFILES_HEADER})
+
+file(GLOB NETFILES_SOURCE "Net/Source/*.cpp")
+source_group("Net/Src/" FILES ${NETFILES_SOURCE})
+
+file(GLOB OSFILES_HEADER "OS/Include/*.hpp")
 source_group("OS/Inc/" FILES ${OSFILES_HEADER})
 
-set(OSFILES_SOURCE "Source/Gamepad.cpp"
-"Source/Input.cpp"
-"Source/Sound.cpp"
-"Source/Window.cpp"
-)
+file(GLOB OSFILES_SOURCE "OS/Source/*.cpp")
 source_group("OS/Src/" FILES ${OSFILES_SOURCE})
+
+target_include_directories(GameEngine PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Core/Include> $<INSTALL_INTERFACE:Core>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Draw/Include> $<INSTALL_INTERFACE:Draw>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Math/Include> $<INSTALL_INTERFACE:Math>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Net/Include> $<INSTALL_INTERFACE:Net>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/OS/Include> $<INSTALL_INTERFACE:OS>
+)
 
 # Thirdparty
 target_link_libraries(GameEngine PRIVATE SoLoud::SoLoud)

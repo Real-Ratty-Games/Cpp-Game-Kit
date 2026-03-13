@@ -1,4 +1,4 @@
-file(GLOB_RECURSE SOURCES "Source/*.cpp" "../GameEngine/Source/FileSystem.cpp")
+file(GLOB_RECURSE SOURCES "Source/*.cpp" "../GameEngine/Core/Source/FileSystem.cpp")
 
 if (WIN32)
     add_executable (M3DC ${SOURCES})
@@ -7,6 +7,11 @@ if (WIN32)
 else()
     add_executable(M3DC MACOSX_BUNDLE ${SOURCES})
 endif()
+
+target_include_directories(M3DC PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../GameEngine/Core/Include> $<INSTALL_INTERFACE:Core>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../GameEngine/Math/Include> $<INSTALL_INTERFACE:Math>
+)
 
 # Thirdparty
 target_link_libraries(M3DC PRIVATE Assimp::Assimp)
