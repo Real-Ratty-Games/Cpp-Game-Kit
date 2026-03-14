@@ -339,3 +339,54 @@ void AssetLoader::LoadSoundFromMemory(SoundWav& obj, std::vector<uint8>& data)
 	if (obj.Handle.loadMem(data.data(), static_cast<uint>(data.size()), false, false) != SoLoud::SO_NO_ERROR)
 		throw BigError("Failed loading sound file from memory!");
 }
+
+void AssetLoader::LoadShader(Shader* shader, strgv rootFolder, strgv shadername)
+{
+	const strg realpath = mRootDir + "/" + strg(rootFolder);
+
+	bgfx::RendererType::Enum type = bgfx::getRendererType();
+	strg typenm = "D3D";
+	if (type == bgfx::RendererType::Vulkan)
+		typenm = "SPIRV";
+	else if (type == bgfx::RendererType::Metal)
+		typenm = "METAL";
+
+	strg path(realpath);
+	path += "/" + typenm + "/" + strg(shadername);
+
+	strg vpath = path + ".vsb";
+	strg fpath = path + ".fsb";
+
+	std::ifstream vfile(vpath.data(), std::ios::binary);
+	if (!vfile)
+	{
+		const strg errmsg = "Failed loading vertex shader of: " + strg(shadername);
+		throw BigError(errmsg);
+	}
+
+	std::ifstream ffile(fpath.data(), std::ios::binary);
+	if (!ffile)
+	{
+		const strg errmsg = "Failed loading fragment shader of: " + strg(shadername);
+		throw BigError(errmsg);
+	}
+
+	bgfx::ShaderHandle vsh = bgfx::createShader(ShaderGetMemory(vfile));
+	bgfx::setName(vsh, strg(strg(shadername) + "_vs").c_str());
+
+	bgfx::ShaderHandle fsh = bgfx::createShader(ShaderGetMemory(ffile));
+	bgfx::setName(vsh, strg(strg(shadername) + "_fs").c_str());
+
+	shader->mHandle = bgfx::createProgram(vsh, fsh, true);
+}
+
+const bgfx::Memory* AssetLoader::ShaderGetMemory(std::ifstream& file)
+{
+	file.seekg(0, std::ios::end);
+	const uint64 size = file.tellg();
+	file.seekg(0, std::ios::beg);
+
+	const bgfx::Memory* mem = bgfx::alloc(size + 1);
+	file.read(reinterpret_cast<char*>(mem->data), size);
+	return mem;
+}

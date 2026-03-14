@@ -40,16 +40,7 @@ bool GameProgram::Initialize()
 
 	mAssetLoader = new AssetLoader(&mRenderer, "Data");
 
-	// setup shaders
-	const strg shaderPath = FileSystem::GetResourcePath("Data/Shaders").string();
-	const strg shaderDevPath = FileSystem::GetResourcePath("Data/Development/Shaders").string();
-
-	Shader::SetShaderDirectory(shaderPath);
-	const strg result = Shader::CompileAllShaders(shaderDevPath);
-	
-	const strg shdErrPath = FileSystem::GetResourcePath("ShaderErr.log").string();
-	FileSystem::WriteTextFile(shdErrPath, result);
-
+	// load shaders
 	LoadShaders();
 
 	// create back buffer surface
@@ -59,12 +50,6 @@ bool GameProgram::Initialize()
 
 	Window::DestroySplashScreen();
 	mWindow->Show();
-
-
-
-	mAssetLoader->StreamSoundFromFile(mStream, "test.wav");
-	mSHandle = mSound.Core()->play(mStream.Handle);
-
 	return true;
 }
 
@@ -101,33 +86,31 @@ void GameProgram::Cleanup()
 {
 	Window::SetHardwareCursorImage(nullptr);
 	Window::Release();
-
-	mSound.Core()->stop(mSHandle);
 }
 
 void GameProgram::LoadShaders()
 {
 	// default sprite shader
 	mSprite2DShader = new Shader(&mRenderer);
-	mSprite2DShader->Initialize("Sprite2D");
+	mAssetLoader->LoadShader(mSprite2DShader.Get(), "Shaders", "Sprite2D");
 	mSprite2DShader->InitUniform("s_texColor", bgfx::UniformType::Sampler);
 	mSprite2DShader->InitUniform("color", bgfx::UniformType::Vec4);
 
 	// default sprite instancing shader
 	mSprite2DIShader = new Shader(&mRenderer);
-	mSprite2DIShader->Initialize("Sprite2DI");
+	mAssetLoader->LoadShader(mSprite2DIShader.Get(), "Shaders", "Sprite2DI");
 	mSprite2DIShader->InitUniform("s_texColor", bgfx::UniformType::Sampler);
 
 	// default sprite atlas shader
 	mSprite2DAtlasShader = new Shader(&mRenderer);
-	mSprite2DAtlasShader->Initialize("Sprite2DAtlas");
+	mAssetLoader->LoadShader(mSprite2DAtlasShader.Get(), "Shaders", "Sprite2DAtlas");
 	mSprite2DAtlasShader->InitUniform("s_texColor", bgfx::UniformType::Sampler);
 	mSprite2DAtlasShader->InitUniform("atlasInfo", bgfx::UniformType::Vec4, 2);
 	mSprite2DAtlasShader->InitUniform("color", bgfx::UniformType::Vec4);
 
 	// default sprite atlas instancing shader
 	mSprite2DAtlasIShader = new Shader(&mRenderer);
-	mSprite2DAtlasIShader->Initialize("Sprite2DAtlasI");
+	mAssetLoader->LoadShader(mSprite2DAtlasIShader.Get(), "Shaders", "Sprite2DAtlasI");
 	mSprite2DAtlasIShader->InitUniform("s_texColor", bgfx::UniformType::Sampler);
 	mSprite2DAtlasIShader->InitUniform("atlasInfo", bgfx::UniformType::Vec4, 2);
 }

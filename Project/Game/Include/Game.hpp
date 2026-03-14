@@ -53,9 +53,6 @@ namespace MyGame
 		SafePtr<Shader>			mSprite2DAtlasShader;
 		SafePtr<Shader>			mSprite2DAtlasIShader;
 		SafePtr<DrawSurface2D>	mBackBufferSurface;
-
-		SoundWavStream mStream;
-		SoundHandle mSHandle;
 	};
 }
 #endif

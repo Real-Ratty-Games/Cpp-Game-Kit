@@ -20,13 +20,8 @@ namespace Tudo
 	class Shader : public DrawObject
 	{
 	public:
-		static void SetShaderDirectory(strgv dir);
-		static strg CompileAllShaders(strgv dir);
-
 		Shader(Renderer* renderer);
 		~Shader();
-
-		void Initialize(strgv shadername);
 
 		void Submit(uint16 viewID, uint8 flags, const bool depth);
 
@@ -36,6 +31,8 @@ namespace Tudo
 
 		bgfx::UniformHandle* GetUniform(strgv name);
 		bgfx::ProgramHandle& GetProgramHandle();
+
+		friend class AssetLoader;
 
 	private:
 		bgfx::ProgramHandle								mHandle;

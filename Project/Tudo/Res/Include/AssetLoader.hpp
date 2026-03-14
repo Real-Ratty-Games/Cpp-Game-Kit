@@ -15,6 +15,7 @@ namespace Tudo
 	class	Renderer;
 	class	Texture;
 	class	Model3D;
+	class	Shader;
 	struct	SoundWav;
 	struct	SoundWavStream;
 
@@ -39,12 +40,16 @@ namespace Tudo
 		void StreamSoundFromFile(SoundWavStream& obj, strgv filepath);
 		void LoadSoundFromMemory(SoundWav& obj, std::vector<uint8>& data);
 
+		void LoadShader(Shader* shader, strgv rootFolder, strgv shadername);
+
 	private:
 		void LoadTexture(Texture* texture, uint8* data, uint64 flags, int nrComponents,
 			strgv texturename, int width, int height, bool mipgen);
 		void LoadGPUTexture(Texture* texture, std::vector<uint8>& data, uint64 flags, strgv texturename);
 
 		void CreateMesh(Mesh3D& modelMesh, MeshData& mdata);
+
+		const bgfx::Memory* ShaderGetMemory(std::ifstream& file);
 
 	private:
 		strg mRootDir;

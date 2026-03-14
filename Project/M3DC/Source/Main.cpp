@@ -1,6 +1,9 @@
 /*======================================================
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
+--------------------------------------------------------
+	Valid Arguments:
+	<input> <output>
 ======================================================*/
 #include <iostream>
 #include <fstream>
