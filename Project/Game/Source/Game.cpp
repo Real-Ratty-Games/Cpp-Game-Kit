@@ -47,7 +47,7 @@ bool GameProgram::Initialize()
 	mWindow->Show();
 	return true;
 }
-
+#include "Multiply.hpp"
 void GameProgram::Tick()
 {
 	mWindow->PollEvent();
@@ -62,6 +62,57 @@ void GameProgram::Tick()
 	while (mClock.Wait())
 	{
 		// Logic here...
+
+
+		if (mInput.KeyboardKeyDown(KeyboardKey::LEFT))
+		{
+			Viewport3D& vp = mPipeline->_vp3d;
+
+			vec3 rotationAxis = vp.Up();
+			quat q = Math::QuatFromAxisAngle(rotationAxis, Math::ToRadians(5.0f));
+			vec3 eyeOffset = vp.Eye;
+			vec3 rotatedOffset = Math::Multiply(eyeOffset, q);
+			vp.Eye = vp.Target + rotatedOffset;
+
+			vp.CreateView();
+		}
+		else if (mInput.KeyboardKeyDown(KeyboardKey::RIGHT))
+		{
+			Viewport3D& vp = mPipeline->_vp3d;
+
+			vec3 rotationAxis = -vp.Up();
+			quat q = Math::QuatFromAxisAngle(rotationAxis, Math::ToRadians(5.0f));
+			vec3 eyeOffset = vp.Eye;
+			vec3 rotatedOffset = Math::Multiply(eyeOffset, q);
+			vp.Eye = vp.Target + rotatedOffset;
+
+			vp.CreateView();
+		}
+
+		if (mInput.KeyboardKeyDown(KeyboardKey::UP))
+		{
+			Viewport3D& vp = mPipeline->_vp3d;
+
+			vec3 rotationAxis = vp.Right();
+			quat q = Math::QuatFromAxisAngle(rotationAxis, Math::ToRadians(5.0f));
+			vec3 eyeOffset = vp.Eye;
+			vec3 rotatedOffset = Math::Multiply(eyeOffset, q);
+			vp.Eye = vp.Target + rotatedOffset;
+
+			vp.CreateView();
+		}
+		else if (mInput.KeyboardKeyDown(KeyboardKey::DOWN))
+		{
+			Viewport3D& vp = mPipeline->_vp3d;
+
+			vec3 rotationAxis = -vp.Right();
+			quat q = Math::QuatFromAxisAngle(rotationAxis, Math::ToRadians(5.0f));
+			vec3 eyeOffset = vp.Eye;
+			vec3 rotatedOffset = Math::Multiply(eyeOffset, q);
+			vp.Eye = vp.Target + rotatedOffset;
+
+			vp.CreateView();
+		}
 	}
 }
 

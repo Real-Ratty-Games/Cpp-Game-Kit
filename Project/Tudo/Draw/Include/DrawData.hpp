@@ -128,6 +128,13 @@ namespace Tudo
 		vec4 IData;
 	};
 
+	struct BillboardTransform
+	{
+		vec3	Location	= vec3(0.0f);
+		vec2	Scale		= vec2(1.0f);
+		Color	ImageColor	= 0xffffffff;
+	};
+
 	struct SpriteFont
 	{
 		Sprite* pSprite;

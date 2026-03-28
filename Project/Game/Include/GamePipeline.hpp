@@ -33,6 +33,9 @@ namespace MyGame
 		GamePipeline(GraphicsDevice& gdevice, AssetLoader& assetloader, vec2 resolution);
 		void OnResize(vec2 size);
 
+
+		Viewport3D _vp3d;
+
 	protected:
 		void Draw();
 
@@ -61,7 +64,9 @@ namespace MyGame
 		SafePtr<Shader>				mColorMeshIShader;
 		SafePtr<Shader>				mBillboardShader;
 
-		Viewport3D _vp3d;
+
+
+
 		SafePtr<Texture> _tex;
 		SafePtr<Model3D> _model;
 		SafePtr<DrawSurface3D> _3dsurface;
@@ -73,6 +78,8 @@ namespace MyGame
 		SafePtr< Sprite> _spriteFont;
 		SpriteFont _ffont;
 		SpriteInstanceData _SimpleTextData;
+
+		SafePtr< Sprite> _bsprite;
 	};
 }
 #endif

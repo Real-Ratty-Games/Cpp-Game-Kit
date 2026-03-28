@@ -11,8 +11,8 @@
 namespace Tudo
 {
 	class GraphicsDevice;
-	class SpriteAnimator;
 	class DrawPipeline;
+	class SpriteAnimator;
 	class Texture;
 	class Sprite;
 

@@ -91,17 +91,27 @@ GamePipeline::GamePipeline(GraphicsDevice& gdevice, AssetLoader& assetloader, ve
 	transf.Location = vec2(100, 100);
 	mSpriteRenderer->PrepareSpriteFontText(_ffont, transf, _SimpleTextData, "Hello, Tudo!\nThis is 3D!!");
 
+
+	_bsprite = new Sprite(*_tex);
+	_bsprite->RotationPivot = vec2(0.5f, 0.0f);
 }
 
 void GamePipeline::Draw()
 {
 	PrepareDrawModel(*_3dsurface, _vp3d);
 
-		// SetActiveShader(mUnlitMeshIShader.Get());
-		// mUnlitRenderer->DrawModelInstanced(_midata);
+		SetActiveShader(mUnlitMeshIShader.Get());
+		mUnlitRenderer->DrawModelInstanced(_midata);
 
-		SetActiveShader(mColorMeshIShader.Get());
-		mColorModelRenderer->DrawModelInstanced(_midata);
+		//SetActiveShader(mColorMeshIShader.Get());
+		//mColorModelRenderer->DrawModelInstanced(_midata);
+
+		SetActiveShader(mBillboardShader.Get());
+
+		BillboardTransform btransf;
+		btransf.Location = vec3(0, 0.0f, 0.0f);
+		btransf.Scale = vec2(1.0f, 2.0f);
+		mBillboardRenderer->DrawSprite(*_bsprite, btransf, true);
 
 	PrepareDrawSprite(*mBackBufferSurface, mCamera);
 
@@ -165,5 +175,6 @@ void GamePipeline::LoadShaders(AssetLoader& assetloader)
 	pGDevice->InitShaderUniform("s_texColor",	bgfx::UniformType::Sampler);
 	pGDevice->InitShaderUniform("u_color",		bgfx::UniformType::Vec4);
 	pGDevice->InitShaderUniform("u_atlasInfo",	bgfx::UniformType::Vec4, 2);
-	pGDevice->InitShaderUniform("u_scale",		bgfx::UniformType::Vec4);
+	pGDevice->InitShaderUniform("u_transform",	bgfx::UniformType::Vec4);
+	pGDevice->InitShaderUniform("u_flags",		bgfx::UniformType::Vec4);
 }

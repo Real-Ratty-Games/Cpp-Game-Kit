@@ -12,13 +12,16 @@ namespace Tudo
 {
 	class GraphicsDevice;
 	class DrawPipeline;
+	class SpriteAnimator;
 	class Texture;
+	class Sprite;
 
 	class BillboardRenderer : public Renderer
 	{
 	public:
 		BillboardRenderer(GraphicsDevice& gdevice, DrawPipeline& pipeline);
-		void Draw(Texture& texture, vec2 scale, Color color, bool cylindric);
+
+		void DrawSprite(Sprite& sprite, const BillboardTransform& transform, bool cylindric);
 	};
 }
 #endif
