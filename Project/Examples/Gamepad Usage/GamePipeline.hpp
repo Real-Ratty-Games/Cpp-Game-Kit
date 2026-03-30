@@ -6,16 +6,19 @@
 #define GAMEPIPELINE_HPP_
 #include <SystemTypes.hpp>
 #include <Memory.hpp>
-#include <Shader.hpp>
 #include <AssetLoader.hpp>
 #include <DrawPipeline.hpp>
 #include <GraphicsDevice.hpp>
 #include <DrawSurface2D.hpp>
+#include <Shader.hpp>
 
 #include <SpriteRenderer.hpp>
 #include <UnlitModelRenderer.hpp>
 #include <ColorModelRenderer.hpp>
 #include <BillboardRenderer.hpp>
+
+#include <Sprite.hpp>
+#include <Texture.hpp>
 
 using namespace Tudo;
 
@@ -32,6 +35,9 @@ namespace MyGame
 
 	private:
 		void LoadShaders(AssetLoader& assetloader);
+
+	public:
+		Transform2D QuadTransf;
 
 	private:
 		Viewport2D					mCamera;

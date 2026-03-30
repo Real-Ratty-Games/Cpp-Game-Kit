@@ -89,9 +89,9 @@ void GraphicsDevice::Printf(vec2i location, uint8 attr, strgv text)
 #endif
 }
 
-void GraphicsDevice::DrawTexture(Shader& shader, const DrawSurface& surface, vec2 rotpiv, vec2 size, const Transform2D& transformation)
+void GraphicsDevice::DrawTexture(Shader& shader, const DrawSurface& surface, vec2 rotpiv, vec2 size, const Transform2D& transform)
 {
-	vec2 rscale = size * transformation.Scale;
+	vec2 rscale = size * transform.Scale;
 
 	vec3 rotPiv = vec3(
 		rotpiv.X * rscale.X,
@@ -100,16 +100,16 @@ void GraphicsDevice::DrawTexture(Shader& shader, const DrawSurface& surface, vec
 	);
 
 	mat4 mdl = mat4::Identity();
-	mdl = Math::Translate(mdl, vec3(transformation.Location.X, transformation.Location.Y, 0.0f), false);		// move to world pos
+	mdl = Math::Translate(mdl, vec3(transform.Location.X, transform.Location.Y, 0.0f), false);		// move to world pos
 	mdl = Math::Translate(mdl, rotPiv, false);																	// mov pivot to origin
-	mdl = Math::Rotate(mdl, vec3(0.0f, 0.0f, 1.0f), Math::ToRadians(transformation.Rotation), false);			// rotate
+	mdl = Math::Rotate(mdl, vec3(0.0f, 0.0f, 1.0f), Math::ToRadians(transform.Rotation), false);			// rotate
 	mdl = Math::Translate(mdl, -rotPiv, false);																	// move pivot back
 	mdl = Math::Scale(mdl, vec3(rscale.X, rscale.Y, 1.0f), false);												// scale
 
 	bgfx::setTransform(mdl.Ptr());
 	bgfx::setState(TUDO_RENDERER_SPRITE_STATE);
 
-	vec4 ucolor = vec4(transformation.ImageColor.R, transformation.ImageColor.G, transformation.ImageColor.B, transformation.ImageColor.A);
+	vec4 ucolor = vec4(transform.ImageColor.R, transform.ImageColor.G, transform.ImageColor.B, transform.ImageColor.A);
 	SetShaderUniform("u_color", ucolor.Ptr());
 
 	shader.Submit(surface.ViewID(), TUDO_RENDERER_SPRITE_FLAGS, true);
@@ -151,11 +151,11 @@ bgfx::VertexLayout& GraphicsDevice::GetMeshVertexLayout()
 	return mMesh3DVBLayout;
 }
 
-void GraphicsDevice::InitShaderUniform(strgv name, bgfx::UniformType::Enum type, uint16 nmb)
+void GraphicsDevice::InitShaderUniform(strgv name, ShaderUniformType type, uint16 nmb)
 {
 	const char* nm = name.data();
 	if (!mShaderUniforms.contains(nm))
-		mShaderUniforms[nm] = bgfx::createUniform(nm, type, nmb);
+		mShaderUniforms[nm] = bgfx::createUniform(nm, (bgfx::UniformType::Enum)type, nmb);
 }
 
 void GraphicsDevice::SetShaderUniform(strgv name, const void* vl, uint16 nmb)

@@ -27,16 +27,37 @@ GamePipeline::GamePipeline(GraphicsDevice& gdevice, AssetLoader& assetloader, ve
 
 	// load shaders
 	LoadShaders(assetloader);
+
+
+
+	_tex = new Texture(gdevice);
+
+	assetloader.LoadTextureFromFile(*_tex, "Font.png", TUDO_SAMPLER_MIN_POINT |
+		TUDO_SAMPLER_MAG_POINT |
+		TUDO_SAMPLER_U_CLAMP |
+		TUDO_SAMPLER_V_CLAMP, "Font", false, false);
+
+	_sprite = new Sprite(*_tex);
+
+
+	_animation.StartIndex		= 0;
+	_animation.TotalFrameCount	= 6;
+	_animation.FrameSize		= vec2(18, 30);
+	_animation.Style			= ESpriteAnimationStyle::REVERSELOOP;
+	_animation.RowCount			= 6;
+	_animation.Speed			= 14;
+
+	_animator.Play(&_animation);
 }
 
 void GamePipeline::Draw()
 {
 	PrepareDraw2D(*mBackBufferSurface, mCamera);
 
-		SetActiveShader(mColorQuadShader.Get());
-		
+		SetActiveShader(mSprite2DAtlasShader.Get());
+
 		Transform2D transf;
-		mSpriteRenderer->DrawColorQuad(transf, 0, 128);
+		mSpriteRenderer->DrawSpriteAnimation(*_sprite, transf, _animator);
 }
 
 void GamePipeline::OnResize(vec2 size)
@@ -98,9 +119,9 @@ void GamePipeline::LoadShaders(AssetLoader& assetloader)
 	mBillboardAtlasIShader = new Shader(*pGDevice);
 	assetloader.LoadShader(*mBillboardAtlasIShader, "Shaders", "BillboardAtlasI");
 
-	pGDevice->InitShaderUniform("s_texColor", ShaderUniformType::Sampler);
-	pGDevice->InitShaderUniform("u_color", ShaderUniformType::Vec4);
-	pGDevice->InitShaderUniform("u_atlasInfo", ShaderUniformType::Vec4, 2);
-	pGDevice->InitShaderUniform("u_transform", ShaderUniformType::Vec4);
-	pGDevice->InitShaderUniform("u_flags", ShaderUniformType::Vec4);
+	pGDevice->InitShaderUniform("s_texColor",	ShaderUniformType::Sampler);
+	pGDevice->InitShaderUniform("u_color",		ShaderUniformType::Vec4);
+	pGDevice->InitShaderUniform("u_atlasInfo",	ShaderUniformType::Vec4, 2);
+	pGDevice->InitShaderUniform("u_transform",	ShaderUniformType::Vec4);
+	pGDevice->InitShaderUniform("u_flags",		ShaderUniformType::Vec4);
 }

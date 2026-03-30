@@ -61,7 +61,7 @@ void GameProgram::Tick()
 	mClock.Tick();
 	while (mClock.Wait())
 	{
-		// logic here...
+		mPipeline->_animator.Tick();
 	}
 }
 

@@ -27,21 +27,61 @@ GamePipeline::GamePipeline(GraphicsDevice& gdevice, AssetLoader& assetloader, ve
 
 	// load shaders
 	LoadShaders(assetloader);
+
+
+
+	_model = new Model3D(*pGDevice);
+	assetloader.LoadModelFromFile(*_model, "cuby.m3d");
+
+	_tex = new Texture(gdevice);
+	assetloader.LoadTextureFromFile(*_tex, "cuby.png", TUDO_SAMPLER_MIN_POINT |
+		TUDO_SAMPLER_MAG_POINT |
+		TUDO_SAMPLER_U_CLAMP |
+		TUDO_SAMPLER_V_CLAMP, "Font", false, true);
+
+	mUnlitRenderer->SetTexture(_tex.Get());
+
+	_3dsurface = new DrawSurface3D(*pGDevice, 1, resolution, nullptr, false);
+	_sprite3d = new Sprite(*_3dsurface->GetTexture());
+
+	_vp3d.Eye.Z = -5;
+	_vp3d.CreateView();
+
+
+
+	std::vector<ModelInstanceTransform> ttrs(255);
+
+	for (int i = 0; i < 255; i++)
+	{
+		mat4 mdl = mat4::Identity();
+		mdl = Math::Translate(mdl, vec3(i, 0, i), false);
+
+		ModelInstanceTransform t;
+		t.ModelMatrix = mdl;
+		ttrs[i] = t;
+	}
+	PrepareModelInstancing(*_model, _midata, ttrs);
 }
 
 void GamePipeline::Draw()
 {
+	PrepareDraw3D(*_3dsurface, _vp3d);
+
+		SetActiveShader(mUnlitMeshIShader.Get());
+		mUnlitRenderer->DrawModelInstanced(_midata);
+
 	PrepareDraw2D(*mBackBufferSurface, mCamera);
 
-		SetActiveShader(mColorQuadShader.Get());
-		
+		SetActiveShader(mSprite2DShader.Get());
+
 		Transform2D transf;
-		mSpriteRenderer->DrawColorQuad(transf, 0, 128);
+		mSpriteRenderer->DrawSprite(*_sprite3d, transf);
 }
 
 void GamePipeline::OnResize(vec2 size)
 {
 	mBackBufferSurface->OnResize(size);
+	_3dsurface->OnResize(size);
 }
 
 void GamePipeline::LoadShaders(AssetLoader& assetloader)

@@ -34,9 +34,7 @@ void GamePipeline::Draw()
 	PrepareDraw2D(*mBackBufferSurface, mCamera);
 
 		SetActiveShader(mColorQuadShader.Get());
-		
-		Transform2D transf;
-		mSpriteRenderer->DrawColorQuad(transf, 0, 128);
+		mSpriteRenderer->DrawColorQuad(QuadTransf, 0, 32);
 }
 
 void GamePipeline::OnResize(vec2 size)

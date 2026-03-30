@@ -37,10 +37,10 @@ namespace Tudo
 		void SetActiveShader(Shader* shader);
 		void SetActiveDrawSurface(DrawSurface* surface);
 
-		void PrepareDrawModel(DrawSurface3D& surface, const Viewport3D& viewport);
-		void PrepareDrawModel(DrawSurface3D& surface, const ViewportOrtho3D& viewport);
+		void PrepareDraw3D(DrawSurface3D& surface, const Viewport3D& viewport);
+		void PrepareDraw3D(DrawSurface3D& surface, const ViewportOrtho3D& viewport);
 
-		void PrepareDrawSprite(DrawSurface2D& surface, const Viewport2D& viewport);
+		void PrepareDraw2D(DrawSurface2D& surface, const Viewport2D& viewport);
 
 		void PrepareModelInstancing(Model3D& model, ModelInstanceData& idata, std::vector<ModelInstanceTransform>& tdata);
 

@@ -26,7 +26,7 @@ void DrawPipeline::DrawAll()
 	pActiveDrawSurface	= nullptr;
 }
 
-void DrawPipeline::PrepareDrawModel(DrawSurface3D& surface, const Viewport3D& viewport)
+void DrawPipeline::PrepareDraw3D(DrawSurface3D& surface, const Viewport3D& viewport)
 {
 	SetActiveDrawSurface(&surface);
 	surface.Clear();
@@ -34,7 +34,7 @@ void DrawPipeline::PrepareDrawModel(DrawSurface3D& surface, const Viewport3D& vi
 	bgfx::setViewTransform(surface.ViewID(), viewport.View().Ptr(), proj.Ptr());
 }
 
-void DrawPipeline::PrepareDrawModel(DrawSurface3D& surface, const ViewportOrtho3D& viewport)
+void DrawPipeline::PrepareDraw3D(DrawSurface3D& surface, const ViewportOrtho3D& viewport)
 {
 	SetActiveDrawSurface(&surface);
 	surface.Clear();
@@ -43,7 +43,7 @@ void DrawPipeline::PrepareDrawModel(DrawSurface3D& surface, const ViewportOrtho3
 	bgfx::setViewTransform(surface.ViewID(), viewport.View().Ptr(), proj.Ptr());
 }
 
-void DrawPipeline::PrepareDrawSprite(DrawSurface2D& surface, const Viewport2D& viewport)
+void DrawPipeline::PrepareDraw2D(DrawSurface2D& surface, const Viewport2D& viewport)
 {
 	SetActiveDrawSurface(&surface);
 	surface.Clear();

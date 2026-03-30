@@ -27,16 +27,36 @@ GamePipeline::GamePipeline(GraphicsDevice& gdevice, AssetLoader& assetloader, ve
 
 	// load shaders
 	LoadShaders(assetloader);
+
+
+
+	_ftex = new Texture(gdevice);
+	assetloader.LoadTextureFromFile(*_ftex, "Font.png", TUDO_SAMPLER_MIN_POINT |
+		TUDO_SAMPLER_MAG_POINT |
+		TUDO_SAMPLER_U_CLAMP |
+		TUDO_SAMPLER_V_CLAMP, "Font", false, false);
+
+	_spriteFont = new Sprite(*_ftex);
+
+	_ffont.pSprite		= _spriteFont.Get();
+	_ffont.GlyphSize	= vec2(18, 30);
+	_ffont.Glyphs		=
+		"AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
+		"ÄäÖöÜü"
+		"0123456789"
+		",;.:_-!?\"§$%&/()=*+~'#|<>²³{[]}\\";
+
+	Transform2D transf;
+	transf.Location = vec2(100, 100);
+	mSpriteRenderer->PrepareSpriteFontText(_ffont, transf, _simpleTextData, "Hello, Tudo!\nThis is so cool!");
 }
 
 void GamePipeline::Draw()
 {
 	PrepareDraw2D(*mBackBufferSurface, mCamera);
 
-		SetActiveShader(mColorQuadShader.Get());
-		
-		Transform2D transf;
-		mSpriteRenderer->DrawColorQuad(transf, 0, 128);
+		SetActiveShader(mSprite2DAtlasIShader.Get());
+		mSpriteRenderer->DrawSpriteFontText(_ffont, _simpleTextData);
 }
 
 void GamePipeline::OnResize(vec2 size)

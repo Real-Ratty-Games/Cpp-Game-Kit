@@ -36,7 +36,7 @@ namespace Tudo
 		const bgfx::Caps* GetGPUInfo();
 
 		void Printf(vec2i location, uint8 attr, strgv text);
-		void DrawTexture(Shader& shader, const DrawSurface& surface, vec2 rotpiv, vec2 size, const Transform2D& transformation);
+		void DrawTexture(Shader& shader, const DrawSurface& surface, vec2 rotpiv, vec2 size, const Transform2D& transform);
 		void SetMesh(uint8 stream, const Mesh3D& mesh);
 		void SetModelTransform(const mat4& mat);
 
@@ -49,7 +49,7 @@ namespace Tudo
 		bgfx::VertexLayout&			GetMeshVertexLayout();
 
 		bgfx::UniformHandle*		GetShaderUniform(strgv name);
-		void						InitShaderUniform(strgv name, bgfx::UniformType::Enum type, uint16 nmb = 1);
+		void						InitShaderUniform(strgv name, ShaderUniformType type, uint16 nmb = 1);
 		void						SetShaderUniform(strgv name, const void* vl, uint16 nmb = 1);
 		void						SetShaderTexture(uint8 stage, strgv name, Texture& texture);
 

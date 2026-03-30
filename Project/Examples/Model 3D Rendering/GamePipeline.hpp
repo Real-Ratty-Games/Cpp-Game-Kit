@@ -6,16 +6,22 @@
 #define GAMEPIPELINE_HPP_
 #include <SystemTypes.hpp>
 #include <Memory.hpp>
-#include <Shader.hpp>
 #include <AssetLoader.hpp>
 #include <DrawPipeline.hpp>
 #include <GraphicsDevice.hpp>
 #include <DrawSurface2D.hpp>
+#include <Shader.hpp>
 
 #include <SpriteRenderer.hpp>
 #include <UnlitModelRenderer.hpp>
 #include <ColorModelRenderer.hpp>
 #include <BillboardRenderer.hpp>
+
+#include <Sprite.hpp>
+#include <Viewport3D.hpp>
+#include <Model3D.hpp>
+#include <DrawSurface3D.hpp>
+#include <Texture.hpp>
 
 using namespace Tudo;
 
@@ -26,6 +32,8 @@ namespace MyGame
 	public:
 		GamePipeline(GraphicsDevice& gdevice, AssetLoader& assetloader, vec2 resolution);
 		void OnResize(vec2 size);
+
+		Viewport3D _vp3d;
 
 	protected:
 		void Draw();
@@ -57,6 +65,16 @@ namespace MyGame
 		SafePtr<Shader>				mBillboardIShader;
 		SafePtr<Shader>				mBillboardAtlasShader;
 		SafePtr<Shader>				mBillboardAtlasIShader;
+
+
+
+
+		SafePtr<Texture>			_tex;
+		SafePtr<Model3D>			_model;
+		ModelInstanceData			_midata;
+
+		SafePtr<DrawSurface3D>		_3dsurface;
+		SafePtr<Sprite>				_sprite3d;
 	};
 }
 #endif

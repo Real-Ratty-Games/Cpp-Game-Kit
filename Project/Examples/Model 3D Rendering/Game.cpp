@@ -5,6 +5,7 @@
 #include "../Include/Game.hpp"
 #include "../Include/GameWindow.hpp"
 #include "../Include/GamePipeline.hpp"
+#include <Multiply.hpp>
 
 using namespace MyGame;
 
@@ -61,7 +62,28 @@ void GameProgram::Tick()
 	mClock.Tick();
 	while (mClock.Wait())
 	{
-		// logic here...
+		Viewport3D& vp = mPipeline->_vp3d;
+
+		if (mInput.KeyboardKeyDown(KeyboardKey::LEFT))
+		{
+			vec3 rotationAxis = vp.Up();
+			quat q = Math::QuatFromAxisAngle(rotationAxis, Math::ToRadians(5.0f));
+			vec3 eyeOffset = vp.Eye;
+			vec3 rotatedOffset = Math::Multiply(eyeOffset, q);
+			vp.Eye = vp.Target + rotatedOffset;
+
+			vp.CreateView();
+		}
+		else if (mInput.KeyboardKeyDown(KeyboardKey::RIGHT))
+		{
+			vec3 rotationAxis = -vp.Up();
+			quat q = Math::QuatFromAxisAngle(rotationAxis, Math::ToRadians(5.0f));
+			vec3 eyeOffset = vp.Eye;
+			vec3 rotatedOffset = Math::Multiply(eyeOffset, q);
+			vp.Eye = vp.Target + rotatedOffset;
+
+			vp.CreateView();
+		}
 	}
 }
 

@@ -50,7 +50,7 @@ void Gamepad::Disconnect()
 
 bool Gamepad::IsConnected()
 {
-	return SDL_GamepadConnected(mGamepadHandle);
+	return SDL_GamepadConnected(mGamepadHandle); // causes mem leak... sdl fault?
 }
 
 bool Gamepad::ButtonDown(GamepadButton button)

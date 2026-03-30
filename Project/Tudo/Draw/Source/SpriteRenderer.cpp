@@ -14,18 +14,18 @@ using namespace Tudo;
 
 SpriteRenderer::SpriteRenderer(GraphicsDevice& gdevice, DrawPipeline& pipeline) : Renderer(gdevice, pipeline) {}
 
-void SpriteRenderer::DrawSprite(Sprite& sprite, const Transform2D& transformation)
+void SpriteRenderer::DrawSprite(Sprite& sprite, const Transform2D& transform)
 {
-	DrawTexture(sprite.GetTexture(), sprite.RotationPivot, sprite.Size, transformation);
+	DrawTexture(sprite.GetTexture(), sprite.RotationPivot, sprite.Size, transform);
 }
 
-void SpriteRenderer::DrawSpriteAtlas(Sprite& sprite, const TransformAtlas2D& transformation, vec2 subSize)
+void SpriteRenderer::DrawSpriteAtlas(Sprite& sprite, const TransformAtlas2D& transform, vec2 subSize)
 {
 	vec4 atinf[2];
-	atinf[0] = vec4(transformation.Index.X, transformation.Index.Y, sprite.Size.X, sprite.Size.Y);
+	atinf[0] = vec4(transform.Index.X, transform.Index.Y, sprite.Size.X, sprite.Size.Y);
 	atinf[1] = vec4(subSize.X, subSize.Y, 1.0f, 0.0f);
 	pGDevice->SetShaderUniform("u_atlasInfo", atinf, 2);
-	DrawTexture(sprite.GetTexture(), sprite.RotationPivot, subSize, transformation);
+	DrawTexture(sprite.GetTexture(), sprite.RotationPivot, subSize, transform);
 }
 
 void SpriteRenderer::PrepareSpriteInstancing(Sprite& sprite, SpriteInstanceData& idata, const std::vector<Transform2D>& tdata)
@@ -136,18 +136,18 @@ void SpriteRenderer::DrawSpriteAtlasInstanced(const SpriteInstanceData& idata, S
 	DrawSpriteInstanced(idata);
 }
 
-void SpriteRenderer::PrepareSpriteFontText(const SpriteFont& font, const Transform2D& transformation, SpriteInstanceData& idata, strgv text)
+void SpriteRenderer::PrepareSpriteFontText(const SpriteFont& font, const Transform2D& transform, SpriteInstanceData& idata, strgv text)
 {
 	std::vector<TransformAtlas2D> tdata;
 
-	vec2 cursor = transformation.Location;
+	vec2 cursor = transform.Location;
 	for (auto& it : text)
 	{
 		TransformAtlas2D result;
 		result.Location = cursor;
-		result.Rotation = transformation.Rotation;
-		result.Scale = transformation.Scale;
-		result.ImageColor = transformation.ImageColor;
+		result.Rotation = transform.Rotation;
+		result.Scale = transform.Scale;
+		result.ImageColor = transform.ImageColor;
 
 		if (it == ' ')
 		{
@@ -156,7 +156,7 @@ void SpriteRenderer::PrepareSpriteFontText(const SpriteFont& font, const Transfo
 		}
 		else if (it == '\n')
 		{
-			cursor.X = transformation.Location.X;
+			cursor.X = transform.Location.X;
 			cursor.Y += font.GlyphSize.Y;
 			continue;
 		}
@@ -179,16 +179,16 @@ void SpriteRenderer::DrawSpriteFontText(const SpriteFont& font, const SpriteInst
 	DrawSpriteAtlasInstanced(idata, *font.pSprite, font.GlyphSize);
 }
 
-void SpriteRenderer::DrawSpriteFontText(const SpriteFont& font, const Transform2D& transformation, strgv text)
+void SpriteRenderer::DrawSpriteFontText(const SpriteFont& font, const Transform2D& transform, strgv text)
 {
-	vec2 cursor = transformation.Location;
+	vec2 cursor = transform.Location;
 	for (auto& it : text)
 	{
 		TransformAtlas2D result;
 		result.Location = cursor;
-		result.Rotation = transformation.Rotation;
-		result.Scale = transformation.Scale;
-		result.ImageColor = transformation.ImageColor;
+		result.Rotation = transform.Rotation;
+		result.Scale = transform.Scale;
+		result.ImageColor = transform.ImageColor;
 
 		if (it == ' ')
 		{
@@ -197,7 +197,7 @@ void SpriteRenderer::DrawSpriteFontText(const SpriteFont& font, const Transform2
 		}
 		else if (it == '\n')
 		{
-			cursor.X = transformation.Location.X;
+			cursor.X = transform.Location.X;
 			cursor.Y += font.GlyphSize.Y;
 			continue;
 		}
@@ -213,25 +213,25 @@ void SpriteRenderer::DrawSpriteFontText(const SpriteFont& font, const Transform2
 	}
 }
 
-void SpriteRenderer::DrawSpriteAnimation(Sprite& sprite, const Transform2D& transformation, const SpriteAnimator& animator)
+void SpriteRenderer::DrawSpriteAnimation(Sprite& sprite, const Transform2D& transform, const SpriteAnimator& animator)
 {
 	TransformAtlas2D transf;
-	transf.Location = transformation.Location;
-	transf.Rotation = transformation.Rotation;
-	transf.Scale = transformation.Scale;
-	transf.ImageColor = transformation.ImageColor;
+	transf.Location = transform.Location;
+	transf.Rotation = transform.Rotation;
+	transf.Scale = transform.Scale;
+	transf.ImageColor = transform.ImageColor;
 	transf.Index = animator.GetCurrentIndex();
 	DrawSpriteAtlas(sprite, transf, animator.GetAnimation()->FrameSize);
 }
 
-void SpriteRenderer::DrawColorQuad(const Transform2D& transformation, vec2 rotpiv, vec2 size)
+void SpriteRenderer::DrawColorQuad(const Transform2D& transform, vec2 rotpiv, vec2 size)
 {
-	pGDevice->DrawTexture(*pPipeline->GetActiveShader(), *pPipeline->GetActiveDrawSurface(), rotpiv, size, transformation);
+	pGDevice->DrawTexture(*pPipeline->GetActiveShader(), *pPipeline->GetActiveDrawSurface(), rotpiv, size, transform);
 }
 
-void SpriteRenderer::DrawTexture(Texture* texture, vec2 rotpiv, vec2 size, const Transform2D& transformation)
+void SpriteRenderer::DrawTexture(Texture* texture, vec2 rotpiv, vec2 size, const Transform2D& transform)
 {
 	Shader* shader = pPipeline->GetActiveShader();
 	pGDevice->SetShaderTexture(0, "s_texColor", *texture);
-	pGDevice->DrawTexture(*shader, *pPipeline->GetActiveDrawSurface(), rotpiv, size, transformation);
+	pGDevice->DrawTexture(*shader, *pPipeline->GetActiveDrawSurface(), rotpiv, size, transform);
 }
