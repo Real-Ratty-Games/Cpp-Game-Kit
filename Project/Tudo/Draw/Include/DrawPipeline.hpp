@@ -24,6 +24,7 @@ namespace Tudo
 	{
 	public:
 		DrawPipeline(GraphicsDevice& gdevice);
+		~DrawPipeline();
 
 		void DrawAll();
 		virtual void OnResize(vec2 size) = 0;

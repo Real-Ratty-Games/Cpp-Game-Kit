@@ -3,7 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "GraphicsDevice.hpp"
-#include "BigError.hpp"
+#include "Logger.hpp"
 #include "Memory.hpp"
 #include "FileSystem.hpp"
 #include "Math.hpp"
@@ -37,7 +37,7 @@ GraphicsDevice::GraphicsDevice(Window& window, DrawAPI api, bool vsync)
 	init.type = (bgfx::RendererType::Enum)api;
 
 	if (!bgfx::init(init))
-		throw BigError("Failed intializing bgfx!");
+		Logger::Log("GraphicsDevice::GraphicsDevice", "Failed intializing bgfx!", ELogType::LERROR);
 
 #if _DEBUG
 	bgfx::setDebug(BGFX_DEBUG_TEXT);
@@ -49,6 +49,9 @@ GraphicsDevice::GraphicsDevice(Window& window, DrawAPI api, bool vsync)
 
 	Init2DQuad();
 	InitMesh3DVBLayout();
+
+	Logger::Log("GraphicsDevice successfully initialized!");
+	LogGPUInfo();
 }
 
 GraphicsDevice::~GraphicsDevice()
@@ -56,6 +59,7 @@ GraphicsDevice::~GraphicsDevice()
 	Release2DQuad();
 	ReleaseShaderUniforms();
 	bgfx::shutdown();
+	Logger::Log("GraphicsDevice released!");
 }
 
 void GraphicsDevice::BeginDraw()
@@ -227,4 +231,25 @@ void GraphicsDevice::InitMesh3DVBLayout()
 	mMesh3DVBLayout.begin()
 		TUDO_RENDERER_M3D_VERTEXLAYOUT
 		.end();
+}
+
+void GraphicsDevice::LogGPUInfo()
+{
+	const bgfx::Caps* caps = GetGPUInfo();
+
+	strg dn = "Unknown";
+	switch (caps->vendorId)
+	{
+	case BGFX_PCI_ID_NVIDIA:				dn = "Nvidia"; break;
+	case BGFX_PCI_ID_AMD:					dn = "AMD"; break;
+	case BGFX_PCI_ID_INTEL:					dn = "Intel"; break;
+	case BGFX_PCI_ID_SOFTWARE_RASTERIZER:	dn = "Software rasterizer"; break;
+	case BGFX_PCI_ID_APPLE:					dn = "Apple"; break;
+	case BGFX_PCI_ID_MICROSOFT:				dn = "Microsoft"; break;
+	case BGFX_PCI_ID_ARM:					dn = "ARM"; break;
+	}
+
+	Logger::Log("GPU device is " + dn);
+	Logger::Log("GPU device Id '" + std::to_string(caps->deviceId) + "'");
+	Logger::Log("GPU count '" + std::to_string(caps->numGPUs) + "'");
 }

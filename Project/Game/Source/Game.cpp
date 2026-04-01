@@ -6,6 +6,8 @@
 #include "../Include/GameWindow.hpp"
 #include "../Include/GamePipeline.hpp"
 
+#include <Texture.hpp>
+
 using namespace MyGame;
 
 void GameProgram::OnResize(vec2i& size)
@@ -40,7 +42,7 @@ bool GameProgram::Initialize()
 	mPipeline = new GamePipeline(*mGDevice, *mAssetLoader, resolution);
 
 	// set hw cursor
-	mAssetLoader->LoadHardwareCursorImage(mCursor, "Textures/Cursor.bmp");
+	mAssetLoader->LoadHardwareCursorImage(mCursor, "Textures/Cursor.bmp", "Cursor");
 	mWindow->SetHardwareCursorImage(&mCursor);
 
 	Window::DestroySplashScreen();

@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "FileSystem.hpp"
+#include "Logger.hpp"
 #include <filesystem>
 #include <fstream>
 
@@ -19,7 +20,9 @@ bool FileSystem::Exists(strgv filepath)
 
 void FileSystem::FileRemove(strgv filepath)
 {
-	std::filesystem::remove(filepath);
+	strg fp(filepath);
+	std::filesystem::remove(fp);
+	Logger::Log("File removed '" + fp + "'");
 }
 
 std::vector<strg> FileSystem::FilesInDirectory(strgv dir, int nt)
@@ -65,12 +68,16 @@ std::vector<strg> FileSystem::SubDirectories(strgv dir)
 
 void FileSystem::DirectoryCreate(strgv dir)
 {
-	std::filesystem::create_directory(dir);
+	strg dr(dir);
+	std::filesystem::create_directory(dr);
+	Logger::Log("Directory created '" + dr + "'");
 }
 
 void FileSystem::DirectoryRemove(strgv dir)
 {
-	std::filesystem::remove_all(dir);
+	strg dr(dir);
+	std::filesystem::remove_all(dr);
+	Logger::Log("Directory removed '" + dr + "'");
 }
 
 std::vector<char> FileSystem::ReadBinaryFile(strgv filepath)
@@ -90,16 +97,20 @@ std::vector<char> FileSystem::ReadBinaryFile(strgv filepath)
 
 void FileSystem::WriteBinaryFile(strgv filepath, const std::vector<char>& data)
 {
-	std::ofstream file(filepath.data(), std::ios::binary);
+	strg fp(filepath);
+	std::ofstream file(fp, std::ios::binary);
 	file.write(data.data(), data.size());
 	file.close();
+	Logger::Log("Binary file written '" + fp + "'");
 }
 
 void FileSystem::WriteTextFile(strgv filepath, strgv text)
 {
-	std::ofstream file(filepath.data());
+	strg fp(filepath);
+	std::ofstream file(fp);
 	file.write(text.data(), text.size());
 	file.close();
+	Logger::Log("Text file written '" + fp + "'");
 }
 
 std::filesystem::path FileSystem::GetResourcePath(strgv filename)

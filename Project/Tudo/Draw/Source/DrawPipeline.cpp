@@ -3,7 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "DrawPipeline.hpp"
-#include "BigError.hpp"
+#include "Logger.hpp"
 #include "Projection.hpp"
 #include "GraphicsDevice.hpp"
 #include "DrawSurface2D.hpp"
@@ -17,6 +17,12 @@ DrawPipeline::DrawPipeline(GraphicsDevice& gdevice) : DrawObject(gdevice)
 {
 	pActiveShader		= nullptr;
 	pActiveDrawSurface	= nullptr;
+	Logger::Log("Initializing DrawPipeline...");
+}
+
+DrawPipeline::~DrawPipeline()
+{
+	Logger::Log("DrawPipeline released!");
 }
 
 void DrawPipeline::DrawAll()
@@ -93,13 +99,13 @@ void DrawPipeline::SetActiveDrawSurface(DrawSurface* surface)
 Shader* DrawPipeline::GetActiveShader()
 {
 	if (!pActiveShader)
-		throw BigError("Invalid Shader!");
+		Logger::Log("DrawPipeline::GetActiveShader", "Invalid Shader!", ELogType::LERROR);
 	return pActiveShader;
 }
 
 DrawSurface* DrawPipeline::GetActiveDrawSurface()
 {
 	if (!pActiveDrawSurface)
-		throw BigError("Invalid Surface!");
+		Logger::Log("DrawPipeline::GetActiveDrawSurface", "Invalid Surface!", ELogType::LERROR);
 	return pActiveDrawSurface;
 }

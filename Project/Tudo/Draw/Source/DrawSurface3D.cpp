@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "DrawSurface3D.hpp"
+#include "Logger.hpp"
 #include "GraphicsDevice.hpp"
 #include "Texture.hpp"
 
@@ -18,6 +19,8 @@ DrawSurface3D::DrawSurface3D(GraphicsDevice& gdevice, uint16 viewid, vec2 size, 
 		UpdateFB(size);
 		SetFBViewId();
 	}
+
+	Logger::Log("New DrawSurface3D created!");
 }
 
 Texture* DrawSurface3D::GetDepthTexture()

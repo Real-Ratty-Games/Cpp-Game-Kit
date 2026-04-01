@@ -20,11 +20,13 @@ namespace Tudo
 
 		void Submit(uint16 viewID, uint8 flags, bool depth);
 		bgfx::ProgramHandle& GetProgramHandle();
+		strg Name();
 
 		friend class AssetLoader;
 
 	private:
 		bgfx::ProgramHandle mHandle;
+		strg				mName;
 	};
 }
 #endif

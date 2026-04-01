@@ -61,6 +61,7 @@ namespace Tudo
 		void InitMesh3DVBLayout();
 		void Init2DQuad();
 		void Release2DQuad();
+		void LogGPUInfo();
 
 	private:
 		bgfx::VertexBufferHandle						mQuad2DVB;

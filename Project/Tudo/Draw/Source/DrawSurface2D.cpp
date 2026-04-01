@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "DrawSurface2D.hpp"
+#include "Logger.hpp"
 #include "GraphicsDevice.hpp"
 #include "Texture.hpp"
 
@@ -15,6 +16,8 @@ DrawSurface2D::DrawSurface2D(GraphicsDevice& gdevice, uint16 viewid, vec2 size, 
 		UpdateFB(size);
 		SetFBViewId();
 	}
+
+	Logger::Log("New DrawSurface2D created!");
 }
 
 void DrawSurface2D::UpdateFB(vec2i texSize, bgfx::TextureFormat::Enum format)

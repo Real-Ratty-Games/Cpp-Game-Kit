@@ -2,12 +2,8 @@
 	Copyright (c) 2026 Real Ratty Games.
 	Created by Norbert Gerberg.
 ======================================================*/
-#include "DrawObject.hpp"
-#include "GraphicsDevice.hpp"
+#ifndef VERSION_HPP_
+#define VERSION_HPP_
 
-using namespace Tudo;
-
-DrawObject::DrawObject(GraphicsDevice& gdevice)
-{
-	pGDevice = &gdevice;
-}
+#define TUDO_VERSION 100
+#endif
