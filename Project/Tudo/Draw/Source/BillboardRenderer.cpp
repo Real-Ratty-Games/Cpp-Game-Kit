@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "BillboardRenderer.hpp"
+#include "Memory.hpp"
 #include "Transformation.hpp"
 #include "GraphicsDevice.hpp"
 #include "SpriteAnimation.hpp"
@@ -33,7 +34,7 @@ void BillboardRenderer::DrawSpriteInstanced(const SpriteInstanceData& idata)
 	vec4 tvec = vec4(0, 0, sprite->RotationPivot.X, sprite->RotationPivot.Y);
 	pGDevice->SetShaderUniform("u_transform", tvec.Ptr());
 
-	pGDevice->SetShaderTexture(0, "s_texColor", *sprite->GetTexture());
+	pGDevice->SetShaderTexture(0, "s_texColor", sprite->GetTexture());
 
 	shader->Submit(pPipeline->GetActiveDrawSurface()->ViewID(), TUDO_RENDERER_MESH_DEFAULT_DISCARD, true);
 }
@@ -67,7 +68,7 @@ void BillboardRenderer::DrawSpriteAtlasInstanced(const SpriteInstanceData& idata
 	vec4 tvec = vec4(0, 0, sprite->RotationPivot.X, sprite->RotationPivot.Y);
 	pGDevice->SetShaderUniform("u_transform", tvec.Ptr());
 
-	pGDevice->SetShaderTexture(0, "s_texColor", *sprite->GetTexture());
+	pGDevice->SetShaderTexture(0, "s_texColor", sprite->GetTexture());
 
 	shader->Submit(pPipeline->GetActiveDrawSurface()->ViewID(), TUDO_RENDERER_MESH_DEFAULT_DISCARD, true);
 }
@@ -103,7 +104,7 @@ void BillboardRenderer::PrepareSpriteInstancing(Sprite& sprite, SpriteInstanceDa
 		auto& transf = tdata[i];
 
 		vec4 loc = vec4(transf.Location.X, transf.Location.Y, transf.Location.Z, 1);
-		Memory::Copy(data, loc.Ptr(), sizeof(mat4));
+		Memory::Copy(data, loc.Ptr(), sizeof(vec4));
 		data += sizeof(vec4);
 
 		vec4 idata = vec4(transf.Scale.X, transf.Scale.Y, transf.bCylindric ? 1.0f : 0.0f, 0.0f);
@@ -134,7 +135,7 @@ void BillboardRenderer::PrepareSpriteAtlasInstancing(Sprite& sprite, SpriteInsta
 		auto& transf = tdata[i];
 
 		vec4 loc = vec4(transf.Location.X, transf.Location.Y, transf.Location.Z, transf.bFlipV ? 1.0f : 0.0f);
-		Memory::Copy(data, loc.Ptr(), sizeof(mat4));
+		Memory::Copy(data, loc.Ptr(), sizeof(vec4));
 		data += sizeof(vec4);
 
 		vec4 idata = vec4(transf.Scale.X, transf.Scale.Y, transf.bCylindric ? 1.0f : 0.0f, transf.bFlipU ? 1.0f : 0.0f);
@@ -156,12 +157,11 @@ void BillboardRenderer::DrawTexture(Shader& shader, Sprite& sprite, const Billbo
 	bgfx::setState(TUDO_RENDERER_MESH_TRANSPARENT_STATE);
 	bgfx::setVertexBuffer(0, pGDevice->GetQuadVertexHandle());
 
-	mat4 mdl = mat4::Identity();
-	mdl = Math::Translate(mdl, transform.Location, false);
-	pGDevice->SetModelTransform(mdl);
-
 	vec4 tvec = vec4(transform.Scale.X, transform.Scale.Y, sprite.RotationPivot.X, sprite.RotationPivot.Y);
 	pGDevice->SetShaderUniform("u_transform", tvec.Ptr());
+
+	vec4 lvec = vec4(transform.Location.X, transform.Location.Y, transform.Location.Z, 0.0f);
+	pGDevice->SetShaderUniform("u_location", lvec.Ptr());
 
 	vec4 fvec = vec4(transform.bCylindric ? 1.0f : 0.0f, transform.bFlipV ? 1.0f : 0.0f, transform.bFlipU ? 1.0f : 0.0f, 0.0f);
 	pGDevice->SetShaderUniform("u_flags", fvec.Ptr());
@@ -169,7 +169,7 @@ void BillboardRenderer::DrawTexture(Shader& shader, Sprite& sprite, const Billbo
 	vec4 col = transform.ImageColor.ToVec();
 	pGDevice->SetShaderUniform("u_color", col.Ptr());
 
-	pGDevice->SetShaderTexture(0, "s_texColor", *sprite.GetTexture());
+	pGDevice->SetShaderTexture(0, "s_texColor", sprite.GetTexture());
 
 	shader.Submit(pPipeline->GetActiveDrawSurface()->ViewID(), TUDO_RENDERER_MESH_DEFAULT_DISCARD, true);
 }

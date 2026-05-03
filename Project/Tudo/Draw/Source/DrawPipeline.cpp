@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "DrawPipeline.hpp"
+#include "Memory.hpp"
 #include "Logger.hpp"
 #include "Projection.hpp"
 #include "GraphicsDevice.hpp"
@@ -13,10 +14,9 @@
 
 using namespace Tudo;
 
-DrawPipeline::DrawPipeline(GraphicsDevice& gdevice) : DrawObject(gdevice)
+DrawPipeline::DrawPipeline(GraphicsDevice& gdevice) : DrawObject(gdevice),
+	pActiveShader(nullptr), pActiveDrawSurface(nullptr)
 {
-	pActiveShader		= nullptr;
-	pActiveDrawSurface	= nullptr;
 	Logger::Log("Initializing DrawPipeline...");
 }
 

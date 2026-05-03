@@ -62,6 +62,12 @@ void Window::SetHardwareCursorImage(WindowCursor* cursor)
 	SDL_SetCursor(cur);
 }
 
+void Window::SetCursor(SDL_SystemCursor id)
+{
+	SDL_Cursor* cur = SDL_CreateSystemCursor(id);
+	SDL_SetCursor(cur);
+}
+
 void Window::ShowMessageBox(SDL_MessageBoxFlags flags, strgv header, strgv message, Window* window)
 {
 	SDL_ShowSimpleMessageBox(flags, header.data(), message.data(), (window == nullptr) ? nullptr : window->mWndHandle);
@@ -84,15 +90,17 @@ bool Window::IsSDLInit()
 	return sbSDLInit;
 }
 
-void Window::Create(strgv title, uint width, uint height, bool fs)
+void Window::Create(strgv title, uint width, uint height, bool resizable, bool fs)
 {
 	bFullscreen = fs;
-    
+
     SDL_WindowFlags wflags = ((fs ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_HIDDEN);
 #if __APPLE__
     wflags |= SDL_WINDOW_METAL;
 #endif
     
+	if (resizable) wflags |= SDL_WINDOW_RESIZABLE;
+
 	if ((mWndHandle = SDL_CreateWindow(title.data(), (int)width, (int)height, wflags)) == nullptr)
 		Logger::Log("Window::Create", "Failed creating window: " + strg(SDL_GetError()), ELogType::LERROR);
     
@@ -119,6 +127,11 @@ void Window::PollEvent()
 void Window::Destroy()
 {
 	SDL_DestroyWindow(mWndHandle);
+}
+
+void Window::WarpMouseInWindow(float x, float y)
+{
+	SDL_WarpMouseInWindow(mWndHandle, x, y);
 }
 
 bool Window::IsIconified()

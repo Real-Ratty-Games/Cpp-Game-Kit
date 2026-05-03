@@ -3,7 +3,9 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "WADFile.hpp"
+#if !TUDO_NO_LOGGER
 #include "Logger.hpp"
+#endif
 #include "FileSystem.hpp"
 #include <fstream>
 #include <sstream>
@@ -14,7 +16,9 @@ bool WADFile::Open(strgv filepath)
 {
 	if (!FileSystem::Exists(filepath))
 	{
+#if !TUDO_NO_LOGGER
 		Logger::Log("WADFile::Open", "Cannot open WAD file, file does not exist: " + strg(filepath), ELogType::LWARNING);
+#endif
 		return false;
 	}
 	mFilepath = filepath;
@@ -50,7 +54,9 @@ bool WADFile::Read(strgv itemname, std::vector<uint8>& data)
 	const strg iname(itemname);
 	if (!mItems.contains(iname))
 	{
+#if !TUDO_NO_LOGGER
 		Logger::Log("WADFile::Read", "Item " + iname + " could not be found inside: " + mFilepath, ELogType::LWARNING);
+#endif
 		return false;
 	}
 
@@ -59,7 +65,9 @@ bool WADFile::Read(strgv itemname, std::vector<uint8>& data)
 	std::ifstream file(mFilepath.data(), std::ios::binary);
 	if (!file)
 	{
+#if !TUDO_NO_LOGGER
 		Logger::Log("WADFile::Read", "Cannot open WAD file: " + mFilepath, ELogType::LWARNING);
+#endif
 		return false;
 	}
 
@@ -68,7 +76,9 @@ bool WADFile::Read(strgv itemname, std::vector<uint8>& data)
 	file.seekg(static_cast<std::streampos>(item.Offset), std::ios::beg);
 	if (!file.read(reinterpret_cast<char*>(data.data()), item.Size))
 	{
+#if !TUDO_NO_LOGGER
 		Logger::Log("WADFile::Read", "Failed reading data here!", ELogType::LWARNING);
+#endif
 		return false;
 	}
 	return true;

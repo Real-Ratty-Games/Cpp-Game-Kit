@@ -13,6 +13,8 @@
 #include <sstream>
 #include <vector>
 #include "SystemTypes.hpp"
+
+#define TUDO_NO_LOGGER
 #include "FileSystem.hpp"
 
 #define SHDC_DEFAULT_SHADERPATH "Data/Shaders"

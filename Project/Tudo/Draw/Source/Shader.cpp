@@ -7,10 +7,8 @@
 
 using namespace Tudo;
 
-Shader::Shader(GraphicsDevice& gdevice) : DrawObject(gdevice)
-{
-	mHandle = BGFX_INVALID_HANDLE;
-}
+Shader::Shader(GraphicsDevice& gdevice) : DrawObject(gdevice),
+	mHandle(BGFX_INVALID_HANDLE) { }
 
 Shader::~Shader()
 {

@@ -42,3 +42,4 @@ void DrawSurface2D::UpdateFB(vec2i texSize, bgfx::TextureFormat::Enum format)
 		}
 	}
 }
+

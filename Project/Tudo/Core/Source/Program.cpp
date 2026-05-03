@@ -3,12 +3,14 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "Program.hpp"
-#include "Version.hpp"
+#include "Globals.hpp"
 #include "Logger.hpp"
 #include <format>
 #include <chrono>
 
 using namespace Tudo;
+
+Program::Program() : bQuit(false) {}
 
 void Program::Run()
 {
@@ -29,7 +31,7 @@ void Program::Run()
 
 void Program::Startup()
 {
-	auto now = std::chrono::system_clock::now();	// getting local time causes massive mem leaks in std...
+	auto now = std::chrono::system_clock::now();	// getting local time causes mem leaks in std...
 
 	Logger::Log("Program Startup");
 	Logger::Log("Today is " + std::format("{:%d-%m-%Y}", now));

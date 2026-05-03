@@ -69,15 +69,15 @@ namespace Tudo
 	class Sprite;
 	class Model3D;
 
-	enum class DrawAPI
+	enum class EDrawAPI
 	{
-		DIRECT3D11	= bgfx::RendererType::Direct3D11,
-		DIRECT3D12	= bgfx::RendererType::Direct3D12,
-		VULKAN		= bgfx::RendererType::Vulkan,
-        METAL       = bgfx::RendererType::Metal
+		DIRECT3D11	= bgfx::RendererType::Direct3D11,	// 2
+		DIRECT3D12	= bgfx::RendererType::Direct3D12,	// 3
+		VULKAN		= bgfx::RendererType::Vulkan,		// 9
+        METAL       = bgfx::RendererType::Metal			// 5
 	};
 
-	enum class ShaderUniformType
+	enum class EShaderUniformType
 	{
 		Sampler = bgfx::UniformType::Sampler,
 		Vec4	= bgfx::UniformType::Vec4,

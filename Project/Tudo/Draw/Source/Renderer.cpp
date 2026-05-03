@@ -8,7 +8,4 @@
 
 using namespace Tudo;
 
-Renderer::Renderer(GraphicsDevice& gdevice, DrawPipeline& pipeline) : DrawObject(gdevice)
-{
-	pPipeline = &pipeline;
-}
+Renderer::Renderer(GraphicsDevice& gdevice, DrawPipeline& pipeline) : DrawObject(gdevice), pPipeline(&pipeline) {}

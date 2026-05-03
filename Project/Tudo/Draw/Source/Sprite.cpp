@@ -7,18 +7,16 @@
 
 using namespace Tudo;
 
-Sprite::Sprite(Texture& texture)
-{
-	pTexture	= &texture;
-	Size		= pTexture->Size();
-}
+Sprite::Sprite(Texture& texture) :
+	pTexture(&texture),
+	Size(texture.Size()) { }
 
 void Sprite::SetTexture(Texture& texture)
 {
 	pTexture = &texture;
 }
 
-Texture* Sprite::GetTexture() const
+Texture& Sprite::GetTexture()
 {
-	return pTexture;
+	return *pTexture;
 }

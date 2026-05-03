@@ -19,14 +19,12 @@ namespace Tudo
 	public:
 		ModelRenderer(GraphicsDevice& gdevice, DrawPipeline& pipeline);
 
-		void			DrawModel(const Model3D& model);
+		void			DrawModel(const Model3D& model, const mat4& transform);
+		void			DrawModel(const Model3D& model, const mat4& transform, uint mesh);
 		void			DrawModelInstanced(const ModelInstanceData& idata);
-
-		virtual void	DrawMesh(const Mesh3D& mesh) = 0;
 	
 	protected:
-		virtual void	SetupMesh() {}
-		virtual void	SetupMeshInstanced();
+		virtual void	DrawMesh(const Mesh3D& mesh) = 0;
 		virtual void	DrawMeshInstanced(const Mesh3D& mesh);
 	};
 }

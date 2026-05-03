@@ -23,7 +23,7 @@
 
 using namespace Tudo;
 
-GraphicsDevice::GraphicsDevice(Window& window, DrawAPI api, bool vsync)
+GraphicsDevice::GraphicsDevice(Window& window, EDrawAPI api, bool vsync)
 {
 	mQuad2DVB = BGFX_INVALID_HANDLE;
 
@@ -113,7 +113,7 @@ void GraphicsDevice::DrawTexture(Shader& shader, const DrawSurface& surface, vec
 	bgfx::setTransform(mdl.Ptr());
 	bgfx::setState(TUDO_RENDERER_SPRITE_STATE);
 
-	vec4 ucolor = vec4(transform.ImageColor.R, transform.ImageColor.G, transform.ImageColor.B, transform.ImageColor.A);
+	vec4 ucolor = transform.ImageColor.ToVec();
 	SetShaderUniform("u_color", ucolor.Ptr());
 
 	shader.Submit(surface.ViewID(), TUDO_RENDERER_SPRITE_FLAGS, true);
@@ -123,11 +123,6 @@ void GraphicsDevice::SetMesh(uint8 stream, const Mesh3D& mesh)
 {
 	bgfx::setVertexBuffer(stream, mesh.VBH);
 	bgfx::setIndexBuffer(mesh.IBH);
-}
-
-void GraphicsDevice::SetModelTransform(const mat4& mat)
-{
-	bgfx::setTransform(mat.Ptr());
 }
 
 bgfx::VertexBufferHandle GraphicsDevice::CreateVertexBuffer(const void* data, uint size, const bgfx::VertexLayout& layout)
@@ -155,7 +150,7 @@ bgfx::VertexLayout& GraphicsDevice::GetMeshVertexLayout()
 	return mMesh3DVBLayout;
 }
 
-void GraphicsDevice::InitShaderUniform(strgv name, ShaderUniformType type, uint16 nmb)
+void GraphicsDevice::InitShaderUniform(strgv name, EShaderUniformType type, uint16 nmb)
 {
 	const char* nm = name.data();
 	if (!mShaderUniforms.contains(nm))

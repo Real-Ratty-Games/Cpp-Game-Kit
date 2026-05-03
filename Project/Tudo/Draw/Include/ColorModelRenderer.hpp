@@ -19,16 +19,14 @@ namespace Tudo
 	{
 	public:
 		ColorModelRenderer(GraphicsDevice& gdevice, DrawPipeline& pipeline);
-		void DrawMesh(const Mesh3D& mesh);
 		void SetColor(Color color);
 
 	protected:
-		void SetupMesh() override;
+		void DrawMesh(const Mesh3D& mesh);
 		void DrawMeshInstanced(const Mesh3D& mesh) override;
 
 	private:
 		Color	mColor;
-		Shader* pShader;
 	};
 }
 #endif

@@ -3,6 +3,7 @@
 	Created by Norbert Gerberg.
 ======================================================*/
 #include "SpriteRenderer.hpp"
+#include "Memory.hpp"
 #include "GraphicsDevice.hpp"
 #include "DrawPipeline.hpp"
 #include "DrawSurface2D.hpp"
@@ -16,7 +17,7 @@ SpriteRenderer::SpriteRenderer(GraphicsDevice& gdevice, DrawPipeline& pipeline) 
 
 void SpriteRenderer::DrawSprite(Sprite& sprite, const Transform2D& transform)
 {
-	DrawTexture(sprite.GetTexture(), sprite.RotationPivot, sprite.Size, transform);
+	DrawTexture(&sprite.GetTexture(), sprite.RotationPivot, sprite.Size, transform);
 }
 
 void SpriteRenderer::DrawSpriteAtlas(Sprite& sprite, const TransformAtlas2D& transform, vec2 subSize)
@@ -25,7 +26,7 @@ void SpriteRenderer::DrawSpriteAtlas(Sprite& sprite, const TransformAtlas2D& tra
 	atinf[0] = vec4(transform.Index.X, transform.Index.Y, sprite.Size.X, sprite.Size.Y);
 	atinf[1] = vec4(subSize.X, subSize.Y, 1.0f, 0.0f);
 	pGDevice->SetShaderUniform("u_atlasInfo", atinf, 2);
-	DrawTexture(sprite.GetTexture(), sprite.RotationPivot, subSize, transform);
+	DrawTexture(&sprite.GetTexture(), sprite.RotationPivot, subSize, transform);
 }
 
 void SpriteRenderer::PrepareSpriteInstancing(Sprite& sprite, SpriteInstanceData& idata, const std::vector<Transform2D>& tdata)
@@ -122,7 +123,7 @@ void SpriteRenderer::DrawSpriteInstanced(const SpriteInstanceData& idata)
 
 	bgfx::setState(TUDO_RENDERER_SPRITE_STATE);
 	bgfx::setInstanceDataBuffer(&idata.Buffer);
-	pGDevice->SetShaderTexture(0, "s_texColor", *idata.pSprite->GetTexture());
+	pGDevice->SetShaderTexture(0, "s_texColor", idata.pSprite->GetTexture());
 
 	shader->Submit(pPipeline->GetActiveDrawSurface()->ViewID(), TUDO_RENDERER_SPRITE_FLAGS, true);
 }

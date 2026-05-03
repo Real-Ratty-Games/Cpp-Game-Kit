@@ -20,15 +20,13 @@ namespace Tudo
 	{
 	public:
 		UnlitModelRenderer(GraphicsDevice& gdevice, DrawPipeline& pipeline);
-		void DrawMesh(const Mesh3D& mesh);
 		void SetTexture(Texture* texture);
 
 	protected:
-		void SetupMesh() override;
+		void DrawMesh(const Mesh3D& mesh);
 
 	private:
-		Texture*	pTexture;
-		Shader*		pShader;
+		Texture* pTexture;
 	};
 }
 #endif

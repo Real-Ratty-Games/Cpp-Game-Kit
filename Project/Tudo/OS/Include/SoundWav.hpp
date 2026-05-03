@@ -26,6 +26,11 @@ namespace Tudo
 			return mHandle;
 		}
 
+		const strg Name() const
+		{
+			return mName;
+		}
+
 		friend class AssetLoader;
 
 	private:

@@ -7,7 +7,4 @@
 
 using namespace Tudo;
 
-DrawObject::DrawObject(GraphicsDevice& gdevice)
-{
-	pGDevice = &gdevice;
-}
+DrawObject::DrawObject(GraphicsDevice& gdevice) : pGDevice(&gdevice) {}

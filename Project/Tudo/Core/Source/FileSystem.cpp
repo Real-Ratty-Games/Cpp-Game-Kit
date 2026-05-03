@@ -125,6 +125,12 @@ void FileSystem::WriteTextFile(strgv filepath, strgv text)
 #endif
 }
 
+void FileSystem::StripStringExt(strg& text)
+{
+	std::filesystem::path p(text);
+	text = p.stem().string();
+}
+
 std::filesystem::path FileSystem::GetResourcePath(strgv filename)
 {
 #if __APPLE__

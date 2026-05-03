@@ -8,11 +8,9 @@
 
 using namespace Tudo;
 
-Texture::Texture(GraphicsDevice& gdevice) : DrawObject(gdevice)
-{
-	mHandle		= BGFX_INVALID_HANDLE;
-	bIsCubemap	= false;
-}
+Texture::Texture(GraphicsDevice& gdevice) : DrawObject(gdevice),
+	mHandle(BGFX_INVALID_HANDLE),
+	bIsCubemap(false) {}
 
 Texture::~Texture()
 {
@@ -20,7 +18,9 @@ Texture::~Texture()
 	{
 		bgfx::destroy(mHandle);
 		mHandle = BGFX_INVALID_HANDLE;
-		Logger::Log("Texture '" + mName + "' released!");
+		
+		if (!mName.empty())
+			Logger::Log("Texture '" + mName + "' released!");
 	}
 }
 

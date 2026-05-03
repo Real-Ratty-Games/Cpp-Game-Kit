@@ -12,26 +12,18 @@
 
 using namespace Tudo;
 
-SkyboxModelRenderer::SkyboxModelRenderer(GraphicsDevice& gdevice, DrawPipeline& pipeline) : ModelRenderer(gdevice, pipeline)
-{
-	pTexture	= nullptr;
-	pShader		= nullptr;
-}
+SkyboxModelRenderer::SkyboxModelRenderer(GraphicsDevice& gdevice, DrawPipeline& pipeline) : ModelRenderer(gdevice, pipeline), pTexture(nullptr) {}
 
 void SkyboxModelRenderer::DrawMesh(const Mesh3D& mesh)
 {
+	Shader* shader = pPipeline->GetActiveShader();
 	bgfx::setState(TUDO_RENDERER_MESH_SKYBOX_STATE);
 	pGDevice->SetShaderTexture(0, "s_envMap", *pTexture);
 	pGDevice->SetMesh(0, mesh);
-	pShader->Submit(pPipeline->GetActiveDrawSurface()->ViewID(), TUDO_RENDERER_MESH_DEFAULT_DISCARD, true);
+	shader->Submit(pPipeline->GetActiveDrawSurface()->ViewID(), TUDO_RENDERER_MESH_DEFAULT_DISCARD, true);
 }
 
 void SkyboxModelRenderer::SetTexture(Texture* texture)
 {
 	pTexture = texture;
-}
-
-void SkyboxModelRenderer::SetupMesh()
-{
-	pShader = pPipeline->GetActiveShader();
 }
