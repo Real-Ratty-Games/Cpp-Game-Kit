@@ -126,6 +126,11 @@ Valid Arguments: 	<shader path> 	<dev path>
 example use:		Data/Shaders	Data/Development/Shaders
 ```
 
+to build at default path:
+```
+-d
+```
+
 ## M3DC
 
 This is a small utility tool that converts 3D files from modeling
